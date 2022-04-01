@@ -1,6 +1,6 @@
 #/bin/bash
 
-if [-d output];then
+if [ -d output ];then
   rm -fv output/*.root
   rm -fv output/*.txt
 else
@@ -8,7 +8,6 @@ else
 fi
 
 cd ../build
-rm -rfv *.root
 wait
 nice make -j4
 wait
@@ -16,5 +15,6 @@ wait
 wait
 cd -
 mv ../build/*.root output/
-mv ../build/*.txt output/
+mv ../build/out.txt output/
+mv ../build/err.txt output/
 
