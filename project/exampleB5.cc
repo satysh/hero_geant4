@@ -1,5 +1,5 @@
-#include "DetectorConstruction.hh"
-#include "ActionInitialization.hh"
+#include "HERODetectorConstruction.hh"
+#include "HEROActionInitialization.hh"
 
 #include "G4RunManagerFactory.hh"
 #include "G4SteppingVerbose.hh"
@@ -29,14 +29,14 @@ int main(int argc, char** argv)
     G4RunManagerFactory::CreateRunManager(G4RunManagerType::Default);
 
   // Mandatory user initialization classes
-  runManager->SetUserInitialization(new HERO::DetectorConstruction);
+  runManager->SetUserInitialization(new HERO::HERODetectorConstruction);
 
   auto physicsList = new FTFP_BERT;
   physicsList->RegisterPhysics(new G4StepLimiterPhysics());
   runManager->SetUserInitialization(physicsList);
 
   // User action initialization
-  runManager->SetUserInitialization(new B5::ActionInitialization());
+  runManager->SetUserInitialization(new HERO::HEROActionInitialization());
 
   // Visualization manager construction
   auto visManager = new G4VisExecutive;
