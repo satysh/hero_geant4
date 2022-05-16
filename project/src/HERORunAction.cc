@@ -4,9 +4,9 @@
 HERORunAction::HERORunAction()
 {
 	G4AnalysisManager *man = G4AnalysisManager::Instance();
-	//man->SetNtupleMerging(true);
+	man->SetNtupleMerging(false);
 
-	man->CreateNtuple("HERO", "HERO");
+	man->CreateNtuple("HERO", "Data");
 	man->CreateNtupleDColumn("deposit_E");
 	man->CreateNtupleDColumn("kin_E");
 	man->CreateNtupleDColumn("x");

@@ -15,7 +15,6 @@
 
 #include "HERODetectorConstruction.hh"
 #include "HEROActionInitialization.hh"
-#include "HERORunAction.hh"
 #include "HEROPrimaryGenerator.hh"
 
 int main(int argc, char** argv)
@@ -23,23 +22,21 @@ int main(int argc, char** argv)
     for (int i=0; i<argc; i++) {
         G4cout << argv[i] << G4endl;
     }
-    G4MTRunManager* runManager = new G4MTRunManager();
-    //G4RunManager *runManager = new G4RunManager();
+    //G4MTRunManager* runManager = new G4MTRunManager();
+    G4RunManager *runManager = new G4RunManager();
 
     runManager->SetUserInitialization(new HERODetectorConstruction());
     runManager->SetUserInitialization(new QGSP_BERT_HP);
     HEROActionInitialization *actionInit = new HEROActionInitialization();
-    HERORunAction *runAction = new HERORunAction();
-    actionInit->SetRunAction(runAction);
     HEROPrimaryGenerator *primeGen = new HEROPrimaryGenerator();
     primeGen->SetParticleEnergy(120.); // GeV
     actionInit->SetPrimaryGenerator(primeGen);
     runManager->SetUserInitialization(actionInit);
     runManager->Initialize();
 
-    runManager->SetNumberOfThreads(2);
+    //runManager->SetNumberOfThreads(2);
     runManager->SetPrintProgress(1);
-    //runManager->BeamOn(1);
+    runManager->BeamOn(3);
 /*
     G4UIExecutive* ui = new G4UIExecutive(argc, argv);
 
