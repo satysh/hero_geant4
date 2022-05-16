@@ -32,14 +32,15 @@ int main(int argc, char** argv)
     HERORunAction *runAction = new HERORunAction();
     actionInit->SetRunAction(runAction);
     HEROPrimaryGenerator *primeGen = new HEROPrimaryGenerator();
+    primeGen->SetParticleEnergy(120.); // GeV
     actionInit->SetPrimaryGenerator(primeGen);
     runManager->SetUserInitialization(actionInit);
     runManager->Initialize();
-/*
+
     runManager->SetNumberOfThreads(2);
     runManager->SetPrintProgress(1);
-    runManager->BeamOn(10);
-*/
+    //runManager->BeamOn(1);
+/*
     G4UIExecutive* ui = new G4UIExecutive(argc, argv);
 
     G4VisManager *visManager = new G4VisExecutive();
@@ -57,6 +58,6 @@ int main(int argc, char** argv)
 
     ui->SessionStart();
     UImanager->ApplyCommand("/run/BeamOn 100");
-
+*/
     return 0;
 }
