@@ -12,12 +12,15 @@ HEROSensitiveDetector::~HEROSensitiveDetector()
 G4bool HEROSensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory*ROhist)
 {
 	G4Track* track = aStep->GetTrack();
+	G4bool statusOn = aStep->IsFirstStepInVolume();
+	G4bool statusOff = aStep->IsLastStepInVolume();
 	G4StepPoint *preStepPoint = aStep->GetPreStepPoint();
-	//G4StepPoint *postStepPoint = aStep->GetPostStepPoint();
+	G4StepPoint *postStepPoint = aStep->GetPostStepPoint();
 
 	//track->SetTrackStatus(fStopAndKill); should track be killed???
 
 	G4ThreeVector positionParticle = preStepPoint->GetPosition();
+	G4ThreeVector positionParticleOff = postStepPoint->GetPosition();
 	const G4ParticleDefinition* particleDefinition = track->GetParticleDefinition();
 	const G4String& particleName = particleDefinition->GetParticleName();
 	G4int pdg = particleDefinition->GetPDGEncoding();
@@ -29,20 +32,31 @@ G4bool HEROSensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory*ROhi
 	G4double depositEnergy = aStep->GetTotalEnergyDeposit();
 	G4double kinEnergy = dParticle->GetKineticEnergy();
 
-
-	//G4cout << "The Particle NAME: " << particleName << " with PDG = " << pdg << G4endl;
+    G4double radiusOn = positionParticle[0]*positionParticle[0];
+    radiusOn += positionParticle[1]*positionParticle[1];
+    radiusOn += positionParticle[2]*positionParticle[2];
+    radiusOn = sqrt(radiusOn)/cm;
+    G4double radiusOff = positionParticleOff[0]*positionParticleOff[0];
+    radiusOff += positionParticleOff[1]*positionParticleOff[1];
+    radiusOff += positionParticleOff[2]*positionParticleOff[2];
+    radiusOff = sqrt(radiusOff)/cm;
+	G4cerr << statusOn << ", " << statusOff << " :";
+	G4cerr << particleName << ", pdg=" << pdg << ", trackId=" << track->GetTrackID()
+	       << ", eKin=" << kinEnergy << ", rOn=" << radiusOn << ", rOff=" << radiusOff << ", time=" << globalTime / nanosecond << G4endl;
 	//G4cout << "some particle position: " << positionParticle << G4endl;
 	//G4cout << "copy number " << copyNo << G4endl;
 	//G4cout << particleName << " time: " << globalTime << ", energy: " << particleEnergy << " no kill" << G4endl;
 
 	G4AnalysisManager* man = G4AnalysisManager::Instance();
-	man->FillNtupleDColumn(0, depositEnergy / keV);
-	man->FillNtupleDColumn(1, kinEnergy / keV);
-	man->FillNtupleDColumn(2, positionParticle[0]);
-	man->FillNtupleDColumn(3, positionParticle[1]);
-	man->FillNtupleDColumn(4, positionParticle[2]);
-	man->FillNtupleDColumn(5, globalTime / nanosecond);
-	man->AddNtupleRow(0);
+	if (pdg == 1000020040) {
+	    man->FillNtupleDColumn(0, depositEnergy / keV);
+	    man->FillNtupleDColumn(1, kinEnergy / keV);
+	    man->FillNtupleDColumn(2, positionParticle[0]);
+	    man->FillNtupleDColumn(3, positionParticle[1]);
+	    man->FillNtupleDColumn(4, positionParticle[2]);
+	    man->FillNtupleDColumn(5, globalTime / nanosecond);
+	    man->AddNtupleRow(0);
+	}
 
     // 2112 neutron
     // 1000020040 alpha

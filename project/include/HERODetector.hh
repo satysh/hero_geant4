@@ -11,5 +11,7 @@ public:
 private:
 	virtual G4bool ProcessHits(G4Step *, G4TouchableHistory *);
 
+private:
+	G4int fCheaker=0;
 };
 #endif
