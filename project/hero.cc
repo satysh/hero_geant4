@@ -15,6 +15,8 @@
 
 #include "HERODetectorConstruction.hh"
 #include "HEROActionInitialization.hh"
+#include "HERORunAction.hh"
+#include "HEROPrimaryGenerator.hh"
 
 int main(int argc, char** argv)
 {
@@ -26,7 +28,12 @@ int main(int argc, char** argv)
 
     runManager->SetUserInitialization(new HERODetectorConstruction());
     runManager->SetUserInitialization(new QGSP_BERT_HP);
-    runManager->SetUserInitialization(new HEROActionInitialization());
+    HEROActionInitialization *actionInit = new HEROActionInitialization();
+    HERORunAction *runAction = new HERORunAction();
+    actionInit->SetRunAction(runAction);
+    HEROPrimaryGenerator *primeGen = new HEROPrimaryGenerator();
+    actionInit->SetPrimaryGenerator(primeGen);
+    runManager->SetUserInitialization(actionInit);
     runManager->Initialize();
 /*
     runManager->SetNumberOfThreads(2);
