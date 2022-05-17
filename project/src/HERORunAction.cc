@@ -7,6 +7,7 @@ HERORunAction::HERORunAction()
 	man->SetNtupleMerging(false);
 
 	man->CreateNtuple("HERO", "Data");
+	man->CreateNtupleIColumn("eventId");
 	man->CreateNtupleDColumn("deposit_E");
 	man->CreateNtupleDColumn("kin_E");
 	man->CreateNtupleDColumn("x");

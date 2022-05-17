@@ -17,7 +17,8 @@ HEROPrimaryGenerator::~HEROPrimaryGenerator()
 
 void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
 {
-    G4cerr << "Event: " << anEvent->GetEventID() << G4endl;
+    G4int eventId = anEvent->GetEventID();
+    G4cerr << "Event: " << eventId << G4endl;
     G4ParticleTable *particleTable = G4ParticleTable::GetParticleTable();
     G4ParticleDefinition *particle = particleTable->FindParticle("proton");
     if (!particle) {

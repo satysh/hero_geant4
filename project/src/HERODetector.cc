@@ -2,6 +2,8 @@
 
 #include "G4AnalysisManager.hh"
 #include "G4SystemOfUnits.hh"
+//#include "G4RunManager.hh"
+#include "G4MTRunManager.hh"
 
 HEROSensitiveDetector::HEROSensitiveDetector(G4String name) :
 G4VSensitiveDetector(name)
@@ -11,6 +13,8 @@ HEROSensitiveDetector::~HEROSensitiveDetector()
 
 G4bool HEROSensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory*ROhist)
 {
+	G4int eventId = G4MTRunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
+	//G4cerr << eventId << G4endl;
 	G4Track* track = aStep->GetTrack();
 	G4VPhysicalVolume* vol = track->GetVolume();
 	const G4String volname = vol->GetLogicalVolume()->GetName();
@@ -55,12 +59,13 @@ G4bool HEROSensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory*ROhi
     // Save data only for alpha particles
 	G4AnalysisManager* man = G4AnalysisManager::Instance();
 	if (pdg == 1000020040) {
-	    man->FillNtupleDColumn(0, depositEnergy); // MeV
-	    man->FillNtupleDColumn(1, kinEnergy); // MeV
-	    man->FillNtupleDColumn(2, positionParticle[0]);
-	    man->FillNtupleDColumn(3, positionParticle[1]);
-	    man->FillNtupleDColumn(4, positionParticle[2]);
-	    man->FillNtupleDColumn(5, globalTime); // nanosecond
+	    man->FillNtupleIColumn(0, eventId);
+	    man->FillNtupleDColumn(1, depositEnergy); // MeV
+	    man->FillNtupleDColumn(2, kinEnergy); // MeV
+	    man->FillNtupleDColumn(3, positionParticle[0]);
+	    man->FillNtupleDColumn(4, positionParticle[1]);
+	    man->FillNtupleDColumn(5, positionParticle[2]);
+	    man->FillNtupleDColumn(6, globalTime); // nanosecond
 	    man->AddNtupleRow(0);
 	}
 
