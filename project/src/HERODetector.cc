@@ -54,7 +54,7 @@ G4bool HEROSensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory*ROhi
 
     // Save data only for alpha particles
 	G4AnalysisManager* man = G4AnalysisManager::Instance();
-	if (pdg == 1000020040 && (statusOn || statusOff || kinEnergy=0.)) {
+	if (pdg == 1000020040) {
 	    man->FillNtupleDColumn(0, depositEnergy); // MeV
 	    man->FillNtupleDColumn(1, kinEnergy); // MeV
 	    man->FillNtupleDColumn(2, positionParticle[0]);
