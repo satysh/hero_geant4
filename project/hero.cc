@@ -39,7 +39,7 @@ int main(int argc, char** argv)
     runManager->SetUserInitialization(actionInit);
     runManager->Initialize();
 
-    runManager->SetNumberOfThreads(3);
+    runManager->SetNumberOfThreads(2);
     //runManager->SetPrintProgress(1);
     runManager->BeamOn(10000);
 /*
