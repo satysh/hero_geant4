@@ -17,6 +17,7 @@ HEROPrimaryGenerator::~HEROPrimaryGenerator()
 
 void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
 {
+    G4cerr << "HEROPrimaryGenerator::GeneratePrimaries" << G4endl;
     G4ParticleTable *particleTable = G4ParticleTable::GetParticleTable();
     G4ParticleDefinition *particle = particleTable->FindParticle("proton");
     if (!particle) {
@@ -24,8 +25,8 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
     }
 
     G4ThreeVector pos(0.,0.,-125.*cm);
-    G4double theta = (-90. + G4UniformRand()*180.)*rad;
-    G4double phi = G4UniformRand()*360.*rad;
+    G4double theta = (-90. + G4UniformRand()*180.)*deg;
+    G4double phi = G4UniformRand()*360.*deg;
     G4double px = sin(theta)*cos(phi);
     G4double py = sin(theta)*sin(phi);
     G4double pz = cos(theta);
