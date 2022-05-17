@@ -32,6 +32,8 @@ G4bool HEROSensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory*ROhi
 	G4double depositEnergy = aStep->GetTotalEnergyDeposit();
 	G4double kinEnergy = dParticle->GetKineticEnergy();
 
+/*
+    // -- DEBUG ------------------------------------------------------------------------------------------------------------
     G4double radiusOn = positionParticle[0]*positionParticle[0];
     radiusOn += positionParticle[1]*positionParticle[1];
     radiusOn += positionParticle[2]*positionParticle[2];
@@ -41,25 +43,26 @@ G4bool HEROSensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory*ROhi
     radiusOff += positionParticleOff[2]*positionParticleOff[2];
     radiusOff = sqrt(radiusOff)/cm;
 	G4cerr << statusOn << ", " << statusOff << " :";
-	G4cerr << particleName << ", pdg=" << pdg << ", trackId=" << track->GetTrackID()
-	       << ", eKin=" << kinEnergy << ", rOn=" << radiusOn << ", rOff=" << radiusOff << ", time=" << globalTime / nanosecond << G4endl;
-	//G4cout << "some particle position: " << positionParticle << G4endl;
-	//G4cout << "copy number " << copyNo << G4endl;
-	//G4cout << particleName << " time: " << globalTime << ", energy: " << particleEnergy << " no kill" << G4endl;
+	G4cerr << particleName << ", pdg=" << pdg << ", trackId=" << track->GetTrackID() << ", parentId=" << track->GetParentID()
+	       << ", eKin=" << kinEnergy << ", edep=" << depositEnergy
+	       << ", rOn=" << radiusOn << ", rOff=" << radiusOff << ", time=" << globalTime / nanosecond << G4endl;
+	// ------------------------------------------------------------------------------------------------------------------------
+*/
 
+    // Save data only for alpha particles
 	G4AnalysisManager* man = G4AnalysisManager::Instance();
 	if (pdg == 1000020040) {
-	    man->FillNtupleDColumn(0, depositEnergy / keV);
-	    man->FillNtupleDColumn(1, kinEnergy / keV);
+	    man->FillNtupleDColumn(0, depositEnergy); // MeV
+	    man->FillNtupleDColumn(1, kinEnergy); // MeV
 	    man->FillNtupleDColumn(2, positionParticle[0]);
 	    man->FillNtupleDColumn(3, positionParticle[1]);
 	    man->FillNtupleDColumn(4, positionParticle[2]);
-	    man->FillNtupleDColumn(5, globalTime / nanosecond);
+	    man->FillNtupleDColumn(5, globalTime); // nanosecond
 	    man->AddNtupleRow(0);
 	}
 
-    // 2112 neutron
-    // 1000020040 alpha
+    // 2112 neutron pdg
+    // 1000020040 alpha pdg
 
 	return true;
 }

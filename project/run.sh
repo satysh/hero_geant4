@@ -12,4 +12,16 @@ fi
 cd ../build
 make -j3
 wait
-./hero
+./hero 1> >(tee out.txt ) 2> >(tee err.txt)
+wait
+
+cd -
+if [ -d output ];then
+    mv ../build/*.root output/
+    mv ../build/out.txt output/
+    mv ../build/err.txt output/
+else
+    mkdir output
+    mv ../build/out.txt output/
+    mv ../build/err.txt output/
+fi
