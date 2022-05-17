@@ -1,4 +1,4 @@
-void meanT()
+void alphaMeanT()
 {
   TFile *file = new TFile("../output/hero.root", "READ");
   if (file->IsZombie()) {
