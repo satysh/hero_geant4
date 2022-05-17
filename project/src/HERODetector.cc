@@ -58,16 +58,18 @@ G4bool HEROSensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory*ROhi
 
     // 2112 neutron pdg
     // 1000020040 alpha pdg
-	G4AnalysisManager* man = G4AnalysisManager::Instance();
-	man->FillNtupleIColumn(0, eventId);
-	man->FillNtupleIColumn(1, pdg);
-	man->FillNtupleDColumn(2, depositEnergy); // MeV
-	man->FillNtupleDColumn(3, kinEnergy); // MeV
-	man->FillNtupleDColumn(4, positionParticle[0]);
-	man->FillNtupleDColumn(5, positionParticle[1]);
-	man->FillNtupleDColumn(6, positionParticle[2]);
-	man->FillNtupleDColumn(7, globalTime); // nanosecond
-	man->AddNtupleRow(0);
+    if (statusOff || kinEnergy == 0.) { // write last step only
+	    G4AnalysisManager* man = G4AnalysisManager::Instance();
+	    man->FillNtupleIColumn(0, eventId);
+	    man->FillNtupleIColumn(1, pdg);
+	    man->FillNtupleDColumn(2, depositEnergy); // MeV
+	    man->FillNtupleDColumn(3, kinEnergy); // MeV
+	    man->FillNtupleDColumn(4, positionParticle[0]);
+	    man->FillNtupleDColumn(5, positionParticle[1]);
+	    man->FillNtupleDColumn(6, positionParticle[2]);
+	    man->FillNtupleDColumn(7, globalTime / nanosecond); // nanosecond
+	    man->AddNtupleRow(0);
+	}
 
 	return true;
 }

@@ -1,6 +1,5 @@
 #include <iostream>
 
-#include "G4MTRunManager.hh"
 #include "G4RunManager.hh"
 //#include "HEROPhysicsList.hh"
 #include <QGSP_BERT_HP.hh>
@@ -13,7 +12,6 @@
 #include "tools/colors"
 #include "G4Colour.hh"
 #include "G4VisAttributes.hh"
-//#include "G4Random.hh"
 
 #include "HERODetectorConstruction.hh"
 #include "HEROActionInitialization.hh"
@@ -24,10 +22,9 @@ int main(int argc, char** argv)
     for (int i=0; i<argc; i++) {
         G4cout << argv[i] << G4endl;
     }
-    G4int seed = 2;
-    CLHEP::HepRandom::setTheSeed(seed); G4Random::setTheSeed(seed);
-    G4MTRunManager* runManager = new G4MTRunManager();
-    //G4RunManager *runManager = new G4RunManager();
+    G4int seed = 4;
+    G4Random::setTheSeed(seed);
+    G4RunManager *runManager = new G4RunManager();
     //runManager->SetVerboseLevel(2);
 
     runManager->SetUserInitialization(new HERODetectorConstruction());
@@ -39,9 +36,8 @@ int main(int argc, char** argv)
     runManager->SetUserInitialization(actionInit);
     runManager->Initialize();
 
-    runManager->SetNumberOfThreads(2);
-    //runManager->SetPrintProgress(1);
-    runManager->BeamOn(10000);
+    runManager->SetPrintProgress(1);
+    runManager->BeamOn(100);
 /*
     G4UIExecutive* ui = new G4UIExecutive(argc, argv);
 

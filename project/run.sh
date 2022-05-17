@@ -19,6 +19,8 @@ wait
 
 cd -
 if [ -d output ];then
+    rm -vf output/*.root
+    rm -vf output/*.txt
     mv ../build/*.root output/
     mv ../build/out.txt output/
     mv ../build/err.txt output/
