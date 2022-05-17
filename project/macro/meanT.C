@@ -15,15 +15,18 @@ void meanT()
   // < evId, vect<time> >
   std::map<int, std::vector<double>> mapEvAlpha;
   Int_t evId;
+  Int_t pdg;
   Double_t time;
   tree->SetBranchAddress("eventId", &evId);
+  tree->SetBranchAddress("pdg", &pdg);
   tree->SetBranchAddress("time", &time);
   Int_t nEntries = tree->GetEntries();
   cout << "nEntries=" << nEntries << endl;
   for (Int_t i=0; i<nEntries; i++) {
     tree->GetEntry(i);
     //cout << evId << ", " << time << endl;
-    mapEvAlpha[evId].push_back(time);
+    if (pdg == 1000020040) // only for alpha
+        mapEvAlpha[evId].push_back(time);
   }
 
   file->Close();
