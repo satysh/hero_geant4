@@ -2,4 +2,5 @@
 /build/*
 
 !/output
-/project/output/*
+/project/output/*.root
+/project/output/*.txt
