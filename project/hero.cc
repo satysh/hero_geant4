@@ -4,6 +4,7 @@
 #include "G4RunManager.hh"
 //#include "HEROPhysicsList.hh"
 #include <QGSP_BERT_HP.hh>
+//#include <QGSP_INCLXX_HP>
 
 #include "G4UImanager.hh"
 #include "G4VisManager.hh"
@@ -25,22 +26,22 @@ int main(int argc, char** argv)
     }
     G4int seed = 2;
     CLHEP::HepRandom::setTheSeed(seed); G4Random::setTheSeed(seed);
-    //G4MTRunManager* runManager = new G4MTRunManager();
-    G4RunManager *runManager = new G4RunManager();
+    G4MTRunManager* runManager = new G4MTRunManager();
+    //G4RunManager *runManager = new G4RunManager();
     //runManager->SetVerboseLevel(2);
 
     runManager->SetUserInitialization(new HERODetectorConstruction());
     runManager->SetUserInitialization(new QGSP_BERT_HP);
     HEROActionInitialization *actionInit = new HEROActionInitialization();
     HEROPrimaryGenerator *primeGen = new HEROPrimaryGenerator();
-    primeGen->SetParticleEnergy(1.); // GeV
+    primeGen->SetParticleEnergy(15.); // GeV
     actionInit->SetPrimaryGenerator(primeGen);
     runManager->SetUserInitialization(actionInit);
     runManager->Initialize();
 
-    //runManager->SetNumberOfThreads(2);
-    runManager->SetPrintProgress(1);
-    runManager->BeamOn(3);
+    runManager->SetNumberOfThreads(3);
+    //runManager->SetPrintProgress(1);
+    runManager->BeamOn(100);
 /*
     G4UIExecutive* ui = new G4UIExecutive(argc, argv);
 
