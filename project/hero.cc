@@ -12,18 +12,25 @@
 #include "tools/colors"
 #include "G4Colour.hh"
 #include "G4VisAttributes.hh"
+#include "G4String.hh"
 
 #include "HERODetectorConstruction.hh"
 #include "HEROActionInitialization.hh"
 #include "HEROPrimaryGenerator.hh"
 
+int atoi(char*);
+
 int main(int argc, char** argv)
 {
-    for (int i=0; i<argc; i++) {
-        G4cout << argv[i] << G4endl;
-    }
-    G4int seed = 4;
+    
+    G4int seed;
+    if (argc == 1) seed = 1; // default
+    else seed = atoi(argv[1]); 
     G4Random::setTheSeed(seed);
+    std::stringstream seedStraem;
+    seedStraem << seed;
+    G4String outFileName = "output_" + seedStraem.str() + ".root";
+
     G4RunManager *runManager = new G4RunManager();
     //runManager->SetVerboseLevel(2);
 
@@ -33,11 +40,12 @@ int main(int argc, char** argv)
     HEROPrimaryGenerator *primeGen = new HEROPrimaryGenerator();
     primeGen->SetParticleEnergy(15.); // GeV
     actionInit->SetPrimaryGenerator(primeGen);
+    actionInit->SetOutFileName(outFileName);
     runManager->SetUserInitialization(actionInit);
     runManager->Initialize();
 
     runManager->SetPrintProgress(1);
-    runManager->BeamOn(100);
+    runManager->BeamOn(5);
 /*
     G4UIExecutive* ui = new G4UIExecutive(argc, argv);
 
@@ -58,4 +66,20 @@ int main(int argc, char** argv)
     UImanager->ApplyCommand("/run/BeamOn 100");
 */
     return 0;
+}
+
+// -- implementation of atoi 
+int atoi(char *str) {
+    int len = 0;
+    while (str[len] != '\0') {
+        len++;
+        if (len > 100) return -1;
+    }
+    int res = 0;
+    int dec = 1;
+    for (int i=len-1; i >= 0; i--) {
+        res += dec*(int(str[i])-48);
+        dec *= 10;
+    }
+    return res;
 }

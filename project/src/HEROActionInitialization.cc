@@ -9,11 +9,15 @@ HEROActionInitialization::~HEROActionInitialization()
 
 void HEROActionInitialization::BuildForMaster() const
 {
-    SetUserAction(new HERORunAction());
+    HERORunAction *runAction = new HERORunAction();
+    runAction->SetOutFileName(fOutFileName);
+    SetUserAction(runAction);
 }
 
 void HEROActionInitialization::Build() const
 {
     SetUserAction(fPrimaryGenerator);
-    SetUserAction(new HERORunAction());
+    HERORunAction *runAction = new HERORunAction();
+    runAction->SetOutFileName(fOutFileName);
+    SetUserAction(runAction);
 }
