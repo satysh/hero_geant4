@@ -4,3 +4,6 @@
 !/output
 /project/output/*.root
 /project/output/*.txt
+
+!/archive/
+/project/archive/*
