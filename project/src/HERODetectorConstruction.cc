@@ -51,7 +51,7 @@ G4VPhysicalVolume *HERODetectorConstruction::Construct()
         G4Sphere *solidBorScin = new G4Sphere("solidBorScin_"+std::to_string(i), G4double(i)*cm, (G4double(i)+1.)*cm,
                                               0.*deg, 360.*deg, 0.*deg, 180.*deg
                                              );
-        fLogicalBorScin[sensBorScinId] = new G4LogicalVolume(solidBorScin, worldMat, "logicBorScint_"+std::to_string(i));
+        fLogicalBorScin[sensBorScinId] = new G4LogicalVolume(solidBorScin, BorScinMat, "logicBorScint_"+std::to_string(i));
         G4VisAttributes * calTubeVisAtt = new G4VisAttributes(G4Colour(1.,1.,0.));
         fLogicalBorScin[sensBorScinId]->SetVisAttributes(calTubeVisAtt);
         new G4PVPlacement(0, G4ThreeVector(0., 0., 0.), fLogicalBorScin[sensBorScinId],
@@ -64,7 +64,7 @@ G4VPhysicalVolume *HERODetectorConstruction::Construct()
         G4Sphere *solidWolfram = new G4Sphere("solidWolfram_"+std::to_string(i), G4double(i)*cm, (G4double(i)+1.)*cm,
                                               0.*deg, 360.*deg, 0.*deg, 180.*deg
                                              );
-        G4LogicalVolume *logicWolfram = new G4LogicalVolume(solidWolfram, worldMat, "logicWolfram_"+std::to_string(i));
+        G4LogicalVolume *logicWolfram = new G4LogicalVolume(solidWolfram, WolframMat, "logicWolfram_"+std::to_string(i));
         G4VisAttributes * calTubeVisAtt = new G4VisAttributes(G4Colour(0.,1.,0.));
         logicWolfram->SetVisAttributes(calTubeVisAtt);
         new G4PVPlacement(0, G4ThreeVector(0., 0., 0.), logicWolfram,

@@ -1,9 +1,15 @@
 #/bin/bash
 
-rm -rfv ../build/*
+if [ -d ../build ];then
+    echo "../build was found!"
+else
+    mkdir ../build
+    cd ../build
+    cmake ../project
+    wait
+    cd -
+fi
 cd ../build
-cmake ../project
-wait
 make -j3
 wait
 ./hero
