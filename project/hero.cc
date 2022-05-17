@@ -41,7 +41,7 @@ int main(int argc, char** argv)
 
     runManager->SetNumberOfThreads(3);
     //runManager->SetPrintProgress(1);
-    runManager->BeamOn(100);
+    runManager->BeamOn(10000);
 /*
     G4UIExecutive* ui = new G4UIExecutive(argc, argv);
 
