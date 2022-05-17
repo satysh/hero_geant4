@@ -22,10 +22,20 @@ int atoi(char*);
 
 int main(int argc, char** argv)
 {
-    
+    G4int nEvents = 10;
+
     G4int seed;
     if (argc == 1) seed = 1; // default
-    else seed = atoi(argv[1]); 
+    else {
+        std::ofstream out(".theLastNEvents.txt");
+        if (!out.is_open()) {
+            G4cerr << "Can't open ifstream!" << G4endl;
+            return -1;
+        }
+        out << nEvents;
+        out.close();
+        seed = atoi(argv[1]); 
+    } 
     G4Random::setTheSeed(seed);
     std::stringstream seedStraem;
     seedStraem << seed;
@@ -45,7 +55,7 @@ int main(int argc, char** argv)
     runManager->Initialize();
 
     runManager->SetPrintProgress(1);
-    runManager->BeamOn(5);
+    runManager->BeamOn(nEvents);
 /*
     G4UIExecutive* ui = new G4UIExecutive(argc, argv);
 
