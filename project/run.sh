@@ -24,6 +24,7 @@ if [ -d output ];then
     mv ../build/err.txt output/
 else
     mkdir output
+    mv ../build/*.root output/
     mv ../build/out.txt output/
     mv ../build/err.txt output/
 fi
