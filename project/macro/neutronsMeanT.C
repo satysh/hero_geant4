@@ -50,4 +50,9 @@ void neutronsMeanT()
   }
   cout << "minMean=" << minMean << ", maxMean=" << maxMean << endl;
   histo->Draw();
+  gPad->SetGrid(2,2);
+  histo->SetTitle("mean time moment distribution for neutrons");
+  histo->GetXaxis()->SetTitle("time moment [usec]");
+  histo->SetLineWidth(3);
+  histo->SetLineColor(1);
 }
