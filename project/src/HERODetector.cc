@@ -58,9 +58,8 @@ G4bool HEROSensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory*ROhi
     // 2112 neutron pdg
     // 1000020040 alpha pdg
 // -----------------------------------------------------------------
-	// We need It because of multithread and uniform start time of an event
+	// We need It because of multithread
     eventId += fStartEventId;
-    globalTime += fPrimaryStartTime;
 // -----------------------------------------------------------------
     if (pdg != 0 && (statusOff || kinEnergy == 0.)) { // skip geantino and write last step only
 	    G4AnalysisManager* man = G4AnalysisManager::Instance();
