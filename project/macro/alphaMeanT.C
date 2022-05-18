@@ -34,7 +34,7 @@ void alphaMeanT()
   Double_t minMean = 1000.;
   Double_t maxMean = 0.;
   Int_t binN = 100;
-  TH1F *histo = new TH1F("histo", "histo", binN, 1000., 5000.);
+  TH1F *histo = new TH1F("histo", "histo", binN, 0., 5.);
   std::map <int, std::vector<double>> :: iterator it = mapEvAlpha.begin();
   for (; it != mapEvAlpha.end(); it++) {
     //cout << it->first << ", " << it->second.size() << endl;
@@ -43,7 +43,7 @@ void alphaMeanT()
       meanTime += it->second[i];
     }
     meanTime /= it->second.size();
-    //meanTime *= 0.001; // to usec
+    meanTime *= 0.001; // to usec
     minMean = min(minMean, meanTime);
     maxMean = max(maxMean, meanTime);
     histo->Fill(meanTime);
