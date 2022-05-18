@@ -31,23 +31,23 @@ void neutronsMeanT()
 
   file->Close();
 
-  TTree *meanTree = new TTree("meanTree", "meanTree");
-  Int_t meanTime;
-  meanTree->Branch("meanTime", &meanTime);
+  Double_t minMean = 1000.;
+  Double_t maxMean = 0.;
+  Int_t binN = 100;
+  TH1F *histo = new TH1F("histo", "histo", binN, 392., 1000.);
   std::map <int, std::vector<double>> :: iterator it = mapEvNeutron.begin();
   for (; it != mapEvNeutron.end(); it++) {
     //cout << it->first << ", " << it->second.size() << endl;
-    meanTime = 0;
+    Double_t meanTime = 0.;
     for (Int_t i=0; i<it->second.size(); i++) {
       meanTime += it->second[i];
     }
     meanTime /= it->second.size();
     //meanTime *= 0.001; // to usec
-    meanTree->Fill();
+    minMean = min(minMean, meanTime);
+    maxMean = max(maxMean, meanTime);
+    histo->Fill(meanTime);
   }
-  meanTree->Draw("meanTime*0.001");
-  TH1F *hist = (TH1F*)gROOT->FindObject("htemp");
-  hist->GetXaxis()->SetTitle("mean time moment [usec]");
-  hist->SetTitle("mean time moment for neutrons");
-  gPad->SetGrid(2,2);
+  cout << "minMean=" << minMean << ", maxMean=" << maxMean << endl;
+  histo->Draw();
 }
