@@ -12,11 +12,13 @@ public:
     HEROPrimaryGenerator();
     ~HEROPrimaryGenerator();
 
-    void SetParticleEnergy(G4double particleE) { fParticleEnergy=particleE; }
+    void SetParticleEnergy(G4double particleE)  { fParticleEnergy=particleE; }
+    void SetParticleMaxStartTime(G4double time) { fParticleMaxStartTime=time; }
     virtual void GeneratePrimaries(G4Event*);
 
 private:
-    G4double fParticleEnergy;
+    G4double fParticleEnergy=0.;
+    G4double fParticleMaxStartTime=0.;
     G4ParticleGun *fParticleGun;
     G4GeneralParticleSource *fParticleSource;
 };
