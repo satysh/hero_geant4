@@ -1,5 +1,4 @@
 #include "HERODetectorConstruction.hh"
-#include "HERODetector.hh"
 
 #include "G4Sphere.hh"
 #include "G4PVPlacement.hh"
@@ -77,9 +76,12 @@ G4VPhysicalVolume *HERODetectorConstruction::Construct()
 
 void HERODetectorConstruction::ConstructSDandField()
 {
-    HEROSensitiveDetector* sensDet = new HEROSensitiveDetector("SensitiveDetector");
+    if (!fSensDetector) {
+        HEROSensitiveDetector* sensDet = new HEROSensitiveDetector("SensitiveDetector");
+        fSensDetector=sensDet;
+    }
     for (G4int i=0; i<63; i++)
-        fLogicalBorScin[i]->SetSensitiveDetector(sensDet);
+        fLogicalBorScin[i]->SetSensitiveDetector(fSensDetector);
 }
 
 

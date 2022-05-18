@@ -15,6 +15,7 @@
 #include "G4String.hh"
 
 #include "HERODetectorConstruction.hh"
+#include "HERODetector.hh"
 #include "HEROActionInitialization.hh"
 #include "HEROPrimaryGenerator.hh"
 
@@ -26,16 +27,8 @@ int main(int argc, char** argv)
 
     G4int seed;
     if (argc == 1) seed = 1; // default
-    else {
-        std::ofstream out(".theLastNEvents.txt");
-        if (!out.is_open()) {
-            G4cerr << "Can't open ifstream!" << G4endl;
-            return -1;
-        }
-        out << nEvents;
-        out.close();
-        seed = atoi(argv[1]); 
-    } 
+    else           seed = atoi(argv[1]);
+
     G4Random::setTheSeed(seed);
     std::stringstream seedStraem;
     seedStraem << seed;
@@ -44,7 +37,12 @@ int main(int argc, char** argv)
     G4RunManager *runManager = new G4RunManager();
     //runManager->SetVerboseLevel(2);
 
-    runManager->SetUserInitialization(new HERODetectorConstruction());
+    HERODetectorConstruction *detectorConstruction = new HERODetectorConstruction();
+    HEROSensitiveDetector *sensDetector = new HEROSensitiveDetector("SensitiveDetector");
+    sensDetector->SetStartEventId((seed-1)*nEvents); // because of multi-thread
+    sensDetector->SetPrimaryStartTime(0.); // [nanoseconds] because of uniform start time
+    detectorConstruction->SetSensDetector(sensDetector);
+    runManager->SetUserInitialization(detectorConstruction);
     runManager->SetUserInitialization(new QGSP_BERT_HP);
     HEROActionInitialization *actionInit = new HEROActionInitialization();
     HEROPrimaryGenerator *primeGen = new HEROPrimaryGenerator();

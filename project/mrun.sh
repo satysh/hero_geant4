@@ -25,15 +25,12 @@ cd -
 if [ -d output ];then
     rm -vf output/*.root
     rm -vf output/*.txt
-    rm -vf output/.theLastNEvents.txt
     mv ../build/*.root output/
     mv ../build/out*.txt output/
     mv ../build/err*.txt output/
-    mv ../build/.theLastNEvents.txt output/
 else
     mkdir output
     mv ../build/*.root output/
     mv ../build/out.txt output/
     mv ../build/err.txt output/
-    mv ../build/.theLastNEvents.txt output/
 fi

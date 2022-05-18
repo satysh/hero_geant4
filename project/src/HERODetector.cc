@@ -2,8 +2,7 @@
 
 #include "G4AnalysisManager.hh"
 #include "G4SystemOfUnits.hh"
-//#include "G4RunManager.hh"
-#include "G4MTRunManager.hh"
+#include "G4RunManager.hh"
 
 HEROSensitiveDetector::HEROSensitiveDetector(G4String name) :
 G4VSensitiveDetector(name)
@@ -13,7 +12,7 @@ HEROSensitiveDetector::~HEROSensitiveDetector()
 
 G4bool HEROSensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory*ROhist)
 {
-	G4int eventId = G4MTRunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
+	G4int eventId = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
 	//G4cerr << eventId << G4endl;
 	G4Track* track = aStep->GetTrack();
 	G4VPhysicalVolume* vol = track->GetVolume();
@@ -58,6 +57,11 @@ G4bool HEROSensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory*ROhi
 
     // 2112 neutron pdg
     // 1000020040 alpha pdg
+// -----------------------------------------------------------------
+	// We need It because of multithread and uniform start time of an event
+    eventId += fStartEventId;
+    globalTime += fPrimaryStartTime;
+// -----------------------------------------------------------------
     if (statusOff || kinEnergy == 0.) { // write last step only
 	    G4AnalysisManager* man = G4AnalysisManager::Instance();
 	    man->FillNtupleIColumn(0, eventId);
@@ -67,7 +71,7 @@ G4bool HEROSensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory*ROhi
 	    man->FillNtupleDColumn(4, positionParticle[0]);
 	    man->FillNtupleDColumn(5, positionParticle[1]);
 	    man->FillNtupleDColumn(6, positionParticle[2]);
-	    man->FillNtupleDColumn(7, globalTime / nanosecond); // nanosecond
+	    man->FillNtupleDColumn(7, globalTime); // nanosecond
 	    man->AddNtupleRow(0);
 	}
 

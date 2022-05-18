@@ -1,21 +1,11 @@
 void bindrootfiles()
 {
-  Int_t nEvents;
-  fstream fin(".theLastNEvents.txt");
-  if (fin.is_open()) {
-      fin >> nEvents;
-  }
-  else nEvents = 0;
-  fin.close();
-  if (nEvents != 0) cout << "nEvents=" << nEvents << endl;
-
-  fin.open(".files_list.txt");
+  fstream fin(".files_list.txt");
   if (!fin.is_open()) {
     cerr << "Can't find .files_list.txt!" << endl;
     return;
   }
   
-  Int_t evIdCounter = 0;
   std::vector<Int_t> vEvId;
   std::vector<Int_t> vPdg;
   std::vector<Double_t> vTime;
@@ -44,14 +34,12 @@ void bindrootfiles()
     cout << fileName << " has " << nEntries << " entries!" << endl;
     for (Int_t i=0; i<nEntries; i++) {
       curTree->GetEntry(i);
-      curEvId += evIdCounter;
       vEvId.push_back(curEvId);
       vPdg.push_back(curPdg);
       vTime.push_back(curTime);
     }
     delete curTree;
     file->Close();
-    evIdCounter += nEvents;
   }
   fin.close();
 
