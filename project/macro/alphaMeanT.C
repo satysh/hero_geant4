@@ -33,7 +33,7 @@ void alphaMeanT()
 
   Double_t minMean = 1000.;
   Double_t maxMean = 0.;
-  Int_t binN = 100;
+  Int_t binN = 250;
   TH1F *histo = new TH1F("histo", "histo", binN, 0., 5.);
   std::map <int, std::vector<double>> :: iterator it = mapEvAlpha.begin();
   for (; it != mapEvAlpha.end(); it++) {
@@ -50,4 +50,9 @@ void alphaMeanT()
   }
   cout << "minMean=" << minMean << ", maxMean=" << maxMean << endl;
   histo->Draw();
+  gPad->SetGrid(2,2);
+  histo->SetTitle("mean time moment distribution for alpha particles");
+  histo->GetXaxis()->SetTitle("time moment [usec]");
+  histo->SetLineWidth(3);
+  histo->SetLineColor(2);
 }
