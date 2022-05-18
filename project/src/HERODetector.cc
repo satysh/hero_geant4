@@ -62,7 +62,7 @@ G4bool HEROSensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory*ROhi
     eventId += fStartEventId;
     globalTime += fPrimaryStartTime;
 // -----------------------------------------------------------------
-    if (statusOff || kinEnergy == 0.) { // write last step only
+    if (pdg != 0 && (statusOff || kinEnergy == 0.)) { // skip geantino and write last step only
 	    G4AnalysisManager* man = G4AnalysisManager::Instance();
 	    man->FillNtupleIColumn(0, eventId);
 	    man->FillNtupleIColumn(1, pdg);
