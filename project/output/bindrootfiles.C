@@ -1,4 +1,4 @@
-void bindrootfiles()
+void bindrootfiles(TString outFileName = "hero.root")
 {
   fstream fin(".files_list.txt");
   if (!fin.is_open()) {
@@ -43,7 +43,7 @@ void bindrootfiles()
   }
   fin.close();
 
-  TFile *file = new TFile("hero.root", "RECREATE");
+  TFile *file = new TFile(outFileName, "RECREATE");
   Int_t evId;
   Int_t pdg;
   Double_t time;
