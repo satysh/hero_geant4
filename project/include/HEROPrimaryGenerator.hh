@@ -13,7 +13,7 @@ public:
     ~HEROPrimaryGenerator();
 
     void SetParticleEnergy(G4double particleE)  { fParticleEnergy=particleE; }
-    void SetParticleMaxStartTime(G4double time) { fParticleMaxStartTime=time; }
+    void SetParticleMaxStartTime(G4double time) { fParticleMaxStartTime=time; fMaxStartTimeIsSet=true; }
     virtual void GeneratePrimaries(G4Event*);
 
 private:
@@ -21,6 +21,8 @@ private:
     G4double fParticleMaxStartTime=0.;
     G4ParticleGun *fParticleGun;
     G4GeneralParticleSource *fParticleSource;
+private:
+    G4bool fMaxStartTimeIsSet=false;
 };
 
 #endif

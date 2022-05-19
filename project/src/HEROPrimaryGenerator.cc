@@ -35,13 +35,15 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
     G4double pz = cos(theta);
     G4ThreeVector mom(px, py, pz);
 
-    G4double start_time = G4UniformRand()*fParticleMaxStartTime; // nanoseconds
+    if (fMaxStartTimeIsSet) {
+        G4double start_time = G4UniformRand()*fParticleMaxStartTime; // nanoseconds
+        fParticleGun->SetParticleTime(start_time); // nanoseconds
+    }
 
     fParticleGun->SetParticleDefinition(particle);
     fParticleGun->SetParticlePosition(pos);
     fParticleGun->SetParticleMomentumDirection(mom);
     fParticleGun->SetParticleEnergy(fParticleEnergy*GeV);
-    fParticleGun->SetParticleTime(start_time); // nanoseconds
     G4cerr << "HEROPrimaryGenerator::GeneratePrimaries_start_time= ";
     G4cerr << fParticleGun->GetParticleTime() << G4endl;
 
