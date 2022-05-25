@@ -1,10 +1,10 @@
 Bool_t time(TH1F*, Int_t index);
 void alletime()
 {
-  Int_t binN = 125;
-  TH1F *histo = new TH1F("histo", "histo", binN, 0., 1e6/15.);
+  Int_t binN = 250;
+  TH1F *histo = new TH1F("histo", "histo", binN, 0., 2e6/15.);
 
-  for (Int_t i=1; i<27; i++) {
+  for (Int_t i=1; i<10; i++) {
     if ( !time(histo, i) ) return;
   }
 
@@ -21,7 +21,7 @@ void alletime()
 Bool_t time(TH1F *histo, Int_t index)
 {
   TString inFileName;
-  inFileName.Form("../output/hero_%d.root", index);
+  inFileName.Form("../archive/allen/hero_%d.root", index);
   TFile *file = new TFile(inFileName, "READ");
   if (file->IsZombie()) {
     cerr << "Can't open input file " << inFileName << endl;
@@ -53,7 +53,7 @@ Bool_t time(TH1F *histo, Int_t index)
       histo->Fill(time*1e-3);
   }
   std::map<int, int> :: iterator it=mapEvId.end();
-  cout << "nEvents: " << it->first << ", nEntries=" << nEntries << endl;
+  cout << index << ": nEvents: " << it->first << ", nEntries=" << nEntries << endl;
   return kTRUE;
 }
 
