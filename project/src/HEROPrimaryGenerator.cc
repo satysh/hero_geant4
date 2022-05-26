@@ -14,6 +14,18 @@ HEROPrimaryGenerator::~HEROPrimaryGenerator()
     delete fParticleGun;
     delete fParticleSource;
 }
+void HEROPrimaryGenerator::SetParticleEnergy(G4double particleE0, G4double particleE1)
+{
+    if (particleE1 > particleE0) {
+        fEnergyRangeIsSet=true;
+        fParticleEnergy0=particleE0;
+        fParticleEnergy1=particleE1;
+    }
+    else {
+        fParticleEnergy= particleE0;
+    }
+
+}
 
 void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
 {
@@ -39,14 +51,22 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
         G4double start_time = G4UniformRand()*fParticleMaxStartTime; // nanoseconds
         fParticleGun->SetParticleTime(start_time); // nanoseconds
         // Debug
-        G4cerr << "HEROPrimaryGenerator::GeneratePrimaries_start_time= ";
-        G4cerr << fParticleGun->GetParticleTime() << G4endl;
+        //G4cerr << "HEROPrimaryGenerator::GeneratePrimaries_start_time= ";
+        //G4cerr << fParticleGun->GetParticleTime() << G4endl;
     }
 
     fParticleGun->SetParticleDefinition(particle);
     fParticleGun->SetParticlePosition(pos);
     fParticleGun->SetParticleMomentumDirection(mom);
-    fParticleGun->SetParticleEnergy(fParticleEnergy*GeV);
+
+    if (fEnergyRangeIsSet) {
+        G4double particleEnergy = fParticleEnergy0 + G4UniformRand()*(fParticleEnergy1-fParticleEnergy0);
+        fParticleGun->SetParticleEnergy(particleEnergy*GeV);
+        G4cerr << "primaryE=" << particleEnergy << G4endl;
+    }
+    else {
+        fParticleGun->SetParticleEnergy(fParticleEnergy*GeV);
+    }
 
     fParticleGun->GeneratePrimaryVertex(anEvent);
     fParticleSource->GeneratePrimaryVertex(anEvent);

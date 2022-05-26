@@ -23,9 +23,10 @@ int atoi(char*);
 
 int main(int argc, char** argv)
 {
-    G4double primaryE = 0.; // GeV
+    G4double primaryE0 = 1.; // GeV
+    G4double primaryE1 = 0.;
     G4double maxStartTime = (1./16.)*1e9; // nanoseconds
-    G4int nEvents = 0;
+    G4int nEvents = 10;
 
     G4int seed;
     if (argc == 1)      seed = 1; // default
@@ -51,7 +52,8 @@ int main(int argc, char** argv)
             fin >> curE >> curFlux;
             G4double curNevents = curFlux*detectorS*4.*pi*time;
             if (it == id) {
-                primaryE=curE; nEvents=(G4int)curNevents;
+                primaryE0=curE; nEvents=(G4int)curNevents;
+                fin >> primaryE1;
                 break;
             }
             it++;
@@ -66,7 +68,8 @@ int main(int argc, char** argv)
     seedStraem << seed;
     G4String outFileName = "output_" + seedStraem.str() + ".root";
     G4cout << "Sim is starts: seed = " << seed << ", ";
-    G4cout << "primaryE=" << primaryE << " [GeV], "
+    G4cout << "primaryE0=" << primaryE0 << " [GeV], "
+           << "primaryE1=" << primaryE1 << " [GeV], "
            << "maxStartTime=" << maxStartTime << " [nanosec], "
            << "nEvents=" << nEvents << G4endl;
 
@@ -77,13 +80,12 @@ int main(int argc, char** argv)
     HERODetectorConstruction *detectorConstruction = new HERODetectorConstruction();
     HEROSensitiveDetector *sensDetector = new HEROSensitiveDetector("SensitiveDetector");
     sensDetector->SetStartEventId((seed-1)*nEvents); // because of multi-thread
-// [nanoseconds] because of uniform start time
     detectorConstruction->SetSensDetector(sensDetector);
     runManager->SetUserInitialization(detectorConstruction);
     runManager->SetUserInitialization(new QGSP_BERT_HP);
     HEROActionInitialization *actionInit = new HEROActionInitialization();
     HEROPrimaryGenerator *primeGen = new HEROPrimaryGenerator();
-    primeGen->SetParticleEnergy(primaryE); // GeV
+    primeGen->SetParticleEnergy(primaryE0, primaryE1); // GeV
     primeGen->SetParticleMaxStartTime(maxStartTime); // nanosec
     actionInit->SetPrimaryGenerator(primeGen);
     actionInit->SetOutFileName(outFileName);
