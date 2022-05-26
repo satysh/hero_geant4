@@ -10,7 +10,7 @@ void getEandNEvents(Int_t i, Double_t &enrgy, Int_t &nevents)
 
   Double_t pi = TMath::Pi();
   Double_t detectorR = 125.*0.01; // m
-  Double_t time = 1.; // sec
+  Double_t time = 128e-6; // sec
   Double_t detectorS = 4.*pi*detectorR*detectorR; // m2
   Int_t it=0 ;
   while (!fin.eof()) {
@@ -39,7 +39,7 @@ void energyNevents()
   TH1F *histo = new TH1F("histo", "histo", 84, 0., 21.);
   Double_t pi = TMath::Pi();
   Double_t detectorR = 125.*0.01; // m
-  Double_t time = 1./16.; // sec
+  Double_t time = 128e-6; // sec
   Double_t detectorS = 4.*pi*detectorR*detectorR; // m2
   cout << "pi=" << pi << ", detectorR=" << detectorR << " [m] , detectorS=" << detectorS
        << " [m2], time=" << time << " [sec]" << endl;
@@ -52,7 +52,7 @@ void energyNevents()
     Double_t curFlux; // particles/m^2 sr s
     fin >> curE >> curFlux;
     if (fin.eof()) break;
-    Double_t curNevents = curFlux*fabs(curE-memE)*detectorS*4.*pi*time;
+    Double_t curNevents = curFlux*detectorS*4.*pi*time;
     full += curNevents;
     for (Int_t ii=0; ii<(Int_t)curNevents; ii++) {
       Double_t histoE = memE + rnd.Uniform()*(curE-memE);
@@ -61,7 +61,7 @@ void energyNevents()
     memFlux = curFlux;
     memE = curE;
     //cout << curE << ", " << curFlux << endl;
-    cout << it << ": E=" << curE << " [GeV], nEvents=" << curNevents << endl;
+    cout << it+1 << ": E=" << curE << " [GeV], nEvents=" << curNevents << endl;
     it++;
   }
   fin.close();

@@ -1,18 +1,18 @@
 Bool_t time(TH1F*, Int_t index);
 void alletime()
 {
-  Int_t binN = 250;
-  TH1F *histo = new TH1F("histo", "histo", binN, 0., 2e6/15.);
+  Int_t binN = 50;
+  TH1F *histo = new TH1F("histo", "histo", binN, 0., 150.);
 
-  for (Int_t i=1; i<10; i++) {
+  for (Int_t i=1; i<71; i++) {
     if ( !time(histo, i) ) return;
   }
 
   histo->Draw();
   //tree->Draw("time >> histo", "pdg == 1000020040");
   gPad->SetGrid(2,2);
-  histo->SetTitle("alpha distribution");
-  histo->GetXaxis()->SetTitle("time moment [usec]");
+  histo->SetTitle("alpha distribution. 128 usec. pE[0.082 : 20.76] GeV");
+  histo->GetXaxis()->SetTitle("(1bin-3usec)time moment [usec]");
   histo->SetLineWidth(3);
   histo->SetLineColor(1);
 
@@ -21,7 +21,7 @@ void alletime()
 Bool_t time(TH1F *histo, Int_t index)
 {
   TString inFileName;
-  inFileName.Form("../archive/allen/hero_%d.root", index);
+  inFileName.Form("../archive/hero_%d.root", index);
   TFile *file = new TFile(inFileName, "READ");
   if (file->IsZombie()) {
     cerr << "Can't open input file " << inFileName << endl;
