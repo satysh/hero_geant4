@@ -25,7 +25,7 @@ void numberOfParticles()
   for (Int_t i=0; i<nEntries; i++) {
     tree->GetEntry(i);
     //cout << evId << ", " << time << endl;
-    if (pdg == 1000020040) // only for alpha
+    if (pdg == 2112) // only for alpha 1000020040 ; only for neutrons 2112
         mapEvAlpha[evId].push_back(time);
   }
 
@@ -33,8 +33,8 @@ void numberOfParticles()
 
   Double_t minN = 1000.;
   Double_t maxN = 0.;
-  Int_t binN = 500;
-  TH1F *histo = new TH1F("histo", "histo", binN, 0., 500.);
+  Int_t binN = 100;
+  TH1F *histo = new TH1F("histo", "histo", binN, 0., 2530.);
   std::map <int, std::vector<double>> :: iterator it = mapEvAlpha.begin();
   for (; it != mapEvAlpha.end(); it++) {
     //cout << it->first << ", " << it->second.size() << endl;

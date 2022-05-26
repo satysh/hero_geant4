@@ -28,4 +28,7 @@ void graph()
   gr->SetLineWidth(3);
   gr->SetLineColor(2);
   cout << gr->Integral(0, 70)*(TMath::Pi()*1.25)*(TMath::Pi()*1.25) << endl;
+  gr->SetTitle("flux(E)");
+  gr->GetXaxis()->SetTitle("E [GeV]");
+  gr->GetYaxis()->SetTitle("flux [particles/m^2 sr s]");
 }
