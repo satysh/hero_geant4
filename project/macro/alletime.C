@@ -1,17 +1,16 @@
 Bool_t time(TH1F*, Int_t index);
 void alletime()
 {
-  Int_t binN = 50;
-  TH1F *histo = new TH1F("histo", "histo", binN, 0., 150.);
+  Int_t binN = 100;
+  TH1F *histo = new TH1F("histo", "histo", binN, 0., 300.);
 
-  for (Int_t i=1; i<71; i++) {
+  for (Int_t i=5; i<66; i++) {
     if ( !time(histo, i) ) return;
   }
 
   histo->Draw();
-  //tree->Draw("time >> histo", "pdg == 1000020040");
   gPad->SetGrid(2,2);
-  histo->SetTitle("alpha distribution. 128 usec. pE[0.082 : 20.76] GeV");
+  histo->SetTitle("alpha distribution. 256 usec. pE[0.082 : 20.76] GeV");
   histo->GetXaxis()->SetTitle("(1bin-3usec)time moment [usec]");
   histo->SetLineWidth(3);
   histo->SetLineColor(1);
