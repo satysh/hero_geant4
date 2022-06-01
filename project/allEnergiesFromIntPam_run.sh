@@ -1,6 +1,7 @@
 #/bin/bash
 
 NTHREADS=3
+STARTENERGY=1
 NENERGIES=70
 
 rm -fv output/*.root
@@ -21,9 +22,9 @@ make -j3
 wait
 
 
-for EI in $(seq 1 ${NENERGIES}); do
+for EI in $(seq ${STARTENERGY} ${NENERGIES}); do
     for THR in $(seq 1 ${NTHREADS}); do
-        ./hero ${THR} ${EI} ${NTHREADS} 1> >(tee out_${THR}.txt ) 2> >(tee err_${THR}.txt) &
+        nice ./hero ${THR} ${EI} ${NTHREADS} 1> >(tee out_${THR}.txt ) 2> >(tee err_${THR}.txt) &
     done
     wait
     rm -fv *.txt
