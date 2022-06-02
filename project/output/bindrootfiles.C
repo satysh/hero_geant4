@@ -8,7 +8,8 @@ void bindrootfiles(TString outFileName = "hero.root")
   
   std::vector<Int_t> vEvId;
   std::vector<Int_t> vPdg;
-  std::vector<Int_t> vRadius;
+  std::vector<Double_t> vDeposit_E;
+  std::vector<Double_t> vRadius;
   std::vector<Double_t> vTime;
   while(!fin.eof()) {
     TString fileName;
@@ -22,6 +23,7 @@ void bindrootfiles(TString outFileName = "hero.root")
     }
     Int_t curEvId;
     Int_t curPdg;
+    Double_t curDeposit_E;
     Double_t curX;
     Double_t curY;
     Double_t curZ;
@@ -33,6 +35,7 @@ void bindrootfiles(TString outFileName = "hero.root")
     }
     curTree->SetBranchAddress("eventId", &curEvId);
     curTree->SetBranchAddress("pdg", &curPdg);
+    curTree->SetBranchAddress("deposit_E", &curDeposit_E);
     curTree->SetBranchAddress("x", &curX);
     curTree->SetBranchAddress("y", &curY);
     curTree->SetBranchAddress("z", &curZ);
@@ -43,6 +46,7 @@ void bindrootfiles(TString outFileName = "hero.root")
       curTree->GetEntry(i);
       vEvId.push_back(curEvId);
       vPdg.push_back(curPdg);
+      vDeposit_E.push_back(curDeposit_E);
       vTime.push_back(curTime);
       Double_t curRadius = TMath::Sqrt(curX*curX+curY*curY+curZ*curZ);
       vRadius.push_back(curRadius);
@@ -55,11 +59,13 @@ void bindrootfiles(TString outFileName = "hero.root")
   TFile *file = new TFile(outFileName, "RECREATE");
   Int_t evId;
   Int_t pdg;
+  Double_t deposit_e;
   Double_t radius;
   Double_t time;
   TTree *tree = new TTree("bindHERO", "data");
   tree->Branch("eventId", &evId);
   tree->Branch("pdg", &pdg);
+  tree->Branch("deposit_e", &deposit_e);
   tree->Branch("radius", &radius);
   tree->Branch("time", &time);
 
@@ -67,6 +73,7 @@ void bindrootfiles(TString outFileName = "hero.root")
   for (Int_t i=0; i<vEvId.size(); i++) {
     evId=vEvId[i];
     pdg=vPdg[i];
+    deposit_e=vDeposit_E[i];
     radius=vRadius[i];
     time=vTime[i];
     tree->Fill();
