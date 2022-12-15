@@ -58,7 +58,7 @@ G4bool HEROSensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory*ROhi
     // 2112 neutron pdg
     // 1000020040 alpha pdg
 // -----------------------------------------------------------------
-	// We need It because of multithread
+	// We need It because of multithread in the other case fStartEventId=0 by default
     eventId += fStartEventId;
 // -----------------------------------------------------------------
     if (pdg != 0 && (statusOff || kinEnergy == 0.)) { // skip geantino and write last step only
