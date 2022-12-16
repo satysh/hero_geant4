@@ -3,6 +3,7 @@
 #include "G4SystemOfUnits.hh"
 #include "Randomize.hh"
 #include "G4IonTable.hh"
+#include "TGraph.h"
 
 HEROPrimaryGenerator::HEROPrimaryGenerator()
 {

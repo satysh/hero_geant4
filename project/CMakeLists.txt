@@ -21,12 +21,16 @@ endif()
 #
 include(${Geant4_USE_FILE})
 
+# Setup of ROOT ANALYSIS : optional.
+find_package(ROOT QUIET)
+
 #----------------------------------------------------------------------------
 # Locate sources and headers for this project
 # NB: headers are included so they will show up in IDEs
 #
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include
-                    ${Geant4_INCLUDE_DIR})
+                    ${Geant4_INCLUDE_DIR}
+                    ${ROOT_INCLUDE_DIRS})
 
 file(
   GLOB sources ${PROJECT_SOURCE_DIR}/src/HERODetectorConstruction.cc
@@ -51,7 +55,7 @@ file(
 # Add the executable, and link it to the Geant4 libraries
 #
 add_executable(hero hero.cc ${sources} ${headers})
-target_link_libraries(hero ${Geant4_LIBRARIES})
+target_link_libraries(hero ${Geant4_LIBRARIES} ${ROOT_LIBRARIES})
 
 #----------------------------------------------------------------------------
 # Copy all scripts to the build directory, i.e. the directory in which we
