@@ -6,16 +6,25 @@
 #include "G4ParticleGun.hh"
 #include "G4GeneralParticleSource.hh"
 
+class TF1;
+
 class HEROPrimaryGenerator : public G4VUserPrimaryGeneratorAction
 {
 public:
     HEROPrimaryGenerator();
     ~HEROPrimaryGenerator();
 
-    void SetParticleEnergy(G4double particleE)  { fParticleEnergy=particleE; }
+    void SetParticleEnergy(G4double particleE)  { fParticleEnergy=particleE; fEnergyIsSet=true; }
     void SetParticleEnergy(G4double particleE0, G4double particleE1);
     void SetParticleMaxStartTime(G4double time) { fParticleMaxStartTime=time; fMaxStartTimeIsSet=true; }
     virtual void GeneratePrimaries(G4Event*);
+
+private:
+    void ReadFluxTXT();
+    G4double PrimaryEGen();
+
+private:
+    TF1* fEnergyInvCDF=NULL;
 
 private:
     G4double fParticleEnergy=0.;
@@ -26,6 +35,7 @@ private:
     G4GeneralParticleSource *fParticleSource;
 private:
     G4bool fMaxStartTimeIsSet=false;
+    G4bool fEnergyIsSet=false;
     G4bool fEnergyRangeIsSet=false;
 };
 

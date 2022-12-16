@@ -23,11 +23,13 @@ int atoi(char*);
 
 int main(int argc, char** argv)
 {
+    /*
     G4double primaryE0 = 20.76; // GeV
     G4double primaryE1 = 0.;
     G4double maxStartTime = 0.; // nanoseconds
+    */
     G4int nEvents = 1000;
-
+/*
     G4int seed;
     if (argc == 1)      seed = 1; // default
     else if (argc == 2) seed = atoi(argv[1]);
@@ -72,20 +74,22 @@ int main(int argc, char** argv)
            << "primaryE1=" << primaryE1 << " [GeV], "
            << "maxStartTime=" << maxStartTime << " [nanosec], "
            << "nEvents=" << nEvents << G4endl;
+*/
 
     //nEvents=10; // Debug
     G4RunManager *runManager = new G4RunManager();
     //runManager->SetVerboseLevel(2);
 
+    G4String outFileName = "hero.root";
     HERODetectorConstruction *detectorConstruction = new HERODetectorConstruction();
     HEROSensitiveDetector *sensDetector = new HEROSensitiveDetector("SensitiveDetector");
-    sensDetector->SetStartEventId((seed-1)*nEvents); // because of multi-thread
+    //sensDetector->SetStartEventId((seed-1)*nEvents); // because of multi-thread
     detectorConstruction->SetSensDetector(sensDetector);
     runManager->SetUserInitialization(detectorConstruction);
     runManager->SetUserInitialization(new QGSP_BERT_HP);
     HEROActionInitialization *actionInit = new HEROActionInitialization();
     HEROPrimaryGenerator *primeGen = new HEROPrimaryGenerator();
-    primeGen->SetParticleEnergy(primaryE0, primaryE1); // GeV
+    //primeGen->SetParticleEnergy(primaryE0, primaryE1); // GeV
     //primeGen->SetParticleMaxStartTime(maxStartTime); // nanosec
     actionInit->SetPrimaryGenerator(primeGen);
     actionInit->SetOutFileName(outFileName);
