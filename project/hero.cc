@@ -20,15 +20,16 @@
 #include "HEROPrimaryGenerator.hh"
 
 int atoi(char*);
+G4int getnEvents(G4double start_time);
 
 int main(int argc, char** argv)
 {
     /*
     G4double primaryE0 = 20.76; // GeV
     G4double primaryE1 = 0.;
-    G4double maxStartTime = 0.; // nanoseconds
     */
-    G4int nEvents = 1000;
+    G4double maxStartTime = 1e3; // nanoseconds
+    G4int nEvents = 100;
 /*
     G4int seed;
     if (argc == 1)      seed = 1; // default
@@ -90,7 +91,7 @@ int main(int argc, char** argv)
     HEROActionInitialization *actionInit = new HEROActionInitialization();
     HEROPrimaryGenerator *primeGen = new HEROPrimaryGenerator();
     //primeGen->SetParticleEnergy(primaryE0, primaryE1); // GeV
-    //primeGen->SetParticleMaxStartTime(maxStartTime); // nanosec
+    primeGen->SetParticleMaxStartTime(maxStartTime); // nanosec
     actionInit->SetPrimaryGenerator(primeGen);
     actionInit->SetOutFileName(outFileName);
     runManager->SetUserInitialization(actionInit);
@@ -136,3 +137,6 @@ int atoi(char *str) {
     return res;
 }
 
+G4int getnEvents(G4double st) {
+    return 0;
+}
