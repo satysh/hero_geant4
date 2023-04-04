@@ -53,10 +53,10 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
     G4cerr << "Event: " << eventId << G4endl;
 */
     G4ParticleTable *particleTable = G4ParticleTable::GetParticleTable();
-    G4ParticleDefinition *particle = particleTable->FindParticle("proton");
+    G4ParticleDefinition *particle = particleTable->FindParticle(fPrimaryParticlePDG);
     //G4ParticleDefinition *particle = G4IonTable::GetIonTable()->GetIon(26, 56, 0); // Fe-56
     if (!particle) {
-        G4cerr << "Can't find particle proton!" << G4endl;
+        G4cerr << "Can't find the particle with pdg: " << fPrimaryParticlePDG << G4endl;
     }
 
     fParticleGun->SetParticleDefinition(particle);
@@ -77,7 +77,7 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
         G4double start_time = (G4double)G4UniformRand()*fParticleMaxStartTime; // nanoseconds
         fParticleGun->SetParticleTime(start_time); // nanoseconds
         // Debug
-        //G4cerr << fParticleGun->GetParticleTime() << G4endl;
+        G4cerr << "start_time=" << fParticleGun->GetParticleTime() << G4endl;
     }
     else if (fMaxFixedTimeIsSet) {
         fParticleGun->SetParticleTime(fParticleFixedStartTime);

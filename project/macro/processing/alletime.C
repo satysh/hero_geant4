@@ -17,6 +17,8 @@ void alletime()
   histo->SetLineWidth(3);
   histo->SetLineColor(1);
 
+  TFile *file = new TFile("hist1per16.root", "RECREATE");
+  histo->Write();
 }
 // ----------------------------------------------------------
 Bool_t time(TH1F *histo, Int_t index)
