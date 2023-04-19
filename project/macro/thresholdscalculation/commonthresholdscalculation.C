@@ -32,7 +32,10 @@ void commonthresholdscalculation()
   add(resultHist, resultHist, "gamma/10TeV.root");
   add(resultHist, resultHist, "alpha/100GeV.root");
   add(resultHist, resultHist, "alpha/500GeV.root");
-  add(resultHist, resultHist, "alpha/1TeV.root");
+  add(resultHist, resultHist, "fer/500GeV.root");
+  add(resultHist, resultHist, "fer/100GeV.root");
+  add(resultHist, resultHist, "fer/10GeV.root");
+
 
   TCanvas* canv = new TCanvas("canv", "canv");
   canv->cd();
