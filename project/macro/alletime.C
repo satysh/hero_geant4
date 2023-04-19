@@ -1,9 +1,8 @@
 Bool_t time(TH1F*, Int_t index);
 void alletime()
 {
-  Int_t binN = 1000;
-  Double_t maxBinVal = 500.;
-  binN = (Int_t)maxBinVal/65;
+  Int_t binN = 100;
+  Double_t maxBinVal = 150.;
   TH1F *histo = new TH1F("histo", "histo", binN, 0., maxBinVal);
 
   for (Int_t i=1; i<71; i++) {
@@ -11,9 +10,9 @@ void alletime()
   }
 
   histo->Draw();
-  gPad->SetGrid(2,2);
-  histo->SetTitle("alpha distribution. 512 usec. pE[0.082 : 20.76] GeV");
-  histo->GetXaxis()->SetTitle("(1bin is 1 usec)time moment [usec]");
+  //gPad->SetGrid(2,2);
+  histo->SetTitle("alpha distribution. bor 12% 128 usec. pE[0.082 : 20.76] GeV");
+  histo->GetXaxis()->SetTitle("time moment [usec]");
   histo->SetLineWidth(3);
   histo->SetLineColor(1);
 
@@ -22,7 +21,7 @@ void alletime()
 Bool_t time(TH1F *histo, Int_t index)
 {
   TString inFileName;
-  inFileName.Form("/opt/Data/hero/background/512usec/hero_%d.root", index);
+  inFileName.Form("../archive/hero_%d.root", index);
   TFile *file = new TFile(inFileName, "READ");
   if (file->IsZombie()) {
     cerr << "Can't open input file " << inFileName << endl;
