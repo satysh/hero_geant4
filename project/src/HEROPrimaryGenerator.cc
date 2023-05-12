@@ -64,7 +64,6 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
     G4ThreeVector pos(0.,0.,-125.*cm);
     G4double theta = (-90. + (G4double)G4UniformRand()*180.)*deg;
     G4double phi = (G4double)G4UniformRand()*360.*deg;
-    theta = 0.; // ATTENTION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     G4double px = sin(theta)*cos(phi);
     G4double py = sin(theta)*sin(phi);
     G4double pz = cos(theta);
@@ -77,26 +76,26 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
         G4double start_time = (G4double)G4UniformRand()*fParticleMaxStartTime; // nanoseconds
         fParticleGun->SetParticleTime(start_time); // nanoseconds
         // Debug
-        G4cerr << "start_time=" << fParticleGun->GetParticleTime() << G4endl;
+        //G4cerr << "start_time=" << fParticleGun->GetParticleTime() << G4endl;
     }
     else if (fMaxFixedTimeIsSet) {
         fParticleGun->SetParticleTime(fParticleFixedStartTime);
-        G4cerr << "start_time=" << fParticleGun->GetParticleTime() << G4endl;
+        //G4cerr << "start_time=" << fParticleGun->GetParticleTime() << G4endl;
     }
 
     if (fEnergyIsSet) {
         fParticleGun->SetParticleEnergy(fParticleEnergy*GeV);
-        G4cerr << "primaryE=" << fParticleEnergy << G4endl;
+        //G4cerr << "primaryE=" << fParticleEnergy << G4endl;
     }
     else if (fEnergyRangeIsSet) {
         G4double particleEnergy = fParticleEnergy0 + (G4double)G4UniformRand()*(fParticleEnergy1-fParticleEnergy0);
         fParticleGun->SetParticleEnergy(particleEnergy*GeV);
-        G4cerr << "primaryE=" << particleEnergy << G4endl;
+        //G4cerr << "primaryE=" << particleEnergy << G4endl;
     }
     else {
         G4double particleEnergy = PrimaryEGen();
         fParticleGun->SetParticleEnergy(particleEnergy*GeV);
-        G4cerr << particleEnergy << G4endl;
+        //G4cerr << particleEnergy << G4endl;
     }
 
     fParticleGun->GeneratePrimaryVertex(anEvent);
