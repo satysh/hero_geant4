@@ -1,6 +1,6 @@
 void normThresh()
 {
-  TFile *file = new TFile("input/old/energy_is_spreaded_10kevents.root", "READ");
+  TFile *file = new TFile("input/background/ev100kspread.root", "READ");
   if (file->IsZombie()) {
     cerr << "Can't open input file!" << endl;
     return;
@@ -20,7 +20,7 @@ void normThresh()
   tree->SetBranchAddress("t", &time);
 
   TCanvas *c = new TCanvas("c", "c");
-  c->Divide(1, 2);
+  //c->Divide(1, 2);
 
   Int_t nBins = 100;
   TH1F *h = new TH1F("base", "base", nBins, 0., 65000.);
@@ -30,10 +30,10 @@ void normThresh()
   //вместо 62 500 000 nanoseconds, я указал 625 000 000.
   // В выходной файл симуляции hero.root time пишется в наносекундах,
   // а мы хотим видеть микросекунды.
-  c->cd(1);
-  tree->Draw("t*0.0001 >> base", "pdg == 1000020040");
+  //c->cd(1);
+  tree->Draw("t*0.001 >> base", "pdg == 1000020040");
 
-  Double_t numOfPrimaryEvents = 10000.;
+  Double_t numOfPrimaryEvents = 100000.;
   Double_t numOfPrimaryEventsIn1pre16sec = 234015.;
   Double_t norm = numOfPrimaryEventsIn1pre16sec / numOfPrimaryEvents;
 
@@ -44,7 +44,7 @@ void normThresh()
     new_h->SetBinContent(i, newBinContent);
   }
 
-  c->cd(2);
+  //c->cd(2);
   new_h->Draw();
   h->SetStats(0);
   new_h->SetStats(0);
