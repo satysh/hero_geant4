@@ -38,23 +38,6 @@ G4bool HEROSensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory*ROhi
 	G4double depositEnergy = aStep->GetTotalEnergyDeposit();
 	G4double kinEnergy = dParticle->GetKineticEnergy();
 
-/*
-    // -- DEBUG ------------------------------------------------------------------------------------------------------------
-    G4double radiusOn = positionParticle[0]*positionParticle[0];
-    radiusOn += positionParticle[1]*positionParticle[1];
-    radiusOn += positionParticle[2]*positionParticle[2];
-    radiusOn = sqrt(radiusOn)/cm;
-    G4double radiusOff = positionParticleOff[0]*positionParticleOff[0];
-    radiusOff += positionParticleOff[1]*positionParticleOff[1];
-    radiusOff += positionParticleOff[2]*positionParticleOff[2];
-    radiusOff = sqrt(radiusOff)/cm;
-	G4cerr << statusOn << ", " << statusOff << " :";
-	G4cerr << particleName << ", pdg=" << pdg << ", trackId=" << track->GetTrackID() << ", parentId=" << track->GetParentID()
-	       << ", eKin=" << kinEnergy << ", edep=" << depositEnergy
-	       << ", rOn=" << radiusOn << ", rOff=" << radiusOff << ", time=" << globalTime / nanosecond
-	       << ", volname=" << volname << G4endl;
-	// ------------------------------------------------------------------------------------------------------------------------
-*/
 
     // 2112 neutron pdg
     // 1000020040 alpha pdg
@@ -64,12 +47,11 @@ G4bool HEROSensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory*ROhi
     eventId += fStartEventId;
 // -----------------------------------------------------------------
 
-/*
 	if (pdg == 1000020040) {
 		track->SetTrackStatus(fStopAndKill); // should track be killed???
 	}
-*/
-    if (pdg != 0) { // skip geantino
+
+    if (pdg != 0 && pdg == 1000020040) { // skip geantino
 	    G4AnalysisManager* man = G4AnalysisManager::Instance();
 	    man->FillNtupleIColumn(0, eventId);
 	    man->FillNtupleIColumn(1, pdg);
