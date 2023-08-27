@@ -17,10 +17,11 @@ file = open('../../input/IntPam2009.txt')
 data = file.readlines()
 
 fluxe = []
-
+sfluxes = 0.
 for line in data[1:]:
-    f, e = map(float, line.split())
-    fluxe.append((f, e))
+    e, f = map(float, line.split())
+    sfluxes += f
+    fluxe.append((e, f))
 
 def func(energy):
     index = lbinsearch(0, len(fluxe) - 1, lcheck, (fluxe, energy))
@@ -37,9 +38,15 @@ for _ in range(n):
     energyi += dx
 
 r = 1.25
-t = 1 / 16
-norm = 16. * pi**2 * r**2 * t
-print(norm * integral)
+t = 512. / 10**6
+norm = 16. * pi**2 * r**2
+print('sfluxes=', round(sfluxes))
+print('sfluxes * norm =', round(sfluxes * norm))
+print('sfluxes * norm * t=', round(sfluxes * norm * t))
+print('norm=', round(norm))
+print('integral=', round(integral))
+print('norm * integral =', round(norm * integral))
+print(round(norm * integral * t))
 
 
 
