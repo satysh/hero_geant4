@@ -1,6 +1,6 @@
 void normThresh()
 {
-  TFile *file = new TFile("input/background/ev100kspread.root", "READ");
+  TFile *file = new TFile("input/costheta_128us.root", "READ");
   if (file->IsZombie()) {
     cerr << "Can't open input file!" << endl;
     return;
@@ -23,8 +23,8 @@ void normThresh()
   //c->Divide(1, 2);
 
   Int_t nBins = 100;
-  TH1F *h = new TH1F("base", "base", nBins, 0., 65000.);
-  TH1F *new_h = new TH1F("normed", "normed", nBins, 0., 65000.);
+  TH1F *h = new TH1F("base", "base", nBins, 0., 160.);
+  TH1F *new_h = new TH1F("normed", "normed", nBins, 0., 160.);
 
   // t*0.0001 потому что я ошибся при инициализации maxStartTime,
   //вместо 62 500 000 nanoseconds, я указал 625 000 000.
@@ -33,8 +33,8 @@ void normThresh()
   //c->cd(1);
   tree->Draw("t*0.001 >> base", "pdg == 1000020040");
 
-  Double_t numOfPrimaryEvents = 100000.;
-  Double_t numOfPrimaryEventsIn1pre16sec = 234015.;
+  Double_t numOfPrimaryEvents = 10000.;
+  Double_t numOfPrimaryEventsIn1pre16sec = 7941.;
   Double_t norm = numOfPrimaryEventsIn1pre16sec / numOfPrimaryEvents;
 
   for (Int_t i=0; i<nBins; i++) {
