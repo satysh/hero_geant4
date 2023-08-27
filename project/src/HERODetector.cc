@@ -15,6 +15,7 @@ G4bool HEROSensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory*ROhi
 	G4int eventId = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
 	//G4cerr << eventId << G4endl;
 	G4Track* track = aStep->GetTrack();
+	G4double trackID = track->GetTrackID();
 	G4VPhysicalVolume* vol = track->GetVolume();
 	const G4String volname = vol->GetLogicalVolume()->GetName();
 	G4bool statusOn = aStep->IsFirstStepInVolume();
@@ -22,7 +23,6 @@ G4bool HEROSensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory*ROhi
 	G4StepPoint *preStepPoint = aStep->GetPreStepPoint();
 	G4StepPoint *postStepPoint = aStep->GetPostStepPoint();
 
-	//track->SetTrackStatus(fStopAndKill); should track be killed???
 
 	G4ThreeVector positionParticle = preStepPoint->GetPosition();
 	G4ThreeVector positionParticleOff = postStepPoint->GetPosition();
@@ -32,6 +32,7 @@ G4bool HEROSensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory*ROhi
 	const G4VTouchable* touchable = aStep->GetPreStepPoint()->GetTouchable();
 	G4int copyNo = touchable->GetCopyNumber();
 	G4double globalTime = track->GetGlobalTime();
+	G4double localTime = track->GetLocalTime();
 
 	const G4DynamicParticle* dParticle = track->GetDynamicParticle();
 	G4double depositEnergy = aStep->GetTotalEnergyDeposit();
@@ -57,20 +58,32 @@ G4bool HEROSensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory*ROhi
 
     // 2112 neutron pdg
     // 1000020040 alpha pdg
+
 // -----------------------------------------------------------------
 	// We need It because of multithread in the other case fStartEventId=0 by default
     eventId += fStartEventId;
 // -----------------------------------------------------------------
-    if (pdg != 0 && (statusOff || kinEnergy == 0.)) { // skip geantino and write last step only
+
+/*
+	if (pdg == 1000020040) {
+		track->SetTrackStatus(fStopAndKill); // should track be killed???
+	}
+*/
+    if (pdg != 0) { // skip geantino
 	    G4AnalysisManager* man = G4AnalysisManager::Instance();
 	    man->FillNtupleIColumn(0, eventId);
 	    man->FillNtupleIColumn(1, pdg);
-	    man->FillNtupleDColumn(2, depositEnergy); // MeV
-	    man->FillNtupleDColumn(3, kinEnergy); // MeV
-	    man->FillNtupleDColumn(4, positionParticle[0]);
-	    man->FillNtupleDColumn(5, positionParticle[1]);
-	    man->FillNtupleDColumn(6, positionParticle[2]);
-	    man->FillNtupleDColumn(7, globalTime); // nanosecond
+	    man->FillNtupleIColumn(2, trackID);
+	    man->FillNtupleDColumn(3, depositEnergy); // MeV
+	    man->FillNtupleDColumn(4, kinEnergy); // MeV
+	    man->FillNtupleDColumn(5, positionParticle[0]);
+	    man->FillNtupleDColumn(6, positionParticle[1]);
+	    man->FillNtupleDColumn(7, positionParticle[2]);
+	    man->FillNtupleDColumn(8, positionParticleOff[0]);
+	    man->FillNtupleDColumn(9, positionParticleOff[1]);
+	    man->FillNtupleDColumn(10, positionParticleOff[2]);
+	    man->FillNtupleDColumn(11, globalTime); // nanosecond
+	    man->FillNtupleDColumn(12, localTime); // nanosecond
 	    man->AddNtupleRow(0);
 	}
 

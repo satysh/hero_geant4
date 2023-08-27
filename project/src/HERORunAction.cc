@@ -9,12 +9,17 @@ HERORunAction::HERORunAction()
 	man->CreateNtuple("HERO", "Data");
 	man->CreateNtupleIColumn("eventId");
 	man->CreateNtupleIColumn("pdg");
+	man->CreateNtupleIColumn("trackID");
 	man->CreateNtupleDColumn("deposit_E");
 	man->CreateNtupleDColumn("kin_E");
-	man->CreateNtupleDColumn("x");
-	man->CreateNtupleDColumn("y");
-	man->CreateNtupleDColumn("z");
+	man->CreateNtupleDColumn("pre_x");
+	man->CreateNtupleDColumn("pre_y");
+	man->CreateNtupleDColumn("pre_z");
+	man->CreateNtupleDColumn("post_x");
+	man->CreateNtupleDColumn("post_y");
+	man->CreateNtupleDColumn("post_z");
 	man->CreateNtupleDColumn("t");
+	man->CreateNtupleDColumn("track_time");
 	man->FinishNtuple(0);
 }
 
