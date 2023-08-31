@@ -35,13 +35,19 @@ private:
     G4double fParticleMaxStartTime=0.;
     G4double fParticleFixedStartTime=0.;
     G4int    fPrimaryParticlePDG=2212;
+
+private:
     G4ParticleGun *fParticleGun;
     G4GeneralParticleSource *fParticleSource;
+
 private:
     G4bool fMaxStartTimeIsSet=false;
     G4bool fMaxFixedTimeIsSet=false;
     G4bool fEnergyIsSet=false;
     G4bool fEnergyRangeIsSet=false;
+
+    G4double fMinFlux;
+    G4double fMaxFlux;
 };
 
 #endif

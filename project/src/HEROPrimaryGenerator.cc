@@ -108,10 +108,14 @@ void HEROPrimaryGenerator::ReadFluxTXT() {
         G4cerr << "Can't find IntPam2009.txt!" << G4endl;
     }
 
+    G4int nPoints = std::count(std::istreambuf_iterator<char>(fin),
+                               std::istreambuf_iterator<char>(), '\n');
+    fin.seekg(0, std::ios::beg);
+
     G4String info="";
     for (Int_t i=0; i<7; i++) {fin >> info;}
 
-    const G4int nPoints = 71;
+    nPoints -= 1;
     TVectorD energy(nPoints);
     TVectorD flux(nPoints);
     G4int i=0;
@@ -127,12 +131,15 @@ void HEROPrimaryGenerator::ReadFluxTXT() {
     }
     fin.close();
 
+    fMinFlux = flux(nPoints - 1);
+    fMaxFlux = flux(0);
+
     energyInvCDFGr = new TGraph(flux, energy);
-    fEnergyInvCDF = new TF1("thetaInvCDF", EnergyInvCDF, 80.73, 7808.99, 0);
+    fEnergyInvCDF = new TF1("EnergyInvCDF", EnergyInvCDF, fMinFlux, fMaxFlux, 0);
 }
 
 G4double HEROPrimaryGenerator::PrimaryEGen() {
-    G4double rndflux = 80.73 + (G4double)G4UniformRand()*7808.99;
+    G4double rndflux = fMinFlux + G4UniformRand() * (fMaxFlux - fMinFlux);
     G4double eval = fEnergyInvCDF->Eval(rndflux);
     return eval;
 }
