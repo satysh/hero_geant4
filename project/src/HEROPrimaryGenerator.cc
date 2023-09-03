@@ -54,6 +54,10 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
 */
     G4ParticleTable *particleTable = G4ParticleTable::GetParticleTable();
     G4ParticleDefinition *particle = particleTable->FindParticle(fPrimaryParticlePDG);
+    //G4IonTable* Iontable = particleTable->GetIonTable();
+    //G4ParticleDefinition* particle = Iontable->GetIon(2, 4, 0); // He-4
+    //G4ParticleDefinition* particle = Iontable->GetIon(6, 12, 0); // Ñ-12
+    //G4ParticleDefinition* particle = Iontable->GetIon(8, 16, 0); // O-16
     //G4ParticleDefinition *particle = G4IonTable::GetIonTable()->GetIon(26, 56, 0); // Fe-56
     if (!particle) {
         G4cerr << "Can't find the particle with pdg: " << fPrimaryParticlePDG << G4endl;
@@ -64,6 +68,7 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
     G4ThreeVector pos(0.,0.,-125.*cm);
     G4double cost = (G4double)G4UniformRand();
     G4double phi = (G4double)G4UniformRand()*360.*deg;
+    //cost = 1.;
     G4double px = (1. - cost)*cos(phi);
     G4double py = (1. - cost)*sin(phi);
     G4double pz = cost;
