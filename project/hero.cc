@@ -25,10 +25,10 @@ G4int getnEvents(G4double start_time);
 int main(int argc, char** argv)
 {
 
-    G4double primaryE0 = 100.; // GeV
+    //G4double primaryE0 = 100.; // GeV
     //G4double primaryE1 = 0.;
 
-    G4double maxStartTime = 62500000.; // nanoseconds
+    G4double maxStartTime = 1280000.; // nanoseconds
     //G4double currFixedStartTime = 40000000.; // nanoseconds
     G4int nEvents = 100000;
 /*
