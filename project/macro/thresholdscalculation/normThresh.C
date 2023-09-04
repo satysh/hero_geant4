@@ -1,6 +1,6 @@
 void normThresh()
 {
-  TFile *file = new TFile("input/costheta_128us.root", "READ");
+  TFile *file = new TFile("input/128us_2010_2505ev.root", "READ");
   if (file->IsZombie()) {
     cerr << "Can't open input file!" << endl;
     return;
@@ -22,7 +22,7 @@ void normThresh()
   TCanvas *c = new TCanvas("c", "c");
   //c->Divide(1, 2);
 
-  Int_t nBins = 100;
+  Int_t nBins = 160;
   TH1F *h = new TH1F("base", "base", nBins, 0., 160.);
   TH1F *new_h = new TH1F("normed", "normed", nBins, 0., 160.);
 
@@ -33,8 +33,8 @@ void normThresh()
   //c->cd(1);
   tree->Draw("t*0.001 >> base", "pdg == 1000020040");
 
-  Double_t numOfPrimaryEvents = 10000.;
-  Double_t numOfPrimaryEventsIn1pre16sec = 7941.;
+  Double_t numOfPrimaryEvents = 2505.;
+  Double_t numOfPrimaryEventsIn1pre16sec = 2505.;
   Double_t norm = numOfPrimaryEventsIn1pre16sec / numOfPrimaryEvents;
 
   for (Int_t i=0; i<nBins; i++) {

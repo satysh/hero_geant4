@@ -13,7 +13,7 @@ def lbinsearch(l, r, ckeck, checkparams):
             l = m + 1
     return l
 
-file = open('../../input/IntPam2009.txt')
+file = open('../../input/IntPam2010.txt')
 data = file.readlines()
 
 fluxe = []
@@ -38,7 +38,7 @@ for _ in range(n):
     energyi += dx
 
 r = 1.25
-t = 512. / 10**6
+t = 128 / 10**5
 norm = 16. * pi**2 * r**2
 print('sfluxes=', round(sfluxes))
 print('sfluxes * norm =', round(sfluxes * norm))
