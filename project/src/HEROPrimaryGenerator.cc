@@ -53,6 +53,7 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
     G4cerr << "Event: " << eventId << G4endl;
 */
     G4ParticleTable *particleTable = G4ParticleTable::GetParticleTable();
+    G4IonTable* Iontable = particleTable->GetIonTable();
     G4ParticleDefinition *particle = particleTable->FindParticle(fPrimaryParticlePDG);
     //G4IonTable* Iontable = particleTable->GetIonTable();
     //G4ParticleDefinition* particle = Iontable->GetIon(2, 4, 0); // He-4
@@ -120,7 +121,6 @@ void HEROPrimaryGenerator::ReadFluxTXT() {
     G4String info="";
     for (Int_t i=0; i<7; i++) {fin >> info;}
 
-    nPoints -= 1;
     TVectorD energy(nPoints);
     TVectorD flux(nPoints);
     G4int i=0;
