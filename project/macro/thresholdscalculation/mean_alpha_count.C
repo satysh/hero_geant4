@@ -1,6 +1,6 @@
 void mean_alpha_count()
 {
-  TFile* file = new TFile("input/Fe_10_GeV_1000_events.root", "READ");
+  TFile* file = new TFile("input/gamma_10000_GeV_100_events.root", "READ");
   if (file->IsZombie()) {
     cerr << "Can't read file!" << endl;
     return;
@@ -19,7 +19,7 @@ void mean_alpha_count()
 
   tree->Draw("t*0.001 >> hist", "pdg==1000020040 && t < 128000");
 
-  Int_t nEvents = 1000;
+  Int_t nEvents = 100;
 
   TH1F* normed_hist = new TH1F("normed_hist", "normed_hist", binN, minBin, maxBin);
 /*

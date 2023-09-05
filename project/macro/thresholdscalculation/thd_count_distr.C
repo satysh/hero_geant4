@@ -1,6 +1,6 @@
 void thd_count_distr()
 {
-  TFile* file = new TFile("input/128us_2010_2505ev.root", "READ");
+  TFile* file = new TFile("input/12800us_2014_64987ev.root", "READ");
   if (file->IsZombie()) {
     cerr << "Can't read a file!" << endl;
     return;
@@ -12,7 +12,7 @@ void thd_count_distr()
     return;
   }
 
-  Int_t binN = 160;
+  Int_t binN = 13000;
   Double_t binMin = 0.;
   Double_t binMax = (Double_t)binN;
   TH1F* thd_h = new TH1F("thd_h", "thd_h", binN, binMin, binMax);
@@ -42,7 +42,7 @@ void thd_count_distr()
   Int_t thd_count;
   thd_count_tree->Branch("thd_count", &thd_count, "thd_count/I");
 
-  for (Int_t i=11; i<128; i++) {
+  for (Int_t i=11; i<12800; i++) {
     thd_count = thd_h->GetBinContent(i);
     cout << thd_count << endl;
     thd_count_tree->Fill();

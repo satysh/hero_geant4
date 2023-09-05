@@ -20,10 +20,10 @@ void thd_for_diff_e()
 */
 
   TGraph* femax = new TGraph();
-  femax->SetPoint(0, 1., 60.);
-  femax->SetPoint(1, 10., 1905.);
-  femax->SetMarkerColor(1);
-  femax->SetLineColor(1);
+  femax->SetPoint(0, 1000., 143.);
+  femax->SetPoint(1, 10000., 1407.);
+  femax->SetMarkerColor(6);
+  femax->SetLineColor(6);
   femax->SetLineStyle(9);
   femax->SetMarkerSize(markersSize);
   femax->SetMarkerStyle(34);
@@ -42,13 +42,13 @@ void thd_for_diff_e()
 */
 
   TGraph* hemax = new TGraph();
-  hemax->SetPoint(0, 1., 27.);
-  hemax->SetPoint(1, 10., 156.);
-  hemax->SetPoint(2, 100., 1049.);
-  hemax->SetMarkerColor(4);
-  hemax->SetLineColor(4);
+  hemax->SetPoint(0, 1000., 141.);
+  hemax->SetPoint(1, 10000., 1520.);
+  //hemax->SetPoint(2, 100., 1049.);
+  hemax->SetMarkerColor(7);
+  hemax->SetLineColor(7);
   hemax->SetLineStyle(9);
-  hemax->SetMarkerSize(markersSize);
+  hemax->SetMarkerSize(1.5);
   hemax->SetMarkerStyle(34);
 // ----------------------------------------
 
@@ -63,9 +63,9 @@ void thd_for_diff_e()
   protonmean->SetMarkerStyle(kFullCircle);*/
 
   TGraph* protonmax = new TGraph();
-  protonmax->SetPoint(0, 1., 3.);
-  protonmax->SetPoint(1, 10., 36.);
-  protonmax->SetPoint(2, 100., 249.);
+  protonmax->SetPoint(0, 1000., 1866.);
+  //protonmax->SetPoint(1, 10., 36.);
+  //protonmax->SetPoint(2, 100., 249.);
   protonmax->SetMarkerColor(3);
   protonmax->SetLineColor(3);
   protonmax->SetLineStyle(9);
@@ -94,9 +94,9 @@ void thd_for_diff_e()
   TLegend* legend = new TLegend(0.1, 0.7, 0.48, 0.9);
   legend->AddEntry(stdDev_line,"background","l");
   //legend->AddEntry(femean, "electron mean count", "p");
-  legend->AddEntry(femax, "Fe", "p");
+  legend->AddEntry(femax, "electron", "p");
   //legend->AddEntry(hemean, "gamma mean count", "p");
-  legend->AddEntry(hemax, "He", "p");
+  legend->AddEntry(hemax, "gamma", "p");
   //legend->AddEntry(protonmean, "proton mean count", "p");
   legend->AddEntry(protonmax, "proton", "p");
   legend->Draw();

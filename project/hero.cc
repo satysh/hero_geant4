@@ -25,10 +25,10 @@ G4int getnEvents(G4double start_time);
 int main(int argc, char** argv)
 {
 
-    G4double primaryE0 = 4000.; // GeV
+    G4double primaryE0 = 1.; // GeV
     //G4double primaryE1 = 0.;
 
-    //G4double maxStartTime = 1280000.; // nanoseconds
+    //G4double maxStartTime = 128000.; // nanoseconds
     G4double currFixedStartTime = 0.; // nanoseconds
     G4int nEvents = 1000;
 /*
@@ -90,7 +90,7 @@ int main(int argc, char** argv)
     runManager->SetUserInitialization(new QGSP_BERT_HP);
     HEROActionInitialization *actionInit = new HEROActionInitialization();
     HEROPrimaryGenerator *primeGen = new HEROPrimaryGenerator();
-    primeGen->SetPrimaryParticle(1000020040); // 2212 proton
+    primeGen->SetPrimaryParticle(2212); // 2212 proton
     primeGen->SetParticleEnergy(primaryE0);
     primeGen->SetParticleFixedStartTime(currFixedStartTime); // nanosec
     //primeGen->SetParticleEnergy(primaryE0, primaryE1); // GeV

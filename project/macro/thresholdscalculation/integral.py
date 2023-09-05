@@ -37,8 +37,8 @@ for _ in range(n):
     integral += func(energyi) * dx
     energyi += dx
 
-r = 1.25
-t = 128 / 10**5
+r = 0.62
+t = 128 / 10**6
 norm = 16. * pi**2 * r**2
 print('sfluxes=', round(sfluxes))
 print('sfluxes * norm =', round(sfluxes * norm))
