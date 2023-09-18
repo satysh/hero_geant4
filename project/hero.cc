@@ -22,6 +22,7 @@
 #include "HEROPrimaryGenerator.hh"
 
 int atoi(char*);
+char* int_to_char(G4int number);
 
 int main(int argc, char** argv)
 {
@@ -36,11 +37,7 @@ int main(int argc, char** argv)
 
     G4RunManager *runManager = new G4RunManager();
 
-    std::stringstream strs;
-    strs << nEvents;
-    std::string temp_str = strs.str();
-    char* char_type = (char*) temp_str.c_str();
-    G4String outFileName = "proton_pE_" + G4String(argv[1]) + "_nEv_" + G4String(char_type) + ".root";
+    G4String outFileName = "proton_pE_" + G4String(argv[1]) + "_nEv_" + G4String(int_to_char(nEvents)) + ".root";
     HERODetectorConstruction *detectorConstruction = new HERODetectorConstruction();
     HEROSensitiveDetector *sensDetector = new HEROSensitiveDetector("SensitiveDetector");
     detectorConstruction->SetSensDetector(sensDetector);
@@ -81,3 +78,11 @@ int atoi(char *str) {
     return res;
 }
 
+char* int_to_char(G4int number) {
+    std::stringstream strs;
+    strs << number;
+    std::string temp_str = strs.str();
+    char* char_type = (char*) temp_str.c_str();
+
+    return char_type;
+}
