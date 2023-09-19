@@ -4,6 +4,8 @@ void thd_for_diff_e()
 
   Double_t stdDev = 85.58;
   TLine* stdDev_line = new TLine(0., stdDev, 10100., stdDev);
+  TLine* stdDev_line_2 = new TLine(0., 2.*stdDev, 10100., 2.*stdDev);
+  TLine* stdDev_line_3 = new TLine(0., 3.*stdDev, 10100., 3.*stdDev);
 
   Double_t markersSize = 2.;
 
@@ -20,8 +22,8 @@ void thd_for_diff_e()
 */
 
   TGraph* femax = new TGraph();
-  femax->SetPoint(0, 1000., 143.);
-  femax->SetPoint(1, 10000., 1407.);
+  femax->SetPoint(0, 1., 60.);
+  femax->SetPoint(1, 10., 1905.);
   femax->SetMarkerColor(6);
   femax->SetLineColor(6);
   femax->SetLineStyle(9);
@@ -42,9 +44,9 @@ void thd_for_diff_e()
 */
 
   TGraph* hemax = new TGraph();
-  hemax->SetPoint(0, 1000., 141.);
-  hemax->SetPoint(1, 10000., 1520.);
-  //hemax->SetPoint(2, 100., 1049.);
+  hemax->SetPoint(0, 1., 27.);
+  hemax->SetPoint(1, 10., 156.);
+  hemax->SetPoint(2, 100., 1049.);
   hemax->SetMarkerColor(7);
   hemax->SetLineColor(7);
   hemax->SetLineStyle(9);
@@ -62,10 +64,18 @@ void thd_for_diff_e()
   protonmean->SetMarkerSize(markersSize);
   protonmean->SetMarkerStyle(kFullCircle);*/
 
-  TGraph* protonmax = new TGraph();
-  protonmax->SetPoint(0, 1000., 1866.);
-  //protonmax->SetPoint(1, 10., 36.);
-  //protonmax->SetPoint(2, 100., 249.);
+  TVectorD x(16);
+  TVectorD y(16);
+  ifstream fin("input/counts.txt");
+  for (Int_t i=0; i<16; i++) {
+    TString str;
+    fin >> str;
+    fin >> x(i);
+    fin >> str;
+    fin >> y(i);
+
+  }
+  TGraph* protonmax = new TGraph(x, y);
   protonmax->SetMarkerColor(3);
   protonmax->SetLineColor(3);
   protonmax->SetLineStyle(9);
@@ -90,13 +100,23 @@ void thd_for_diff_e()
   stdDev_line->SetLineColor(kRed);
   stdDev_line->SetLineWidth(2);
   stdDev_line->SetLineStyle(9);
+  stdDev_line_2->Draw("SAME");
+  stdDev_line_2->SetLineColor(kRed);
+  stdDev_line_2->SetLineWidth(2);
+  stdDev_line_2->SetLineStyle(2);
+  stdDev_line_3->Draw("SAME");
+  stdDev_line_3->SetLineColor(kRed);
+  stdDev_line_3->SetLineWidth(2);
+  stdDev_line_3->SetLineStyle(10);
 
   TLegend* legend = new TLegend(0.1, 0.7, 0.48, 0.9);
-  legend->AddEntry(stdDev_line,"background","l");
+  legend->AddEntry(stdDev_line,"stdDev","l");
+  legend->AddEntry(stdDev_line_2,"2*stdDev","l");
+  legend->AddEntry(stdDev_line_3,"3*stdDev","l");
   //legend->AddEntry(femean, "electron mean count", "p");
-  legend->AddEntry(femax, "electron", "p");
+  legend->AddEntry(femax, "Fe", "p");
   //legend->AddEntry(hemean, "gamma mean count", "p");
-  legend->AddEntry(hemax, "gamma", "p");
+  legend->AddEntry(hemax, "He", "p");
   //legend->AddEntry(protonmean, "proton mean count", "p");
   legend->AddEntry(protonmax, "proton", "p");
   legend->Draw();
