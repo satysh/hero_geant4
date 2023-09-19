@@ -66,7 +66,7 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
 
     fParticleGun->SetParticleDefinition(particle);
 
-    G4ThreeVector pos(0.,0.,-125.*cm);
+    G4ThreeVector pos(0.,0.,-250.*cm);
     G4double cost = (G4double)G4UniformRand();
     G4double phi = (G4double)G4UniformRand()*360.*deg;
     //cost = 1.;
@@ -109,7 +109,7 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
 }
 
 void HEROPrimaryGenerator::ReadFluxTXT() {
-    std::ifstream fin("../project/input/IntPam2010.txt");
+    std::ifstream fin("../project/input/IntPam2014.txt");
     if (!fin.is_open()) {
         G4cerr << "Can't find IntPam2009.txt!" << G4endl;
     }

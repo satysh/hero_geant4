@@ -38,15 +38,15 @@ G4VPhysicalVolume *HERODetectorConstruction::Construct()
 
 
     // World
-
-    G4Sphere *solidWorld = new G4Sphere("solidWorld", 0.*cm, 125.*cm, 0.*deg, 360.*deg, 0.*deg, 180.*deg);
+    G4int R = 250;
+    G4Sphere *solidWorld = new G4Sphere("solidWorld", 0.*cm, G4double(R)*cm, 0.*deg, 360.*deg, 0.*deg, 180.*deg);
     G4LogicalVolume *logicWorld = new G4LogicalVolume(solidWorld, worldMat, "logicWorld");
     G4VPhysicalVolume *physWorld = new G4PVPlacement(0, G4ThreeVector(0., 0., 0.), logicWorld, "physWorld", 0, false, 0, true);
 
     // 125 layers
     // Scint
     G4int sensBorScinId = 0;
-    for (G4int i=0; i<125; i+=2) {
+    for (G4int i=0; i<R; i+=2) {
         G4Sphere *solidBorScin = new G4Sphere("solidBorScin_"+std::to_string(i), G4double(i)*cm, (G4double(i)+1.)*cm,
                                               0.*deg, 360.*deg, 0.*deg, 180.*deg
                                              );
@@ -59,7 +59,7 @@ G4VPhysicalVolume *HERODetectorConstruction::Construct()
         sensBorScinId++;
     }
     // Absorber
-    for (G4int i=1; i<125; i+=2) {
+    for (G4int i=1; i<R; i+=2) {
         G4Sphere *solidWolfram = new G4Sphere("solidWolfram_"+std::to_string(i), G4double(i)*cm, (G4double(i)+1.)*cm,
                                               0.*deg, 360.*deg, 0.*deg, 180.*deg
                                              );
@@ -80,7 +80,7 @@ void HERODetectorConstruction::ConstructSDandField()
         HEROSensitiveDetector* sensDet = new HEROSensitiveDetector("SensitiveDetector");
         fSensDetector=sensDet;
     }
-    for (G4int i=0; i<63; i++)
+    for (G4int i=0; i<125; i++)
         fLogicalBorScin[i]->SetSensitiveDetector(fSensDetector);
 }
 

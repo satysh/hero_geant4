@@ -69,7 +69,7 @@ G4bool HEROSensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory*ROhi
 		track->SetTrackStatus(fStopAndKill); // should track be killed???
 	}
 */
-    if (pdg != 0) { // skip geantino
+    if (pdg != 0 && pdg == 1000020040) { // skip geantino
 	    G4AnalysisManager* man = G4AnalysisManager::Instance();
 	    man->FillNtupleIColumn(0, eventId);
 	    man->FillNtupleIColumn(1, pdg);

@@ -13,7 +13,7 @@ def lbinsearch(l, r, ckeck, checkparams):
             l = m + 1
     return l
 
-file = open('../../input/IntPam2010.txt')
+file = open('../../input/IntPam2014.txt')
 data = file.readlines()
 
 fluxe = []

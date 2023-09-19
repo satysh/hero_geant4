@@ -24,7 +24,6 @@ G4int getnEvents(G4double start_time);
 
 int main(int argc, char** argv)
 {
-
     G4double primaryE0 = 1.; // GeV
     //G4double primaryE1 = 0.;
 
@@ -94,7 +93,7 @@ int main(int argc, char** argv)
     primeGen->SetParticleEnergy(primaryE0);
     primeGen->SetParticleFixedStartTime(currFixedStartTime); // nanosec
     //primeGen->SetParticleEnergy(primaryE0, primaryE1); // GeV
-    //primeGen->SetParticleMaxStartTime(maxStartTime); // nanosec
+    primeGen->SetParticleMaxStartTime(maxStartTime); // nanosec
     actionInit->SetPrimaryGenerator(primeGen);
     actionInit->SetOutFileName(outFileName);
     runManager->SetUserInitialization(actionInit);
