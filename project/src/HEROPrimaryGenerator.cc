@@ -66,10 +66,9 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
 
     fParticleGun->SetParticleDefinition(particle);
 
-    G4ThreeVector pos(0.,0.,-250.*cm);
+    G4ThreeVector pos(0.,0.,-125.*cm);
     G4double cost = (G4double)G4UniformRand();
     G4double phi = (G4double)G4UniformRand()*360.*deg;
-    //cost = 1.;
     G4double px = (1. - cost)*cos(phi);
     G4double py = (1. - cost)*sin(phi);
     G4double pz = cost;
