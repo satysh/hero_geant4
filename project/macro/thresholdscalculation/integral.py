@@ -17,11 +17,11 @@ file = open('../../input/IntPam2014.txt')
 data = file.readlines()
 
 fluxe = []
-sfluxes = 0.
+sf = 0.
 for line in data[1:]:
     e, f = map(float, line.split())
-    sfluxes += f
     fluxe.append((e, f))
+    sf += f
 
 def func(energy):
     index = lbinsearch(0, len(fluxe) - 1, lcheck, (fluxe, energy))
@@ -29,7 +29,7 @@ def func(energy):
 
 
 n = 100000
-dx = fluxe[-1][0] / n
+dx = (fluxe[-1][0] - fluxe[0][0]) / n
 
 energyi = 0.
 integral = 0.
@@ -37,16 +37,10 @@ for _ in range(n):
     integral += func(energyi) * dx
     energyi += dx
 
-r = 0.62
-t = 128 / 10**6
-norm = 16. * pi**2 * r**2
-print('sfluxes=', round(sfluxes))
-print('sfluxes * norm =', round(sfluxes * norm))
-print('sfluxes * norm * t=', round(sfluxes * norm * t))
-print('norm=', round(norm))
-print('integral=', round(integral))
-print('norm * integral =', round(norm * integral))
-print(round(norm * integral * t))
+r = 1.25
+t = 16. / 10**6
+norm = 8. * (pi * r)**2
 
-
+print('nprotons =', round(norm * integral * t))
+print('nprotons =', round(norm * sf * t))
 
