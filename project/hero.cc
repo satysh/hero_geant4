@@ -24,59 +24,12 @@ G4int getnEvents(G4double start_time);
 
 int main(int argc, char** argv)
 {
-    G4double primaryE0 = 1.; // GeV
+    //G4double primaryE0 = 1.; // GeV
     //G4double primaryE1 = 0.;
 
-    //G4double maxStartTime = 128000.; // nanoseconds
-    G4double currFixedStartTime = 0.; // nanoseconds
-    G4int nEvents = 1000;
-/*
-    G4int seed;
-    if (argc == 1)      seed = 1; // default
-    else if (argc == 2) seed = atoi(argv[1]);
-    else { // Read IntPam2009.txt and set E and nEvents
-        seed = atoi(argv[1]);
-        std::fstream fin("../project/input/IntPam2009.txt");
-        if (!fin.is_open()) {
-            G4cerr << "Can't open IntPam2009.txt!" << G4endl;
-            return -1;
-        }
-        G4int id = atoi(argv[2]);
-        G4String info="";
-        for (G4int i=0; i<7; i++) { fin >> info; }
-        G4double pi = 3.141592653;
-        G4double detectorR = 125.*0.01; // m
-        G4double time = maxStartTime*1e-9; // to sec
-        G4double detectorS = 4.*pi*detectorR*detectorR; // m2
-        G4int it=1;
-        while (!fin.eof()) {
-            G4double curE; // GeV
-            G4double curFlux; // particles/m^2 sr s
-            fin >> curE >> curFlux;
-            G4double curNevents = curFlux*detectorS*4.*pi*time;
-            if (it == id) {
-                primaryE0=curE; nEvents=(G4int)curNevents;
-                fin >> primaryE1;
-                break;
-            }
-            it++;
-        }
-        fin.close();
-        G4int NTHREADS = atoi(argv[3]);
-        nEvents = 1 + (G4int)nEvents/NTHREADS;
-    }
-
-    G4Random::setTheSeed(seed);
-    std::stringstream seedStraem;
-    seedStraem << seed;
-    G4String outFileName = "output_" + seedStraem.str() + ".root";
-    G4cout << "Sim is starts: seed = " << seed << ", ";
-    G4cout << "primaryE0=" << primaryE0 << " [GeV], "
-           << "primaryE1=" << primaryE1 << " [GeV], "
-           << "maxStartTime=" << maxStartTime << " [nanosec], "
-           << "nEvents=" << nEvents << G4endl;
-*/
-
+    G4double maxStartTime = 10.; // nanoseconds
+    //G4double currFixedStartTime = 0.; // nanoseconds
+    G4int nEvents = 100;
     G4RunManager *runManager = new G4RunManager();
     //runManager->SetVerboseLevel(2);
 
@@ -90,8 +43,8 @@ int main(int argc, char** argv)
     HEROActionInitialization *actionInit = new HEROActionInitialization();
     HEROPrimaryGenerator *primeGen = new HEROPrimaryGenerator();
     primeGen->SetPrimaryParticle(2212); // 2212 proton
-    primeGen->SetParticleEnergy(primaryE0);
-    primeGen->SetParticleFixedStartTime(currFixedStartTime); // nanosec
+    //primeGen->SetParticleEnergy(primaryE0);
+    //primeGen->SetParticleFixedStartTime(currFixedStartTime); // nanosec
     //primeGen->SetParticleEnergy(primaryE0, primaryE1); // GeV
     primeGen->SetParticleMaxStartTime(maxStartTime); // nanosec
     actionInit->SetPrimaryGenerator(primeGen);

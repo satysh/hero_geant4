@@ -110,7 +110,7 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
 void HEROPrimaryGenerator::ReadFluxTXT() {
     std::ifstream fin("../project/input/IntPam2014.txt");
     if (!fin.is_open()) {
-        G4cerr << "Can't find IntPam2009.txt!" << G4endl;
+        G4cerr << "Can't find IntPam2014.txt!" << G4endl;
     }
 
     G4int nPoints = std::count(std::istreambuf_iterator<char>(fin),
