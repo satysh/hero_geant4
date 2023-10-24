@@ -53,7 +53,12 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
     G4cerr << "Event: " << eventId << G4endl;
 */
     G4ParticleTable *particleTable = G4ParticleTable::GetParticleTable();
+    G4IonTable* Iontable = particleTable->GetIonTable();
     G4ParticleDefinition *particle = particleTable->FindParticle(fPrimaryParticlePDG);
+    //G4IonTable* Iontable = particleTable->GetIonTable();
+    //G4ParticleDefinition* particle = Iontable->GetIon(2, 4, 0); // He-4
+    //G4ParticleDefinition* particle = Iontable->GetIon(6, 12, 0); // Ñ-12
+    //G4ParticleDefinition* particle = Iontable->GetIon(8, 16, 0); // O-16
     //G4ParticleDefinition *particle = G4IonTable::GetIonTable()->GetIon(26, 56, 0); // Fe-56
     if (!particle) {
         G4cerr << "Can't find the particle with pdg: " << fPrimaryParticlePDG << G4endl;
@@ -103,15 +108,18 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
 }
 
 void HEROPrimaryGenerator::ReadFluxTXT() {
-    std::ifstream fin("../project/input/IntPam2009.txt");
+    std::ifstream fin("../project/input/IntPam2014.txt");
     if (!fin.is_open()) {
-        G4cerr << "Can't find IntPam2009.txt!" << G4endl;
+        G4cerr << "Can't find IntPam2014.txt!" << G4endl;
     }
+
+    G4int nPoints = std::count(std::istreambuf_iterator<char>(fin),
+                               std::istreambuf_iterator<char>(), '\n');
+    fin.seekg(0, std::ios::beg);
 
     G4String info="";
     for (Int_t i=0; i<7; i++) {fin >> info;}
 
-    const G4int nPoints = 71;
     TVectorD energy(nPoints);
     TVectorD flux(nPoints);
     G4int i=0;
@@ -127,12 +135,15 @@ void HEROPrimaryGenerator::ReadFluxTXT() {
     }
     fin.close();
 
+    fMinFlux = flux(nPoints - 1);
+    fMaxFlux = flux(0);
+
     energyInvCDFGr = new TGraph(flux, energy);
-    fEnergyInvCDF = new TF1("thetaInvCDF", EnergyInvCDF, 80.73, 7808.99, 0);
+    fEnergyInvCDF = new TF1("EnergyInvCDF", EnergyInvCDF, fMinFlux, fMaxFlux, 0);
 }
 
 G4double HEROPrimaryGenerator::PrimaryEGen() {
-    G4double rndflux = 80.73 + (G4double)G4UniformRand()*7808.99;
+    G4double rndflux = fMinFlux + G4UniformRand() * (fMaxFlux - fMinFlux);
     G4double eval = fEnergyInvCDF->Eval(rndflux);
     return eval;
 }

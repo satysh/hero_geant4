@@ -11,10 +11,9 @@
 #include "HEROPrimaryGenerator.hh"
 
 G4int GetPdgCode(G4int Z, G4int A) {
-  if (Z == 1 && A == 1) return 2212;
-  return 1000000000 + Z*10000 + A*10;
+    if (Z == 1 && A == 1) return 2212;
+    return 1000000000 + Z*10000 + A*10;
 }
-
 
 G4int GetPdgCode(G4String name="") {
     if (name == "0") // electron
@@ -97,4 +96,3 @@ int main(int argc, char** argv)
 
     return 0;
 }
-
