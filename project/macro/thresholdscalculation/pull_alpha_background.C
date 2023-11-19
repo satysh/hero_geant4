@@ -1,8 +1,7 @@
 // Макрос вытаскиевает из root фаила информацию только по альфа 
 // и записывает ее в новый root файл
-void pull_alpha_background()
+void pull_alpha_background(TString input_file_name = "helium_4000_GeV_100_events.root")
 {
-	TString input_file_name = "background_2014_207512_ev_1_sec.root";
 	TFile *file = new TFile("input/" + input_file_name);
 	if (file->IsZombie()) {	
 		cerr << "Can't open input file!" << endl;
@@ -44,7 +43,7 @@ void pull_alpha_background()
 	tree->SetBranchAddress("track_time", &track_time);
 
 
-	TFile *alpha_file = new TFile("output/background/trees/alpha_" + input_file_name, "RECREATE");
+	TFile *alpha_file = new TFile("output/fixedstarttime/alpha_" + input_file_name, "RECREATE");
 	TTree *alpha_tree = new TTree("alpha_tree", "alpha_tree");
 
 	alpha_tree->Branch("eventId", &eventId, "eventId/I");
