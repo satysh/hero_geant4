@@ -38,7 +38,7 @@ for _ in range(n):
     energyi += dx
 
 r = 1.25
-t = 16. / 10**6
+t = 100. / 10**6
 norm = 8. * (pi * r)**2
 
 print('nprotons =', round(norm * integral * t))
