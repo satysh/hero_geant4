@@ -28,12 +28,12 @@ int main(int argc, char** argv)
 {
     G4int pdg = 2212;  // 2212 proton
     G4double primaryE0 = atoi(argv[1]); // GeV
+
     //G4double primaryE1 = 0.;
     G4double currFixedStartTime = 0.; // nanoseconds
     G4int nEvents = G4int(100000. / primaryE0);
 
     //G4double maxStartTime = 128000.; // nanoseconds
-
 
     G4RunManager *runManager = new G4RunManager();
 

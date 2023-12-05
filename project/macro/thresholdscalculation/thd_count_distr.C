@@ -1,53 +1,45 @@
+// Максрос для построения распределения фоновго счета
+// из гистограммы фоновго счета
+
 void thd_count_distr()
 {
-  TFile* file = new TFile("input/12800us_2014_64987ev.root", "READ");
+  TFile* file = new TFile("output/background/hists/hists_background_2014_207512_ev_1_sec.root", "READ");
   if (file->IsZombie()) {
     cerr << "Can't read a file!" << endl;
     return;
   }
 
-  TTree* tree = (TTree*)file->Get("HERO");
-  if (!tree) {
-    cerr << "Can't find a tree!" << endl;
+
+  TH1F* thd_h = (TH1F*)file->Get("b_hist"); // a is only alpha, but b_hist for all particles
+  if (!thd_h) {
+    cerr << "Can't find hist!" << endl;
     return;
   }
 
-  Int_t binN = 13000;
-  Double_t binMin = 0.;
-  Double_t binMax = (Double_t)binN;
-  TH1F* thd_h = new TH1F("thd_h", "thd_h", binN, binMin, binMax);
+  cout << "hist info:\n";
+  Int_t nbins = thd_h->GetNbinsX();
+  cout << "nbins is " << nbins << endl;
+  cout << "left board bin content is " << thd_h->GetBinContent(1) << ", right one is " << thd_h->GetBinContent(nbins - 1) << endl;
+  cout << "left board bin center is " << thd_h->GetBinCenter(1) << ", right one is " << thd_h->GetBinCenter(nbins - 1) << endl;
 
-  tree->Draw("t*0.001 >> thd_h", "pdg == 1000020040");
-
-/*
-  TH1F *new_h = new TH1F("normed", "normed", binN, binMin, binMax);
-  new_h->SetTitle("alpha threshold distribution per 1 [usec] in range the [0:128] [usec]");
-  new_h->GetXaxis()->SetTitle("time moment [nanosec]");
-  new_h->GetYaxis()->SetTitle("counts");
-
-  Double_t numOfPrimaryEvents = 2505.;
-  Double_t numOfPrimaryEventsIn1pre16sec = 2505.;
-  Double_t norm = numOfPrimaryEventsIn1pre16sec / numOfPrimaryEvents;
-
-  for (Int_t i=0; i<binN; i++) {
-    Double_t oldBinContent = (Double_t)thd_h->GetBinContent(i);
-    Double_t newBinContent = oldBinContent * norm;
-    new_h->SetBinContent(i, newBinContent);
-  }
-
-  new_h->Draw();
-*/
-
+  TFile *tmp_file = new TFile("tmp.root", "RECREATE");
   TTree* thd_count_tree = new TTree("thd_count_tree", "thd_count_tree");
   Int_t thd_count;
   thd_count_tree->Branch("thd_count", &thd_count, "thd_count/I");
 
-  for (Int_t i=11; i<12800; i++) {
+  Int_t z_cnt = 0;
+  for (Int_t i=0; i<nbins; i++) {
     thd_count = thd_h->GetBinContent(i);
-    cout << thd_count << endl;
-    thd_count_tree->Fill();
+    //cout << thd_count << endl;
+    if (thd_count != 0) // skip zeros
+      thd_count_tree->Fill();
+    else {
+      z_cnt++;
+    }
+
   }
 
+  cout << "cnt of zeros is " << z_cnt << endl;
   TCanvas* canv = new TCanvas("canv", "canv");
   thd_count_tree->Draw("thd_count");
 }

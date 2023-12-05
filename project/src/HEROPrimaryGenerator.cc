@@ -69,7 +69,6 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
     G4ThreeVector pos(0.,0.,-125.*cm);
     G4double cost = (G4double)G4UniformRand();
     G4double phi = (G4double)G4UniformRand()*360.*deg;
-    //cost = 1.;
     G4double px = (1. - cost)*cos(phi);
     G4double py = (1. - cost)*sin(phi);
     G4double pz = cost;
@@ -109,9 +108,9 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
 }
 
 void HEROPrimaryGenerator::ReadFluxTXT() {
-    std::ifstream fin("../project/input/IntPam2010.txt");
+    std::ifstream fin("../project/input/IntPam2014.txt");
     if (!fin.is_open()) {
-        G4cerr << "Can't find IntPam2009.txt!" << G4endl;
+        G4cerr << "Can't find IntPam2014.txt!" << G4endl;
     }
 
     G4int nPoints = std::count(std::istreambuf_iterator<char>(fin),
