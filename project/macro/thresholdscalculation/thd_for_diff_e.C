@@ -2,68 +2,57 @@ void thd_for_diff_e()
 {
   TCanvas* canv = new TCanvas("canv", "canv");
 
-  Double_t stdDev = 85.58;
+  Double_t stdDev = 9.;
   TLine* stdDev_line = new TLine(0., stdDev, 10100., stdDev);
   TLine* stdDev_line_2 = new TLine(0., 2.*stdDev, 10100., 2.*stdDev);
   TLine* stdDev_line_3 = new TLine(0., 3.*stdDev, 10100., 3.*stdDev);
 
   Double_t markersSize = 2.;
 
-// ----------- Fe -------------------------
-/*
-  TGraph* femean = new TGraph();
-  femean->SetPoint(0, 1000., 9.12);
-  femean->SetPoint(1, 10000., 91.72);
-  femean->SetMarkerColor(6);
-  femean->SetLineColor(6);
-  femean->SetLineStyle(9);
-  femean->SetMarkerSize(markersSize);
-  femean->SetMarkerStyle(kFullCircle);
-*/
-
+// ----------- Fe ------------------------
   TGraph* femax = new TGraph();
-  femax->SetPoint(0, 1., 60.);
-  femax->SetPoint(1, 10., 1905.);
-  femax->SetMarkerColor(6);
-  femax->SetLineColor(6);
+  femax->SetPoint(0, 1., 29.184);
+  femax->SetPoint(1, 10., 736.11);
+  femax->SetMarkerColor(2);
+  femax->SetLineColor(2);
   femax->SetLineStyle(9);
   femax->SetMarkerSize(markersSize);
   femax->SetMarkerStyle(34);
 // ----------------------------------------
 
-// ----------- He -------------------------
-/*
-  TGraph* hemean = new TGraph();
-  hemean->SetPoint(0, 1000., 9.04);
-  hemean->SetPoint(1, 10000., 98.78);
-  hemean->SetMarkerColor(4);
-  hemean->SetLineColor(4);
-  hemean->SetLineStyle(9);
-  hemean->SetMarkerSize(1.5);
-  hemean->SetMarkerStyle(kFullCircle);
-*/
+// ----------- He4 -------------------------
+  TGraph* he4max = new TGraph();
+  he4max->SetPoint(0, 1., 6.5811);
+  he4max->SetPoint(1, 10., 50.4148);
+  he4max->SetMarkerColor(3);
+  he4max->SetLineColor(3);
+  he4max->SetLineStyle(9);
+  he4max->SetMarkerSize(markersSize);
+  he4max->SetMarkerStyle(34);
+// ----------------------------------------
 
-  TGraph* hemax = new TGraph();
-  hemax->SetPoint(0, 1., 27.);
-  hemax->SetPoint(1, 10., 156.);
-  hemax->SetPoint(2, 100., 1049.);
-  hemax->SetMarkerColor(7);
-  hemax->SetLineColor(7);
-  hemax->SetLineStyle(9);
-  hemax->SetMarkerSize(1.5);
-  hemax->SetMarkerStyle(34);
+// ----------- He3 -------------------------
+  TGraph* he3max = new TGraph();
+  he3max->SetPoint(0, 1., 4.66);
+  he3max->SetPoint(1, 10., 38.565);
+  he3max->SetMarkerColor(6);
+  he3max->SetLineColor(6);
+  he3max->SetLineStyle(9);
+  he3max->SetMarkerSize(markersSize);
+  he3max->SetMarkerStyle(34);
 // ----------------------------------------
 
 // ----------- proton -------------------------
-  /*
-  TGraph* protonmean = new TGraph();
-  protonmean->SetPoint(0, 1000., 199.22);
-  protonmean->SetMarkerColor(3);
-  protonmean->SetLineColor(3);
-  protonmean->SetLineStyle(9);
-  protonmean->SetMarkerSize(markersSize);
-  protonmean->SetMarkerStyle(kFullCircle);*/
+  TGraph* protonmax = new TGraph();
+  protonmax->SetPoint(0, 1., 1.6586);
+  protonmax->SetPoint(1, 10., 13.0329);
+  protonmax->SetMarkerColor(4);
+  protonmax->SetLineColor(4);
+  protonmax->SetLineStyle(9);
+  protonmax->SetMarkerSize(markersSize);
+  protonmax->SetMarkerStyle(kFullCircle);
 
+/*
   TVectorD x(16);
   TVectorD y(16);
   ifstream fin("input/counts.txt");
@@ -81,16 +70,15 @@ void thd_for_diff_e()
   protonmax->SetLineStyle(9);
   protonmax->SetMarkerSize(markersSize);
   protonmax->SetMarkerStyle(34);
+*/
 // ----------------------------------------
 
 
 // ------- Draw ----------------------------------------------------
   TMultiGraph* mg = new TMultiGraph();
-  //mg->Add(femean);
   mg->Add(femax);
-  //mg->Add(hemean);
-  mg->Add(hemax);
-  //mg->Add(protonmean);
+  mg->Add(he4max);
+  mg->Add(he3max);
   mg->Add(protonmax);
   mg->SetTitle("thresholds for 1 usec counts");
   mg->GetXaxis()->SetTitle("E [GeV/n]");
@@ -113,11 +101,9 @@ void thd_for_diff_e()
   legend->AddEntry(stdDev_line,"stdDev","l");
   legend->AddEntry(stdDev_line_2,"2*stdDev","l");
   legend->AddEntry(stdDev_line_3,"3*stdDev","l");
-  //legend->AddEntry(femean, "electron mean count", "p");
   legend->AddEntry(femax, "Fe", "p");
-  //legend->AddEntry(hemean, "gamma mean count", "p");
-  legend->AddEntry(hemax, "He", "p");
-  //legend->AddEntry(protonmean, "proton mean count", "p");
+  legend->AddEntry(he4max, "He4", "p");
+  legend->AddEntry(he3max, "He3", "p");
   legend->AddEntry(protonmax, "proton", "p");
   legend->Draw();
 }
