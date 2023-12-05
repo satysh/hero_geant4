@@ -56,7 +56,7 @@ int main(int argc, char** argv)
     runManager->Initialize();
 
     runManager->SetPrintProgress(1);
-    nEvents=10; // DEBUG
+    //nEvents=10; // DEBUG
     runManager->BeamOn(nEvents);
 
     return 0;
