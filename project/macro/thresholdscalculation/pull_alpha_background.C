@@ -1,11 +1,14 @@
 // Макрос вытаскиевает из root фаила информацию только по альфа 
 // и записывает ее в новый root файл
-void pull_alpha_background(TString input_file_name = "helium_4000_GeV_100_events.root")
+void pull_alpha_background(TString input_file_name = "background_2010_10000_ev_100_usec_r62.root")
 {
 	TFile *file = new TFile("input/" + input_file_name);
 	if (file->IsZombie()) {	
 		cerr << "Can't open input file!" << endl;
 		return;
+	}
+	else {
+		cout << input_file_name << " is processing!" << endl;
 	}
 
 	Int_t eventId;

@@ -17,7 +17,7 @@ void thd_for_diff_e()
   femax->SetLineColor(2);
   femax->SetLineStyle(9);
   femax->SetMarkerSize(markersSize);
-  femax->SetMarkerStyle(34);
+  femax->SetMarkerStyle(kFullCircle);
 // ----------------------------------------
 
 // ----------- He4 -------------------------
@@ -28,7 +28,7 @@ void thd_for_diff_e()
   he4max->SetLineColor(3);
   he4max->SetLineStyle(9);
   he4max->SetMarkerSize(markersSize);
-  he4max->SetMarkerStyle(34);
+  he4max->SetMarkerStyle(kFullCircle);
 // ----------------------------------------
 
 // ----------- He3 -------------------------
@@ -39,10 +39,11 @@ void thd_for_diff_e()
   he3max->SetLineColor(6);
   he3max->SetLineStyle(9);
   he3max->SetMarkerSize(markersSize);
-  he3max->SetMarkerStyle(34);
+  he3max->SetMarkerStyle(kFullCircle);
 // ----------------------------------------
 
 // ----------- proton -------------------------
+/*
   TGraph* protonmax = new TGraph();
   protonmax->SetPoint(0, 1., 1.6586);
   protonmax->SetPoint(1, 10., 13.0329);
@@ -51,6 +52,7 @@ void thd_for_diff_e()
   protonmax->SetLineStyle(9);
   protonmax->SetMarkerSize(markersSize);
   protonmax->SetMarkerStyle(kFullCircle);
+*/
 
 /*
   TVectorD x(16);
@@ -64,13 +66,15 @@ void thd_for_diff_e()
     fin >> y(i);
 
   }
-  TGraph* protonmax = new TGraph(x, y);
-  protonmax->SetMarkerColor(3);
-  protonmax->SetLineColor(3);
+*/
+  Double_t x[] = {1, 10, 20, 30, 40, 50, 60, 70};
+  Double_t y[] = {1.62564, 13.0329, 21.6622, 28.5596, 35.7924, 41.442, 47.6903, 53.5861};
+  TGraph* protonmax = new TGraph(7, x, y);
+  protonmax->SetMarkerColor(4);
+  protonmax->SetLineColor(4);
   protonmax->SetLineStyle(9);
   protonmax->SetMarkerSize(markersSize);
-  protonmax->SetMarkerStyle(34);
-*/
+  protonmax->SetMarkerStyle(kFullCircle);
 // ----------------------------------------
 
 
@@ -84,6 +88,7 @@ void thd_for_diff_e()
   mg->GetXaxis()->SetTitle("E [GeV/n]");
   mg->GetYaxis()->SetTitle("alpha counts");
   mg->Draw("AP");
+  /*
   stdDev_line->Draw("SAME");
   stdDev_line->SetLineColor(kRed);
   stdDev_line->SetLineWidth(2);
@@ -92,14 +97,15 @@ void thd_for_diff_e()
   stdDev_line_2->SetLineColor(kRed);
   stdDev_line_2->SetLineWidth(2);
   stdDev_line_2->SetLineStyle(2);
+  */
   stdDev_line_3->Draw("SAME");
   stdDev_line_3->SetLineColor(kRed);
-  stdDev_line_3->SetLineWidth(2);
+  stdDev_line_3->SetLineWidth(3);
   stdDev_line_3->SetLineStyle(10);
 
   TLegend* legend = new TLegend(0.1, 0.7, 0.48, 0.9);
-  legend->AddEntry(stdDev_line,"stdDev","l");
-  legend->AddEntry(stdDev_line_2,"2*stdDev","l");
+  //legend->AddEntry(stdDev_line,"stdDev","l");
+  //legend->AddEntry(stdDev_line_2,"2*stdDev","l");
   legend->AddEntry(stdDev_line_3,"3*stdDev","l");
   legend->AddEntry(femax, "Fe", "p");
   legend->AddEntry(he4max, "He4", "p");
