@@ -100,7 +100,8 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
     else {
         G4double particleEnergy = PrimaryEGen();
         fParticleGun->SetParticleEnergy(particleEnergy*GeV);
-        //G4cerr << particleEnergy << G4endl;
+        G4cerr << particleEnergy << G4endl;
+        G4cerr << "check * GeV " << particleEnergy * GeV << G4endl; 
     }
 
     fParticleGun->GeneratePrimaryVertex(anEvent);
@@ -108,9 +109,9 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
 }
 
 void HEROPrimaryGenerator::ReadFluxTXT() {
-    std::ifstream fin("../project/input/IntPam2014.txt");
+    std::ifstream fin("../project/input/IntPam2010.txt");
     if (!fin.is_open()) {
-        G4cerr << "Can't find IntPam2014.txt!" << G4endl;
+        G4cerr << "Can't find IntPam2010.txt!" << G4endl;
     }
 
     G4int nPoints = std::count(std::istreambuf_iterator<char>(fin),
