@@ -9,7 +9,7 @@ fi
 fname=_tmp_file.txt
 ls input/ > ${fname}
 
-root -l -q "energy_release.C(\"${fname}\")" 2> output/full_edeps.txt
+root -l -q "energy_release.C(\"${fname}\")" > out.txt 2> output/full_edeps.txt
 wait
 
 rm -fv ${fname}
