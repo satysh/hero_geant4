@@ -1,8 +1,24 @@
-void energy_release()
+void Print(TString fileName="");
+
+void energy_release(TString fileName="")
 {
-	//TFile *file = new TFile("input/base_geo_3_boron_3804_ev_2010.root", "READ");
-	//TFile *file = new TFile("input/only_boron_geo_3_percent_of_boron_and_r125cm_3804_ev_2010.root", "READ");
-	TFile *file = new TFile("input/only_boron_geo_6_percent_of_boron_44_C_50_H_and_r125cm_3804_ev_2010.root", "READ");
+	ifstream input(fileName.Data());
+	if (!input.is_open()) {
+		cerr << "Can't find file" + fileName << endl;
+		return;
+	}
+	
+	while (!input.eof()) {
+		TString nowFileName;
+		input >> nowFileName;
+		if (nowFileName.Contains(".root")) {
+			Print(nowFileName);
+		}
+	}
+}
+
+void Print(TString fileName="") {
+	TFile *file = new TFile("input/" + fileName, "READ");
 	if (file->IsZombie()) {
 		cerr << "Can't read input file!" << endl;
 		return;
@@ -15,7 +31,7 @@ void energy_release()
 	}
 
 	UInt_t nEntries = tree->GetEntries();
-	cout << "nEntries = " << nEntries << endl;
+	//cout << "nEntries = " << nEntries << endl;
 
 	Int_t pdg;
 	Double_t deposit_E;
@@ -37,7 +53,10 @@ void energy_release()
 		}
 	}
 
-	cout << "------------------------------------------------------------------------" << endl;
-	cout << "full_edep = " << full_edep << endl;
-	cout << "full_edep_alpha = " << full_edep_alpha << endl;
+	cerr << "------------------------------------------------------------------------" << endl;
+	cerr << fileName << endl;
+	cerr << "full_edep = " << full_edep << endl;
+	cerr << "full_edep_alpha = " << full_edep_alpha << endl;
+	cerr << "------------------------------------------------------------------------" << endl;
+	file->Close();
 }
