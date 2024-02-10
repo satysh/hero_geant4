@@ -27,13 +27,13 @@ int main(int argc, char** argv)
     //G4double primaryE0 = 1.; // GeV
     //G4double primaryE1 = 0.;
 
-    G4double maxStartTime = 10.; // nanoseconds
+    G4double maxStartTime = 1000000000.; // nanoseconds
     //G4double currFixedStartTime = 0.; // nanoseconds
-    G4int nEvents = 100;
+    G4int nEvents = 469319;
     G4RunManager *runManager = new G4RunManager();
     //runManager->SetVerboseLevel(2);
 
-    G4String outFileName = "hero.root";
+    G4String outFileName = "base_geo_3_perc_boron_469319_ev_2010.root";
     HERODetectorConstruction *detectorConstruction = new HERODetectorConstruction();
     HEROSensitiveDetector *sensDetector = new HEROSensitiveDetector("SensitiveDetector");
     //sensDetector->SetStartEventId((seed-1)*nEvents); // because of multi-thread
