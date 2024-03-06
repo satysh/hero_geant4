@@ -33,7 +33,7 @@ int main(int argc, char** argv)
     G4RunManager *runManager = new G4RunManager();
     //runManager->SetVerboseLevel(2);
 
-    G4String outFileName = "only_boron_geo_3_percent_of_boron_and_r125cm_469319_ev_2010.root";
+    G4String outFileName = "base_geo_50_percent_of_boron_23_C_27_H_and_r125cm_469319_ev_2010.root";
     HERODetectorConstruction *detectorConstruction = new HERODetectorConstruction();
     HEROSensitiveDetector *sensDetector = new HEROSensitiveDetector("SensitiveDetector");
     //sensDetector->SetStartEventId((seed-1)*nEvents); // because of multi-thread
