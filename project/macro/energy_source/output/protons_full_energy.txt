@@ -5,3 +5,4 @@ base_geo_3_perc_boron_469319_ev_2010.txt: 1.123e+06 GeV
 only_boron_geo_3_percent_of_boron_and_r125cm_469319_ev_2010.txt: 1.1224e+06 GeV
 only_boron_geo_6_percent_of_boron_44_C_50_H_and_r125cm_3804_ev_2010.txt: 9059.95 GeV
 only_boron_geo_50_percent_of_boron_23_C_27_H_and_r125cm_469319_ev_2010.txt: 1.12339e+06 GeV
+base_geo_50_percent_of_boron_23_C_27_H_and_r125cm_469319_ev_2010.txt: 1.12242e+06 GeV
