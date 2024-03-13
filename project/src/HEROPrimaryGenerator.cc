@@ -100,7 +100,7 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
     else {
         G4double particleEnergy = PrimaryEGen();
         fParticleGun->SetParticleEnergy(particleEnergy*GeV);
-        G4cerr << particleEnergy << G4endl;
+        //G4cerr << particleEnergy << G4endl;
     }
 
     fParticleGun->GeneratePrimaryVertex(anEvent);
