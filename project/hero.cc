@@ -23,15 +23,16 @@ int atoi(char*);
 G4int getnEvents(G4double start_time);
 
 int main(int argc, char** argv)
-{
-    //G4double primaryE0 = 1.; // GeV
+{   
+    G4Random::setTheSeed(1);
+    G4double primaryE0 = 10.; // GeV
     //G4double primaryE1 = 0.;
 
-    G4double maxStartTime = 1000000000.; // nanoseconds
-    //G4double currFixedStartTime = 0.; // nanoseconds
-    G4int nEvents = 10;
+    //G4double maxStartTime = 1000000000.; // nanoseconds
+    G4double currFixedStartTime = 0.; // nanoseconds
+    G4int nEvents = 1;
     G4RunManager *runManager = new G4RunManager();
-    //runManager->SetVerboseLevel(2);
+    //runManager->SetVerboseLevel(3);
 
     G4String outFileName = "hero.root";
     HERODetectorConstruction *detectorConstruction = new HERODetectorConstruction();
@@ -43,10 +44,10 @@ int main(int argc, char** argv)
     HEROActionInitialization *actionInit = new HEROActionInitialization();
     HEROPrimaryGenerator *primeGen = new HEROPrimaryGenerator();
     primeGen->SetPrimaryParticle(2212); // 2212 proton
-    //primeGen->SetParticleEnergy(primaryE0);
-    //primeGen->SetParticleFixedStartTime(currFixedStartTime); // nanosec
+    primeGen->SetParticleEnergy(primaryE0);
+    primeGen->SetParticleFixedStartTime(currFixedStartTime); // nanosec
     //primeGen->SetParticleEnergy(primaryE0, primaryE1); // GeV
-    primeGen->SetParticleMaxStartTime(maxStartTime); // nanosec
+    //primeGen->SetParticleMaxStartTime(maxStartTime); // nanosec
     actionInit->SetPrimaryGenerator(primeGen);
     actionInit->SetOutFileName(outFileName);
     runManager->SetUserInitialization(actionInit);
