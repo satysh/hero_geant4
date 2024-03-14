@@ -2,11 +2,5 @@
 /build/*
 
 !/output
-/project/output/*.root
-/project/output/*.txt
-
-!/archive/
-/project/archive/*
-
-!/results
-/project/macro/results/*.root
+/macro/thresholdscalculation/input/*.root
+/macro/jupyter/.ipynb_checkpoints/
