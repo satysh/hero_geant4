@@ -46,7 +46,7 @@ G4bool HEROSensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory*ROhi
     // 2112 neutron pdg
     // 1000020040 alpha pdg
 
-    if (pdg != 0 && volname != "logicWorld"/* && pdg == 1000020040*/) { // skip geantino
+    if (pdg != 0 && volname != "logicWorld" && pdg == 1000020040) { // skip geantino
 	    G4AnalysisManager* man = G4AnalysisManager::Instance();
 	    man->FillNtupleIColumn(0, 0, eventId);
 	    man->FillNtupleIColumn(0, 1, pdg);
@@ -63,7 +63,7 @@ G4bool HEROSensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory*ROhi
 	    man->FillNtupleDColumn(0, 12, localTime); // nanosecond
 	    man->AddNtupleRow(0);
 	}
-	else if (volname == "logicWorld") {
+	else if (volname == "logicWorld" && pdg == 1000020040) {
 		G4AnalysisManager* man = G4AnalysisManager::Instance();
 	    man->FillNtupleIColumn(1, 0, eventId);
 	    man->FillNtupleIColumn(1, 1, pdg);

@@ -69,11 +69,11 @@ G4VPhysicalVolume *HERODetectorConstruction::Construct()
         G4LogicalVolume *logicWolfram = new G4LogicalVolume(solidWolfram, WolframMat, "logicWolfram_"+std::to_string(i));
         G4VisAttributes * calTubeVisAtt = new G4VisAttributes(G4Colour(0.,1.,0.));
         logicWolfram->SetVisAttributes(calTubeVisAtt);
-        fLogicalBorScin[sensBorScinId] = logicWolfram;
+        //fLogicalBorScin[sensBorScinId] = logicWolfram;
         new G4PVPlacement(0, G4ThreeVector(0., 0., 0.), logicWolfram,
                           "physWolfram_"+std::to_string(i), logicWorld, false, 0, true
                          );
-        sensBorScinId++;
+        //sensBorScinId++;
     }
 
     return physWorld;
@@ -85,7 +85,7 @@ void HERODetectorConstruction::ConstructSDandField()
         HEROSensitiveDetector* sensDet = new HEROSensitiveDetector("SensitiveDetector");
         fSensDetector=sensDet;
     }
-    for (G4int i=0; i<250 + 1; i++)
+    for (G4int i=0; i<125 + 1; i++)
         fLogicalBorScin[i]->SetSensitiveDetector(fSensDetector);
 }
 
