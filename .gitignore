@@ -4,6 +4,7 @@
 !/output
 /project/output/*.root
 /project/output/*.txt
+/project/macro/x_year_stat/one/input/*.root
 
 !/archive/
 /project/archive/*
