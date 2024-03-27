@@ -19,6 +19,7 @@ public:
     void SetParticleMaxStartTime(G4double time) { fParticleMaxStartTime=time; fMaxStartTimeIsSet=true; }
     void SetParticleFixedStartTime(G4double time) { fParticleFixedStartTime=time; fMaxFixedTimeIsSet=true;}
     void SetPrimaryParticle(G4int pdgcode) { fPrimaryParticlePDG=pdgcode; }
+    void SetR(G4int r) { fR=r; }
     virtual void GeneratePrimaries(G4Event*);
 
 private:
@@ -48,6 +49,7 @@ private:
 
     G4double fMinFlux;
     G4double fMaxFlux;
+    G4int fR=125; // detector radius in cm
 };
 
 #endif

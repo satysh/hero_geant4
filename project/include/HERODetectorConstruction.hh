@@ -13,6 +13,7 @@ public:
     ~HERODetectorConstruction();
 
     void SetSensDetector(HEROSensitiveDetector *det) { fSensDetector=det; }
+    void SetR(G4int r) { fR=r; }
 
     virtual G4VPhysicalVolume *Construct();
 private:
@@ -21,6 +22,9 @@ private:
 
 private:
     HEROSensitiveDetector *fSensDetector=nullptr;
+
+private:
+    G4int fR=125; // detector radius in cm
 };
 
 #endif

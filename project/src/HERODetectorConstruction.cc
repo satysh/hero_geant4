@@ -38,7 +38,7 @@ G4VPhysicalVolume *HERODetectorConstruction::Construct()
 
 
     // World
-    G4int R = 125;
+    G4int R = fR;
     G4Sphere *solidWorld = new G4Sphere("solidWorld", 0.*cm, G4double(R + 1)*cm, 0.*deg, 360.*deg, 0.*deg, 180.*deg);
     G4LogicalVolume *logicWorld = new G4LogicalVolume(solidWorld, worldMat, "logicWorld");
     G4VPhysicalVolume *physWorld = new G4PVPlacement(0, G4ThreeVector(0., 0., 0.), logicWorld, "physWorld", 0, false, 0, true);
@@ -85,7 +85,7 @@ void HERODetectorConstruction::ConstructSDandField()
         HEROSensitiveDetector* sensDet = new HEROSensitiveDetector("SensitiveDetector");
         fSensDetector=sensDet;
     }
-    for (G4int i=0; i<250 + 1; i++)
+    for (G4int i=0; i<fR*2 + 1; i++)
         fLogicalBorScin[i]->SetSensitiveDetector(fSensDetector);
 }
 
