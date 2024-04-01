@@ -40,7 +40,7 @@ int main(int argc, char** argv)
     //runManager->SetVerboseLevel(3);
 
     TString outFileNameTmp;
-    outFileNameTmp.Form("2010_background_%d_usec_nevents_%d_r_%d.root", G4int(maxStartTime / 1000), nEvents, nowR);
+    outFileNameTmp.Form("2014_background_%d_usec_nevents_%d_r_%d.root", G4int(maxStartTime / 1000), nEvents, nowR);
     G4String outFileName(outFileNameTmp);
     HERODetectorConstruction *detectorConstruction = new HERODetectorConstruction();
     HEROSensitiveDetector *sensDetector = new HEROSensitiveDetector("SensitiveDetector");
@@ -55,7 +55,7 @@ int main(int argc, char** argv)
     //primeGen->SetParticleEnergy(primaryE0);
     //primeGen->SetParticleFixedStartTime(currFixedStartTime); // nanosec
     primeGen->SetR(nowR);
-    primeGen->SetInputFluxFileName("cumulative_func_2010.txt");
+    primeGen->SetInputFluxFileName("cumulative_func_2014.txt");
     primeGen->ReadFluxTXT();
     //primeGen->SetParticleEnergy(primaryE0, primaryE1); // GeV
     primeGen->SetParticleMaxStartTime(maxStartTime); // nanosec
