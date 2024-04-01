@@ -17,7 +17,7 @@ public:
 
     virtual G4VPhysicalVolume *Construct();
 private:
-    G4LogicalVolume* fLogicalBorScin[250 + 1];
+    G4LogicalVolume* fLogicalBorScin[2000 + 1];
     virtual void ConstructSDandField();
 
 private:

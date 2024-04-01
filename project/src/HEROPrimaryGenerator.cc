@@ -20,7 +20,6 @@ HEROPrimaryGenerator::HEROPrimaryGenerator()
 {
     fParticleGun = new G4ParticleGun(1);
     fParticleSource = new G4GeneralParticleSource();
-    ReadFluxTXT();
 }
 
 HEROPrimaryGenerator::~HEROPrimaryGenerator()
@@ -108,9 +107,12 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
 }
 
 void HEROPrimaryGenerator::ReadFluxTXT() {
-    std::ifstream fin("../project/input/IntPam2010.txt");
+    G4cout << "[HEROcout]: Flux input file is " << fInputFluxFileName << " !" << G4endl << G4endl;
+
+    TString path = "../project/input/";
+    std::ifstream fin((path + fInputFluxFileName).Data());
     if (!fin.is_open()) {
-        G4cerr << "Can't find IntPam2010.txt!" << G4endl;
+        G4cerr << "Can't find " << fInputFluxFileName << "!" << G4endl;
     }
 
     G4int nPoints = std::count(std::istreambuf_iterator<char>(fin),

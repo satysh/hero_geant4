@@ -7,6 +7,7 @@
 #include "G4GeneralParticleSource.hh"
 
 class TF1;
+#include "TString.h"
 
 class HEROPrimaryGenerator : public G4VUserPrimaryGeneratorAction
 {
@@ -20,14 +21,16 @@ public:
     void SetParticleFixedStartTime(G4double time) { fParticleFixedStartTime=time; fMaxFixedTimeIsSet=true;}
     void SetPrimaryParticle(G4int pdgcode) { fPrimaryParticlePDG=pdgcode; }
     void SetR(G4int r) { fR=r; }
+    void SetInputFluxFileName(TString name) { fInputFluxFileName=name; }
     virtual void GeneratePrimaries(G4Event*);
+    void ReadFluxTXT();
 
 private:
-    void ReadFluxTXT();
     G4double PrimaryEGen();
 
 private:
     TF1* fEnergyInvCDF=NULL;
+    TString fInputFluxFileName="";
 
 private:
     G4double fParticleEnergy=0.;
