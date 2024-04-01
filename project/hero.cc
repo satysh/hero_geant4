@@ -55,7 +55,7 @@ int main(int argc, char** argv)
     //primeGen->SetParticleEnergy(primaryE0);
     //primeGen->SetParticleFixedStartTime(currFixedStartTime); // nanosec
     primeGen->SetR(nowR);
-    primeGen->SetInputFluxFileName("IntPam2010.txt");
+    primeGen->SetInputFluxFileName("cumulative_func_2010.txt");
     primeGen->ReadFluxTXT();
     //primeGen->SetParticleEnergy(primaryE0, primaryE1); // GeV
     primeGen->SetParticleMaxStartTime(maxStartTime); // nanosec

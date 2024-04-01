@@ -119,11 +119,8 @@ void HEROPrimaryGenerator::ReadFluxTXT() {
                                std::istreambuf_iterator<char>(), '\n');
     fin.seekg(0, std::ios::beg);
 
-    G4String info="";
-    for (Int_t i=0; i<7; i++) {fin >> info;}
-
-    TVectorD energy(nPoints);
-    TVectorD flux(nPoints);
+    TVectorD energy(nPoints + 1);
+    TVectorD flux(nPoints + 1);
     G4int i=0;
 
     while (!fin.eof()) {
@@ -132,20 +129,18 @@ void HEROPrimaryGenerator::ReadFluxTXT() {
         fin >> curE >> curFlux;
         energy(i) = curE;
         flux(i) = curFlux;
+        //G4cerr << energy(i) << " " << flux(i) << G4endl;
         if (fin.eof()) break;
         i++;
     }
     fin.close();
 
-    fMinFlux = flux(nPoints - 1);
-    fMaxFlux = flux(0);
-
     energyInvCDFGr = new TGraph(flux, energy);
-    fEnergyInvCDF = new TF1("EnergyInvCDF", EnergyInvCDF, fMinFlux, fMaxFlux, 0);
+    fEnergyInvCDF = new TF1("EnergyInvCDF", EnergyInvCDF, 0., 1., 0);
 }
 
 G4double HEROPrimaryGenerator::PrimaryEGen() {
-    G4double rndflux = fMinFlux + G4UniformRand() * (fMaxFlux - fMinFlux);
+    G4double rndflux = G4UniformRand();
     G4double eval = fEnergyInvCDF->Eval(rndflux);
     return eval;
 }
