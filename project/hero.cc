@@ -40,7 +40,7 @@ int main(int argc, char** argv)
     //runManager->SetVerboseLevel(3);
 
     TString outFileNameTmp;
-    outFileNameTmp.Form("2014_background_%d_usec_nevents_%d_r_%d.root", G4int(maxStartTime / 1000), nEvents, nowR);
+    outFileNameTmp.Form("2014_C_48_H_52_background_%d_usec_nevents_%d_r_%d.root", G4int(maxStartTime / 1000), nEvents, nowR);
     G4String outFileName(outFileNameTmp);
     HERODetectorConstruction *detectorConstruction = new HERODetectorConstruction();
     HEROSensitiveDetector *sensDetector = new HEROSensitiveDetector("SensitiveDetector");
