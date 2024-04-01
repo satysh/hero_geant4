@@ -1,5 +1,5 @@
 void now_r_hist_build(Int_t R=125, Int_t year=2010, Int_t nevents=10000, TFile *out_file=NULL);
-void build_root_file_contains_hists()
+void wb_build_root_file_contains_hists()
 {
 	Int_t year = 2010;
 	Int_t nevents = 10000;
