@@ -23,8 +23,10 @@
 
 int main(int argc, char** argv)
 {   
+    G4int year = 2010;
+    TString bopt = "b";
     G4Random::setTheSeed(1);
-    G4int nowR = 125; // cm
+    G4int nowR = 12; // cm
     //G4double primaryE0 = 10.; // GeV
     //G4double primaryE1 = 0.;
 
@@ -40,7 +42,10 @@ int main(int argc, char** argv)
     //runManager->SetVerboseLevel(3);
 
     TString outFileNameTmp;
-    outFileNameTmp.Form("2014_C_48_H_52_background_%d_usec_nevents_%d_r_%d.root", G4int(maxStartTime / 1000), nEvents, nowR);
+    if (bopt == "wb")
+        outFileNameTmp.Form("%d_C_48_H_52_background_%d_usec_nevents_%d_r_%d.root", year, G4int(maxStartTime / 1000), nEvents, nowR);
+    else
+        outFileNameTmp.Form("%d_background_%d_usec_nevents_%d_r_%d.root", year, G4int(maxStartTime / 1000), nEvents, nowR);
     G4String outFileName(outFileNameTmp);
     HERODetectorConstruction *detectorConstruction = new HERODetectorConstruction();
     HEROSensitiveDetector *sensDetector = new HEROSensitiveDetector("SensitiveDetector");
@@ -55,7 +60,9 @@ int main(int argc, char** argv)
     //primeGen->SetParticleEnergy(primaryE0);
     //primeGen->SetParticleFixedStartTime(currFixedStartTime); // nanosec
     primeGen->SetR(nowR);
-    primeGen->SetInputFluxFileName("cumulative_func_2014.txt");
+    TString cum_func_name;
+    cum_func_name.Form("cumulative_func_%d.txt", year);
+    primeGen->SetInputFluxFileName(cum_func_name.Data());
     primeGen->ReadFluxTXT();
     //primeGen->SetParticleEnergy(primaryE0, primaryE1); // GeV
     primeGen->SetParticleMaxStartTime(maxStartTime); // nanosec

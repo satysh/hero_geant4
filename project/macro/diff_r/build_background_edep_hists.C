@@ -1,15 +1,18 @@
 void now_r_hist_build(Int_t R=125, Int_t year=2010, Int_t nevents=10000, TString bopt="b", TFile *out_file=NULL);
 void build_background_edep_hists()
 {
-	Int_t year = 2014;
-	Int_t nevents = 10;
-	TString bopt = "wb";
+	Int_t year = 2010;
+	Int_t nevents = 10000;
+	TString bopt = "b";
 	TString out_file_name;
-	out_file_name.Form("%d_edep_hists_diff_r.root", year);
+	if (bopt == "wb")
+		out_file_name.Form("wb_%d_edep_hists_diff_r.root", year);
+	else 
+		out_file_name.Form("%d_edep_hists_diff_r.root", year);
 	TFile *out_file = new TFile(out_file_name, "RECREATE");
 
-	const Int_t n_poinst = 9;
-	Int_t r_list[n_poinst] = {1000, 500, 250, 125, 100, 80, 62, 50, 30};
+	const Int_t n_poinst = 1;
+	Int_t r_list[n_poinst] = {12};
 
 	for (Int_t i=0; i<n_poinst; i++) {
 		now_r_hist_build(r_list[i], year, nevents, bopt, out_file);
