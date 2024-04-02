@@ -38,53 +38,46 @@ G4bool HEROSensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory*ROhi
 	G4double depositEnergy = aStep->GetTotalEnergyDeposit();
 	G4double kinEnergy = dParticle->GetKineticEnergy();
 
-/*
-    // -- DEBUG ------------------------------------------------------------------------------------------------------------
-    G4double radiusOn = positionParticle[0]*positionParticle[0];
-    radiusOn += positionParticle[1]*positionParticle[1];
-    radiusOn += positionParticle[2]*positionParticle[2];
-    radiusOn = sqrt(radiusOn)/cm;
-    G4double radiusOff = positionParticleOff[0]*positionParticleOff[0];
-    radiusOff += positionParticleOff[1]*positionParticleOff[1];
-    radiusOff += positionParticleOff[2]*positionParticleOff[2];
-    radiusOff = sqrt(radiusOff)/cm;
-	G4cerr << statusOn << ", " << statusOff << " :";
-	G4cerr << particleName << ", pdg=" << pdg << ", trackId=" << track->GetTrackID() << ", parentId=" << track->GetParentID()
-	       << ", eKin=" << kinEnergy << ", edep=" << depositEnergy
-	       << ", rOn=" << radiusOn << ", rOff=" << radiusOff << ", time=" << globalTime / nanosecond
-	       << ", volname=" << volname << G4endl;
-	// ------------------------------------------------------------------------------------------------------------------------
-*/
-
-    // 2112 neutron pdg
-    // 1000020040 alpha pdg
-
 // -----------------------------------------------------------------
 	// We need It because of multithread in the other case fStartEventId=0 by default
     eventId += fStartEventId;
 // -----------------------------------------------------------------
 
-/*
-	if (pdg == 1000020040) {
-		track->SetTrackStatus(fStopAndKill); // should track be killed???
-	}
-*/
-    if (pdg != 0 && pdg == 1000020040) { // skip geantino
+    if (pdg != 0 && volname != "logicWorld"/* && pdg == 1000020040*/) { // skip geantino
 	    G4AnalysisManager* man = G4AnalysisManager::Instance();
-	    man->FillNtupleIColumn(0, eventId);
-	    man->FillNtupleIColumn(1, pdg);
-	    man->FillNtupleIColumn(2, trackID);
-	    man->FillNtupleDColumn(3, depositEnergy); // MeV
-	    man->FillNtupleDColumn(4, kinEnergy); // MeV
-	    man->FillNtupleDColumn(5, positionParticle[0]);
-	    man->FillNtupleDColumn(6, positionParticle[1]);
-	    man->FillNtupleDColumn(7, positionParticle[2]);
-	    man->FillNtupleDColumn(8, positionParticleOff[0]);
-	    man->FillNtupleDColumn(9, positionParticleOff[1]);
-	    man->FillNtupleDColumn(10, positionParticleOff[2]);
-	    man->FillNtupleDColumn(11, globalTime); // nanosecond
-	    man->FillNtupleDColumn(12, localTime); // nanosecond
+	    man->FillNtupleIColumn(0, 0, eventId);
+	    man->FillNtupleIColumn(0, 1, pdg);
+	    man->FillNtupleIColumn(0, 2, trackID);
+	    man->FillNtupleDColumn(0, 3, depositEnergy); // MeV
+	    man->FillNtupleDColumn(0, 4, kinEnergy); // MeV
+	    man->FillNtupleDColumn(0, 5, positionParticle[0]);
+	    man->FillNtupleDColumn(0, 6, positionParticle[1]);
+	    man->FillNtupleDColumn(0, 7, positionParticle[2]);
+	    man->FillNtupleDColumn(0, 8, positionParticleOff[0]);
+	    man->FillNtupleDColumn(0, 9, positionParticleOff[1]);
+	    man->FillNtupleDColumn(0, 10, positionParticleOff[2]);
+	    man->FillNtupleDColumn(0, 11, globalTime); // nanosecond
+	    man->FillNtupleDColumn(0, 12, localTime); // nanosecond
 	    man->AddNtupleRow(0);
+	}
+	else if (volname == "logicWorld") {
+		G4AnalysisManager* man = G4AnalysisManager::Instance();
+	    man->FillNtupleIColumn(1, 0, eventId);
+	    man->FillNtupleIColumn(1, 1, pdg);
+	    man->FillNtupleIColumn(1, 2, trackID);
+	    man->FillNtupleDColumn(1, 3, depositEnergy); // MeV
+	    man->FillNtupleDColumn(1, 4, kinEnergy); // MeV
+	    man->FillNtupleDColumn(1, 5, positionParticle[0]);
+	    man->FillNtupleDColumn(1, 6, positionParticle[1]);
+	    man->FillNtupleDColumn(1, 7, positionParticle[2]);
+	    man->FillNtupleDColumn(1, 8, positionParticleOff[0]);
+	    man->FillNtupleDColumn(1, 9, positionParticleOff[1]);
+	    man->FillNtupleDColumn(1, 10, positionParticleOff[2]);
+	    man->FillNtupleDColumn(1, 11, globalTime); // nanosecond
+	    man->FillNtupleDColumn(1, 12, localTime); // nanosecond
+	    man->AddNtupleRow(1);
+
+	    track->SetTrackStatus(fStopAndKill);
 	}
 
 	return true;

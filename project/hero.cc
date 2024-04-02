@@ -21,33 +21,44 @@
 #include "HEROActionInitialization.hh"
 #include "HEROPrimaryGenerator.hh"
 
-int atoi(char*);
-char* int_to_char(G4int number);
+#include "TString.h"
 
 int main(int argc, char** argv)
-{
-    G4int pdg = 2212;  // 2212 proton
-    G4double primaryE0 = atoi(argv[1]); // GeV
+{   
+    G4int year = 2010;
+    TString bopt = "wb";
+    G4Random::setTheSeed(1);
+    G4int nowR = 125; // cm
 
-    //G4double primaryE1 = 0.;
-    G4double currFixedStartTime = 0.; // nanoseconds
-    G4int nEvents = G4int(100000. / primaryE0);
-
-    //G4double maxStartTime = 128000.; // nanoseconds
+    G4double maxStartTime = 100000.; // nanoseconds
+    //G4double currFixedStartTime = 0.; // nanoseconds
+    G4int nEvents = 10;
 
     G4RunManager *runManager = new G4RunManager();
-
-    G4String outFileName = "proton_pE_" + G4String(argv[1]) + "_nEv_" + G4String(int_to_char(nEvents)) + ".root";
+    //runManager->SetVerboseLevel(3);
+    TString outFileNameTmp;
+    if (bopt == "wb")
+        outFileNameTmp.Form("%d_C_47.4_H_52.6_background_%d_usec_nevents_%d_r_%d.root", year, G4int(maxStartTime / 1000), nEvents, nowR);
+    else
+        outFileNameTmp.Form("%d_background_%d_usec_nevents_%d_r_%d.root", year, G4int(maxStartTime / 1000), nEvents, nowR);
+    G4String outFileName(outFileNameTmp);
     HERODetectorConstruction *detectorConstruction = new HERODetectorConstruction();
     HEROSensitiveDetector *sensDetector = new HEROSensitiveDetector("SensitiveDetector");
     detectorConstruction->SetSensDetector(sensDetector);
+    detectorConstruction->SetR(nowR);
+    detectorConstruction->SetBopt(bopt);
     runManager->SetUserInitialization(detectorConstruction);
     runManager->SetUserInitialization(new QGSP_BERT_HP);
     HEROActionInitialization *actionInit = new HEROActionInitialization();
     HEROPrimaryGenerator *primeGen = new HEROPrimaryGenerator();
-    primeGen->SetPrimaryParticle(pdg);
-    primeGen->SetParticleEnergy(primaryE0);
-    primeGen->SetParticleFixedStartTime(currFixedStartTime); // nanosec
+    primeGen->SetPrimaryParticle(2212); // 2212 proton
+    //primeGen->SetParticleEnergy(primaryE0);
+    //primeGen->SetParticleFixedStartTime(currFixedStartTime); // nanosec
+    primeGen->SetR(nowR);
+    TString cum_func_name;
+    cum_func_name.Form("cumulative_func_%d.txt", year);
+    primeGen->SetInputFluxFileName(cum_func_name.Data());
+    primeGen->ReadFluxTXT();
     //primeGen->SetParticleEnergy(primaryE0, primaryE1); // GeV
     //primeGen->SetParticleMaxStartTime(maxStartTime); // nanosec
     actionInit->SetPrimaryGenerator(primeGen);
@@ -58,31 +69,6 @@ int main(int argc, char** argv)
     runManager->SetPrintProgress(1);
     //nEvents=10; // DEBUG
     runManager->BeamOn(nEvents);
-
+ 
     return 0;
-}
-
-// -- implementation of atoi 
-int atoi(char *str) {
-    int len = 0;
-    while (str[len] != '\0') {
-        len++;
-        if (len > 100) return -1;
-    }
-    int res = 0;
-    int dec = 1;
-    for (int i=len-1; i >= 0; i--) {
-        res += dec*(int(str[i])-48);
-        dec *= 10;
-    }
-    return res;
-}
-
-char* int_to_char(G4int number) {
-    std::stringstream strs;
-    strs << number;
-    std::string temp_str = strs.str();
-    char* char_type = (char*) temp_str.c_str();
-
-    return char_type;
 }

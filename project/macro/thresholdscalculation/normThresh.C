@@ -4,32 +4,33 @@ void normThresh()
 {
   TCanvas* canv = new TCanvas("canv", "canv");
   canv->cd();
-  TH1F* new_h = hist("128us_2010_2505ev_R250.root", 10020., 2505.);
+  TH1F *new_h;
+  TLegend* legend = new TLegend(0.1, 0.7, 0.48, 0.9);
+
+  new_h = hist("background_2010_10000_ev_old_wrong_geo.root", 47., 10000.);
   new_h->Draw();
   new_h->SetStats(0);
-  new_h->SetTitle("threshold alpha counts [0:128] usec (1 bin ~ 1 usec)");
+  new_h->SetTitle("background alpha counts [0:100] usec (1 bin ~ 1 usec)");
   new_h->GetXaxis()->SetTitle("time [usec]");
   new_h->GetYaxis()->SetTitle("alpha counts");
-  new_h->SetLineColor(kRed);
+  new_h->SetLineColor(kBlue);
 
-
-  TLegend* legend = new TLegend(0.1, 0.7, 0.48, 0.9);
+/*
   legend->AddEntry(new_h,"R=250 cm","l");
-
-  new_h = hist("128us_2010_2505ev.root", 2505., 2505.);
+  new_h = hist("alpha_background_2010_10000_ev_100_usec.root", 47., 10000.);
   canv->cd();
   new_h->Draw("SAME");
   new_h->SetLineColor(kBlue);
   legend->AddEntry(new_h, "R=125 cm","l");
 
-  new_h = hist("128us_2010_2505ev_R62.root", 616., 2505.);
+  new_h = hist("alpha_background_2010_10000_ev_100_usec_r62.root", 47., 10000.);
   canv->cd();
   new_h->Draw("SAME");
   new_h->SetLineColor(kGreen);
   legend->AddEntry(new_h, "R=62 cm","l");
 
   legend->Draw();
-
+*/
 
 }
 
@@ -38,6 +39,9 @@ TH1F* hist(TString fileName, Double_t nBaseEvents, Double_t nEvents) {
   if (file->IsZombie()) {
     cerr << "Can't open input file:" << fileName << endl;
     return NULL;
+  }
+  else {
+    cout << fileName << " is processing!" << endl;
   }
 
   TTree *tree = (TTree*)file->Get("HERO");
@@ -56,9 +60,9 @@ TH1F* hist(TString fileName, Double_t nBaseEvents, Double_t nEvents) {
   TCanvas *c = new TCanvas("c", "c");
   //c->Divide(1, 2);
 
-  Int_t nBins = 160;
-  TH1F *h = new TH1F("base", "base", nBins, 0., 160.);
-  TH1F *new_h = new TH1F("normed", "normed", nBins, 0., 160.);
+  Int_t nBins = 120;
+  TH1F *h = new TH1F("base", "base", nBins, 0., 120.);
+  TH1F *new_h = new TH1F("normed", "normed", nBins, 0., 120.);
 
   // t*0.0001 потому что я ошибся при инициализации maxStartTime,
   //вместо 62 500 000 nanoseconds, я указал 625 000 000.

@@ -20,7 +20,6 @@ HEROPrimaryGenerator::HEROPrimaryGenerator()
 {
     fParticleGun = new G4ParticleGun(1);
     fParticleSource = new G4GeneralParticleSource();
-    ReadFluxTXT();
 }
 
 HEROPrimaryGenerator::~HEROPrimaryGenerator()
@@ -66,7 +65,7 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
 
     fParticleGun->SetParticleDefinition(particle);
 
-    G4ThreeVector pos(0.,0.,-125.*cm);
+    G4ThreeVector pos(0.,0.,-G4double(fR)*cm);
     G4double cost = (G4double)G4UniformRand();
     G4double phi = (G4double)G4UniformRand()*360.*deg;
     G4double px = (1. - cost)*cos(phi);
@@ -108,20 +107,20 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
 }
 
 void HEROPrimaryGenerator::ReadFluxTXT() {
-    std::ifstream fin("../project/input/IntPam2014.txt");
+    G4cout << "[HEROcout]: Flux input file is " << fInputFluxFileName << " !" << G4endl << G4endl;
+
+    TString path = "../project/input/";
+    std::ifstream fin((path + fInputFluxFileName).Data());
     if (!fin.is_open()) {
-        G4cerr << "Can't find IntPam2014.txt!" << G4endl;
+        G4cerr << "Can't find " << fInputFluxFileName << "!" << G4endl;
     }
 
     G4int nPoints = std::count(std::istreambuf_iterator<char>(fin),
                                std::istreambuf_iterator<char>(), '\n');
     fin.seekg(0, std::ios::beg);
 
-    G4String info="";
-    for (Int_t i=0; i<7; i++) {fin >> info;}
-
-    TVectorD energy(nPoints);
-    TVectorD flux(nPoints);
+    TVectorD energy(nPoints + 1);
+    TVectorD flux(nPoints + 1);
     G4int i=0;
 
     while (!fin.eof()) {
@@ -130,20 +129,18 @@ void HEROPrimaryGenerator::ReadFluxTXT() {
         fin >> curE >> curFlux;
         energy(i) = curE;
         flux(i) = curFlux;
+        //G4cerr << energy(i) << " " << flux(i) << G4endl;
         if (fin.eof()) break;
         i++;
     }
     fin.close();
 
-    fMinFlux = flux(nPoints - 1);
-    fMaxFlux = flux(0);
-
     energyInvCDFGr = new TGraph(flux, energy);
-    fEnergyInvCDF = new TF1("EnergyInvCDF", EnergyInvCDF, fMinFlux, fMaxFlux, 0);
+    fEnergyInvCDF = new TF1("EnergyInvCDF", EnergyInvCDF, 0., 1., 0);
 }
 
 G4double HEROPrimaryGenerator::PrimaryEGen() {
-    G4double rndflux = fMinFlux + G4UniformRand() * (fMaxFlux - fMinFlux);
+    G4double rndflux = G4UniformRand();
     G4double eval = fEnergyInvCDF->Eval(rndflux);
     return eval;
 }

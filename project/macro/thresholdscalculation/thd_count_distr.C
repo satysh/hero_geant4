@@ -10,7 +10,7 @@ void thd_count_distr()
   }
 
 
-  TH1F* thd_h = (TH1F*)file->Get("b_hist"); // a is only alpha, but b_hist for all particles
+  TH1F* thd_h = (TH1F*)file->Get("a_b_hist"); // a is only alpha, but b_hist for all particles
   if (!thd_h) {
     cerr << "Can't find hist!" << endl;
     return;
@@ -31,11 +31,11 @@ void thd_count_distr()
   for (Int_t i=0; i<nbins; i++) {
     thd_count = thd_h->GetBinContent(i);
     //cout << thd_count << endl;
-    if (thd_count != 0) // skip zeros
+    //if (thd_count != 0) // skip zeros
       thd_count_tree->Fill();
-    else {
-      z_cnt++;
-    }
+    //else {
+    //  z_cnt++;
+    //}
 
   }
 

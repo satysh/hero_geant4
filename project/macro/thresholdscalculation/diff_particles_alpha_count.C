@@ -1,70 +1,137 @@
-TH1F* get_normed_hist(TString inputFileName="", Int_t nEvents=0);
+  TH1F* get_normed_hist(TString inputFileName="", Int_t nEvents=0);
 
 void diff_particles_alpha_count()
 {
 
   TLegend* legend = new TLegend(0.1,0.7,0.48,0.9);
-  legend->SetHeader("primary E=10 GeV/n","C"); // option "C" allows to center the header
-  TH1F* normed_hist = get_normed_hist("Fe_10_GeV_1000_events.root", 1000);
+  legend->SetHeader("","C"); // option "C" allows to center the header
+  TH1F* normed_hist = get_normed_hist("output/fixedstarttime/alpha_Fe_560_GeV_100_events.root", 100);
+
+  if (!normed_hist) return;
+  cout << "10 GeV/n Fe56 2usec alhpa counts: " << normed_hist->GetBinContent(2) << endl;
+
   TCanvas* canv = new TCanvas("canv", "canv");
   canv->cd();
   normed_hist->Draw();
   normed_hist->SetStats(0);
-  normed_hist->SetLineWidth(2);
-  normed_hist->SetLineColor(1);
+  normed_hist->SetLineWidth(3);
+  normed_hist->SetLineColor(2);
   normed_hist->SetTitle("Mean alpha counts per 1 primary particle(1 bin ~ 1 usec)");
   normed_hist->GetXaxis()->SetTitle("time moment [usec]");
   normed_hist->GetYaxis()->SetTitle("alpha counts");
-  legend->AddEntry(normed_hist,"Fe","l");
+  legend->AddEntry(normed_hist,"Fe ion E=10 GeV/n","l");
 
-  normed_hist = get_normed_hist("He_10_GeV_10000_events.root", 10000);
+/*  normed_hist = get_normed_hist("output/fixedstarttime/alpha_Fe_56_GeV_1000_events.root", 1000);
   canv->cd();
   normed_hist->Draw("SAME");
-  normed_hist->SetLineWidth(2);
+  normed_hist->SetLineWidth(3);
   normed_hist->SetLineColor(2);
-  legend->AddEntry(normed_hist,"He","l");
+  normed_hist->SetLineStyle(9);
+  legend->AddEntry(normed_hist,"Fe ion E=1 GeV/n","l");
 
-  normed_hist = get_normed_hist("proton_10_GeV_10000_events.root", 10000);
+  cout << "1 GeV/n Fe56 2usec alhpa counts: " << normed_hist->GetBinContent(2) << endl;
+
+  normed_hist = get_normed_hist("output/fixedstarttime/alpha_helium_40_GeV_10000_events.root", 10000);
   canv->cd();
   normed_hist->Draw("SAME");
-  normed_hist->SetLineWidth(2);
+  normed_hist->SetLineWidth(3);
   normed_hist->SetLineColor(3);
-  legend->AddEntry(normed_hist,"proton","l");
+  legend->AddEntry(normed_hist,"He4 ion E=10 GeV/n","l");
 
-  normed_hist = get_normed_hist("gamma_10_GeV_100000_events.root", 100000);
+  cout << "10 GeV/n He4 2usec alhpa counts: " << normed_hist->GetBinContent(2) << endl;
+
+  normed_hist = get_normed_hist("output/fixedstarttime/alpha_helium_4_GeV_10000_events.root", 10000);
   canv->cd();
   normed_hist->Draw("SAME");
-  normed_hist->SetLineWidth(2);
-  normed_hist->SetLineColor(4);
-  legend->AddEntry(normed_hist,"gamma","l");
+  normed_hist->SetLineWidth(3);
+  normed_hist->SetLineColor(3);
+  normed_hist->SetLineStyle(9);
+  legend->AddEntry(normed_hist,"He4 ion E=1 GeV/n","l");
 
-  normed_hist = get_normed_hist("electron_10_GeV_100000_events.root", 100000);
+  cout << "1 GeV/n He4 2usec alhpa counts: " << normed_hist->GetBinContent(2) << endl;
+
+  normed_hist = get_normed_hist("output/fixedstarttime/alpha_helium3_30_GeV_1000_events.root", 1000);
   canv->cd();
   normed_hist->Draw("SAME");
-  normed_hist->SetLineWidth(1);
+  normed_hist->SetLineWidth(3);
   normed_hist->SetLineColor(6);
-  legend->AddEntry(normed_hist,"electron","l");
+  legend->AddEntry(normed_hist,"He3 ion E=10 GeV/n","l");
 
+  cout << "10 GeV/n He3 2usec alhpa counts: " << normed_hist->GetBinContent(2) << endl;
 
+  normed_hist = get_normed_hist("output/fixedstarttime/alpha_helium3_3_GeV_1000_events.root", 1000);
+  canv->cd();
+  normed_hist->Draw("SAME");
+  normed_hist->SetLineWidth(3);
+  normed_hist->SetLineColor(6);
+  normed_hist->SetLineStyle(9);
+  legend->AddEntry(normed_hist,"He3 ion E=1 GeV/n","l");
+
+  cout << "1 GeV/n He3 2usec alhpa counts: " << normed_hist->GetBinContent(2) << endl;
+
+  normed_hist = get_normed_hist("output/fixedstarttime/alpha_proton_10_GeV_10000_events.root", 10000);
+  canv->cd();
+  normed_hist->Draw("SAME");
+  normed_hist->SetLineWidth(3);
+  normed_hist->SetLineColor(4);
+  legend->AddEntry(normed_hist,"proton E=10 GeV/n","l");
+
+  cout << "10 GeV/n proton 2usec alhpa counts: " << normed_hist->GetBinContent(2) << endl;
+
+  normed_hist = get_normed_hist("output/fixedstarttime/alpha_proton_1_GeV_10000_events.root", 10000);
+  canv->cd();
+  normed_hist->Draw("SAME");
+  normed_hist->SetLineWidth(3);
+  normed_hist->SetLineColor(4);
+  normed_hist->SetLineStyle(9);
+  legend->AddEntry(normed_hist,"proton E=1 GeV/n","l");
+
+  cout << "1 GeV/n proton 2usec alhpa counts: " << normed_hist->GetBinContent(2) << endl;
+
+  normed_hist = get_normed_hist("output/fixedstarttime/alpha_e_10_GeV_10000_events.root", 10000);
+  canv->cd();
+  normed_hist->Draw("SAME");
+  normed_hist->SetLineWidth(3);
+  normed_hist->SetLineColor(1);
+  legend->AddEntry(normed_hist,"e- E=10 GeV","l");
+
+  cout << "10 GeV/n e- 2usec alhpa counts: " << normed_hist->GetBinContent(2) << endl;
+
+  normed_hist = get_normed_hist("output/fixedstarttime/alpha_e_1_GeV_10000_events.root", 10000);
+  canv->cd();
+  normed_hist->Draw("SAME");
+  normed_hist->SetLineWidth(3);
+  normed_hist->SetLineColor(1);
+  normed_hist->SetLineStyle(9);
+  legend->AddEntry(normed_hist,"e- E=1 GeV","l");
+
+  cout << "1 GeV/n e- 2usec alhpa counts: " << normed_hist->GetBinContent(2) << endl;
+*/
   legend->Draw();
 }
 
 TH1F* get_normed_hist(TString inputFileName, Int_t nEvents) {
-  TFile* file = new TFile("input/" + inputFileName, "READ");
+  TFile* file = new TFile(inputFileName, "READ");
   if (file->IsZombie()) {
     cerr << "Can't read file:" << inputFileName << endl;
     return NULL;
   }
+  else {
+    cout << inputFileName << " is processing" << endl;
+  }
 
   TTree* tree = (TTree*)file->Get("HERO");
   if (!tree) {
-    cerr << "Can't find tree!" << endl;
-    return NULL;
+    tree = (TTree*)file->Get("alpha_tree");
+    if (!tree) {
+      cerr << "Can't find tree!" << endl;
+      return NULL;
+    }
   }
 
-  Int_t binN = 50;
+  Int_t binN = 500;
   Double_t minBin = 0.;
-  Double_t maxBin = (Double_t)binN;
+  Double_t maxBin = 50.;
   TH1F* hist = new TH1F("hist", "hist", binN, minBin, maxBin);
 /*
   Double_t t;
