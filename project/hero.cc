@@ -24,7 +24,7 @@
 int main(int argc, char** argv)
 {   
     G4int year = 2010;
-    TString bopt = "b";
+    TString bopt = "wb";
     G4Random::setTheSeed(1);
     G4int nowR = 12; // cm
     //G4double primaryE0 = 10.; // GeV
@@ -37,7 +37,7 @@ int main(int argc, char** argv)
 
     G4double maxStartTime = 100000.; // nanoseconds
     //G4double currFixedStartTime = 0.; // nanoseconds
-    G4int nEvents = 10000;
+    G4int nEvents = 10;
     G4RunManager *runManager = new G4RunManager();
     //runManager->SetVerboseLevel(3);
 
@@ -52,6 +52,7 @@ int main(int argc, char** argv)
     //sensDetector->SetStartEventId((seed-1)*nEvents); // because of multi-thread
     detectorConstruction->SetSensDetector(sensDetector);
     detectorConstruction->SetR(nowR);
+    detectorConstruction->SetBopt(bopt);
     runManager->SetUserInitialization(detectorConstruction);
     runManager->SetUserInitialization(new QGSP_BERT_HP);
     HEROActionInitialization *actionInit = new HEROActionInitialization();

@@ -4,6 +4,7 @@
 #include "G4VUserDetectorConstruction.hh"
 #include "G4VPhysicalVolume.hh"
 #include "G4LogicalVolume.hh"
+#include "TString.h"
 #include "HERODetector.hh"
 
 class HERODetectorConstruction : public G4VUserDetectorConstruction
@@ -14,6 +15,8 @@ public:
 
     void SetSensDetector(HEROSensitiveDetector *det) { fSensDetector=det; }
     void SetR(G4int r) { fR=r; }
+    void SetBopt(TString bopt) { fBopt=bopt; }
+
 
     virtual G4VPhysicalVolume *Construct();
 private:
@@ -25,6 +28,7 @@ private:
 
 private:
     G4int fR=125; // detector radius in cm
+    TString fBopt="b";
 };
 
 #endif
