@@ -1,8 +1,9 @@
-void now_r_hist_build(Int_t R=125, Int_t year=2010, Int_t nevents=10000, TFile *out_file=NULL);
+void now_r_hist_build(Int_t R=125, Int_t year=2010, Int_t nevents=10000, TString bopt="b", TFile *out_file=NULL);
 void build_background_edep_hists()
 {
-	Int_t year = 2010;
-	Int_t nevents = 10000;
+	Int_t year = 2014;
+	Int_t nevents = 10;
+	TString bopt = "wb";
 	TString out_file_name;
 	out_file_name.Form("%d_edep_hists_diff_r.root", year);
 	TFile *out_file = new TFile(out_file_name, "RECREATE");
@@ -11,14 +12,22 @@ void build_background_edep_hists()
 	Int_t r_list[n_poinst] = {1000, 500, 250, 125, 100, 80, 62, 50, 30};
 
 	for (Int_t i=0; i<n_poinst; i++) {
-		now_r_hist_build(r_list[i], year, nevents, out_file);
+		now_r_hist_build(r_list[i], year, nevents, bopt, out_file);
 	}
 }
 
-void now_r_hist_build(Int_t R=125, Int_t year=2010, Int_t nevents=10000, TFile *out_file=NULL)
+void now_r_hist_build(Int_t R=125, Int_t year=2010, Int_t nevents=10000, TString bopt="b", TFile *out_file=NULL)
 {
 	TString input_file_name;
-	input_file_name.Form("../input/%d/b/%d_background_100_usec_nevents_%d_r_%d.root", year, year, nevents, R);
+	if (bopt == "b")
+		input_file_name.Form("../input/%d/b/%d_background_100_usec_nevents_%d_r_%d.root", year, year, nevents, R);
+	else if (bopt == "wb")
+		input_file_name.Form("../input/%d/wb/%d_C_48_H_52_background_100_usec_nevents_%d_r_%d.root", year, year, nevents, R);
+	else {
+		cerr << "Unknown boron option! Set b or wb!" << endl;
+		return;
+	}
+
 	TFile *file = new TFile(input_file_name, "READ");
 	if (file->IsZombie()) {
 		cerr << "Can't read file " << input_file_name << endl;
