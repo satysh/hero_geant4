@@ -32,7 +32,7 @@ int main(int argc, char** argv)
 
     G4double maxStartTime = 100000.; // nanoseconds
     //G4double currFixedStartTime = 0.; // nanoseconds
-    G4int nEvents = 10;
+    G4int nEvents = 10000;
 
     G4RunManager *runManager = new G4RunManager();
     //runManager->SetVerboseLevel(3);
