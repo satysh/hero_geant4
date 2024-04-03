@@ -32,7 +32,12 @@ int main(int argc, char** argv)
 
     G4double maxStartTime = 100000.; // nanoseconds
     //G4double currFixedStartTime = 0.; // nanoseconds
-    G4int nEvents = 10;
+    G4int nEvents = 10000;
+
+    if (argc > 1) {
+        TString inputR(argv[1]);
+        nowR = inputR.Atoi();
+    }
 
     G4RunManager *runManager = new G4RunManager();
     //runManager->SetVerboseLevel(3);
@@ -67,7 +72,6 @@ int main(int argc, char** argv)
     runManager->Initialize();
 
     runManager->SetPrintProgress(1);
-    //nEvents=10; // DEBUG
     runManager->BeamOn(nEvents);
  
     return 0;
