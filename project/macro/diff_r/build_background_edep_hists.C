@@ -12,7 +12,7 @@ void build_background_edep_hists()
 	TFile *out_file = new TFile(out_file_name, "RECREATE");
 
 	const Int_t n_poinst = 1;
-	Int_t r_list[n_poinst] = {12};
+	Int_t r_list[n_poinst] = {125};
 
 	for (Int_t i=0; i<n_poinst; i++) {
 		now_r_hist_build(r_list[i], year, nevents, bopt, out_file);
@@ -25,7 +25,7 @@ void now_r_hist_build(Int_t R=125, Int_t year=2010, Int_t nevents=10000, TString
 	if (bopt == "b")
 		input_file_name.Form("../input/%d/b/%d_background_100_usec_nevents_%d_r_%d.root", year, year, nevents, R);
 	else if (bopt == "wb")
-		input_file_name.Form("../input/%d/wb/%d_C_48_H_52_background_100_usec_nevents_%d_r_%d.root", year, year, nevents, R);
+		input_file_name.Form("../input/%d/wb/%d_C_47.4_H_52.6_background_100_usec_nevents_%d_r_%d.root", year, year, nevents, R);
 	else {
 		cerr << "Unknown boron option! Set b or wb!" << endl;
 		return;
@@ -47,8 +47,10 @@ void now_r_hist_build(Int_t R=125, Int_t year=2010, Int_t nevents=10000, TString
 	cout << "netries = " << now_nentries << endl;
 	Double_t edep;
 	Double_t time;
+	Int_t pdg;
 	tree->SetBranchAddress("deposit_E", &edep);
 	tree->SetBranchAddress("t", &time);
+	tree->SetBranchAddress("pdg", &pdg);
 
 	TString now_hist_name;
 	now_hist_name.Form("background_edep_r_%d", R);
@@ -61,7 +63,8 @@ void now_r_hist_build(Int_t R=125, Int_t year=2010, Int_t nevents=10000, TString
 		tree->GetEntry(i);
 		// time * 0.001 to usec
 		// edep * 0.001 to GeV
-		now_hist->AddBinContent(now_hist->FindBin(time * 0.001), edep * 0.001); 
+		if (pdg == 1000020040)
+			now_hist->AddBinContent(now_hist->FindBin(time * 0.001), edep * 0.001); 
 	}
 
 	out_file->cd();
