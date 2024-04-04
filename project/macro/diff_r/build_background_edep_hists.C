@@ -59,14 +59,15 @@ void now_r_hist_build(Int_t R=125, Int_t year=2010, Int_t nevents=10000, TString
 	TH1F *now_hist = new TH1F(now_hist_name, now_hist_name, bin_n, 0., max_bin_val);
 
 
+	Double_t norm = 1. / nevents; 
 	for (Int_t i=0; i<now_nentries; i++) {
 		tree->GetEntry(i);
 		// time * 0.001 to usec
-		// edep * 0.001 to GeV
 		if (pdg == 1000020040)
-			now_hist->AddBinContent(now_hist->FindBin(time * 0.001), edep * 0.001); 
+			now_hist->AddBinContent(now_hist->FindBin(time * 0.001), edep * norm); 
 	}
-
+	now_hist->GetXaxis()->SetTitle("t [usec]");
+	now_hist->GetYaxis()->SetTitle("sum edep per event [MeV]");
 	out_file->cd();
 	now_hist->Write();
 }
