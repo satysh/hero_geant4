@@ -43,7 +43,7 @@ int main(int argc, char** argv)
     //runManager->SetVerboseLevel(3);
     TString outFileNameTmp;
     if (bopt == "wb")
-        outFileNameTmp.Form("%d_C_47.4_H_52.6_background_%d_usec_nevents_%d_r_%d.root", year, G4int(maxStartTime / 1000), nEvents, nowR);
+        outFileNameTmp.Form("%d_C_46_H_54_background_%d_usec_nevents_%d_r_%d.root", year, G4int(maxStartTime / 1000), nEvents, nowR);
     else
         outFileNameTmp.Form("%d_background_%d_usec_nevents_%d_r_%d.root", year, G4int(maxStartTime / 1000), nEvents, nowR);
     G4String outFileName(outFileNameTmp);
@@ -65,7 +65,7 @@ int main(int argc, char** argv)
     primeGen->SetInputFluxFileName(cum_func_name.Data());
     primeGen->ReadFluxTXT();
     //primeGen->SetParticleEnergy(primaryE0, primaryE1); // GeV
-    //primeGen->SetParticleMaxStartTime(maxStartTime); // nanosec
+    primeGen->SetParticleMaxStartTime(maxStartTime); // nanosec
     actionInit->SetPrimaryGenerator(primeGen);
     actionInit->SetOutFileName(outFileName);
     runManager->SetUserInitialization(actionInit);

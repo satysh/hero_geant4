@@ -14,7 +14,7 @@ fi
 cd ../build
 make -j3
 wait
-./hero 1 1> >(tee out.txt ) 2> >(tee err.txt)
+./hero 1> >(tee out.txt ) 2> >(tee err.txt)
 wait
 
 cd -

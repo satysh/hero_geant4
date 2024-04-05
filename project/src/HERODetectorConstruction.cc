@@ -38,8 +38,8 @@ G4VPhysicalVolume *HERODetectorConstruction::Construct()
     else if (fBopt == "wb") {
         G4cerr << "[HERO] wb opt is set!" << G4endl;
         BorScinMat = new G4Material("BorScinMat", 1.032 * g / cm3, 2);
-        BorScinMat->AddElement(nist->FindOrBuildElement("C"), 47.4 * perCent);
-        BorScinMat->AddElement(nist->FindOrBuildElement("H"), 52.6 * perCent);
+        BorScinMat->AddElement(nist->FindOrBuildElement("C"), 46 * perCent);
+        BorScinMat->AddElement(nist->FindOrBuildElement("H"), 54 * perCent);
     }
 
     G4Material *WolframMat = new G4Material("WolframMat", 19.3*g/cm3, 1);
