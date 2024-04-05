@@ -6,13 +6,13 @@ void build_background_edep_hists()
 	TString bopt = "b";
 	TString out_file_name;
 	if (bopt == "wb")
-		out_file_name.Form("wb_%d_edep_hists_diff_r.root", year);
+		out_file_name.Form("alpha_wb_%d_edep_hists_diff_r.root", year);
 	else 
-		out_file_name.Form("%d_edep_hists_diff_r.root", year);
+		out_file_name.Form("alpha_%d_edep_hists_diff_r.root", year);
 	TFile *out_file = new TFile(out_file_name, "RECREATE");
 
-	const Int_t n_poinst = 1;
-	Int_t r_list[n_poinst] = {125};
+	const Int_t n_poinst = 9;
+	Int_t r_list[n_poinst] = {1000, 500, 250, 125, 100, 80, 62, 50, 30};
 
 	for (Int_t i=0; i<n_poinst; i++) {
 		now_r_hist_build(r_list[i], year, nevents, bopt, out_file);
@@ -58,13 +58,11 @@ void now_r_hist_build(Int_t R=125, Int_t year=2010, Int_t nevents=10000, TString
 	Double_t max_bin_val = (Double_t)bin_n;
 	TH1F *now_hist = new TH1F(now_hist_name, now_hist_name, bin_n, 0., max_bin_val);
 
-
-	Double_t norm = 1. / nevents; 
 	for (Int_t i=0; i<now_nentries; i++) {
 		tree->GetEntry(i);
 		// time * 0.001 to usec
 		if (pdg == 1000020040)
-			now_hist->AddBinContent(now_hist->FindBin(time * 0.001), edep * norm); 
+			now_hist->AddBinContent(now_hist->FindBin(time * 0.001), edep); 
 	}
 	now_hist->GetXaxis()->SetTitle("t [usec]");
 	now_hist->GetYaxis()->SetTitle("sum edep per event [MeV]");
