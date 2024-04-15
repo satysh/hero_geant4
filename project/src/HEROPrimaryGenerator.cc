@@ -68,6 +68,7 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
     G4ThreeVector pos(0.,0.,-G4double(fR)*cm);
     G4double cost = (G4double)G4UniformRand();
     G4double phi = (G4double)G4UniformRand()*360.*deg;
+    cost = 1.; // DELETE ME
     G4double px = (1. - cost)*cos(phi);
     G4double py = (1. - cost)*sin(phi);
     G4double pz = cost;
