@@ -1,4 +1,9 @@
-#!/bin/bash
+#/bin/bash
+
+NTHREADS=16 # It must be (45 div NTHREADS) = 0
+NRUNS=100
+NBATCH=$((NRUNS / NTHREADS - 1))
+echo NBATCH=${NBATCH}
 
 if [ -d ../build ];then
     echo "../build was found!"
@@ -12,18 +17,18 @@ else
     cd -
 fi
 cd ../build
-make -j3
+make -j${NTHREADS}
 wait
 
-./hero 30 1> >(tee out.txt ) 2> >(tee err.txt) &
-./hero 50 &
-./hero 62 &
-./hero 80 &
-./hero 100 &
-./hero 125 &
-./hero 250 &
-./hero 500 &
-./hero 1000 1> >(tee out_1000.txt ) 2> >(tee err_1000.txt)
+for BATCH_ID in $(seq 0 ${NBATCH}); do
+    #echo "BATCH_ID="${BATCH_ID}
+    for THR in $(seq 0 $((NTHREADS - 1))); do
+        INTERVAL_ID=$((BATCH_ID * NTHREADS + THR))
+        echo INTERVAL_ID=${INTERVAL_ID}
+        ./hero ${INTERVAL_ID} 1> >(tee out_${INTERVAL_ID}.txt ) 2> >(tee err_${INTERVAL_ID}.txt) &
+    done
+    wait
+done
 wait
 
 cd -
@@ -31,8 +36,8 @@ if [ -d output ];then
     rm -vf output/*.root
     rm -vf output/*.txt
     mv ../build/*.root output/
-    mv ../build/out.txt output/
-    mv ../build/err.txt output/
+    mv ../build/out*.txt output/
+    mv ../build/err*.txt output/
 else
     mkdir output
     mv ../build/*.root output/

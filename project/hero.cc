@@ -27,26 +27,27 @@ int main(int argc, char** argv)
 {   
     //G4int year = 2010;
     TString bopt = "b";
-    G4Random::setTheSeed(1);
     G4int nowR = 125; // cm
     G4double primaryE0 = 100.; // GeV
 
     //G4double maxStartTime = 100000.; // nanoseconds
     G4double currFixedStartTime = 0.; // nanoseconds
-    G4int nEvents = 10000;
+    G4int nEvents = 100;
 
+    G4int seed = 0;
     if (argc > 1) {
-        TString inputR(argv[1]);
-        primaryE0 = G4double(inputR.Atoi());
+        TString inputSeed(argv[1]);
+        seed = inputSeed.Atoi();
     }
+    G4Random::setTheSeed(seed);
 
     G4RunManager *runManager = new G4RunManager();
     //runManager->SetVerboseLevel(3);
     TString outFileNameTmp;
     if (bopt == "wb")
-        outFileNameTmp.Form("fixed_E_%d_GeV_C_46_H_54_nevents_%d_r_%d.root", G4int(primaryE0), nEvents, nowR);
+        outFileNameTmp.Form("seed_%d_fixed_E_%d_GeV_C_46_H_54_nevents_%d_r_%d.root", seed, G4int(primaryE0), nEvents, nowR);
     else
-        outFileNameTmp.Form("fixed_E_%d_GeV_nevents_%d_r_%d.root", G4int(primaryE0), nEvents, nowR);
+        outFileNameTmp.Form("seed_%d_fixed_E_%d_GeV_nevents_%d_r_%d.root", seed, G4int(primaryE0), nEvents, nowR);
     G4String outFileName(outFileNameTmp);
     HERODetectorConstruction *detectorConstruction = new HERODetectorConstruction();
     HEROSensitiveDetector *sensDetector = new HEROSensitiveDetector("SensitiveDetector");
