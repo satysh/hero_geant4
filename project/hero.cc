@@ -26,9 +26,9 @@
 int main(int argc, char** argv)
 {   
     G4int year = 2010;
-    TString bopt = "wb";
+    TString bopt = "b";
     G4Random::setTheSeed(1);
-    G4int nowR = 125; // cm
+    G4int nowR = 12; // cm
 
     G4double maxStartTime = 100000.; // nanoseconds
     //G4double currFixedStartTime = 0.; // nanoseconds
@@ -51,7 +51,7 @@ int main(int argc, char** argv)
     HEROSensitiveDetector *sensDetector = new HEROSensitiveDetector("SensitiveDetector");
     detectorConstruction->SetSensDetector(sensDetector);
     detectorConstruction->SetR(nowR);
-    detectorConstruction->SetBopt(bopt);
+    detectorConstruction->SetBopt(bopt);    
     runManager->SetUserInitialization(detectorConstruction);
     runManager->SetUserInitialization(new QGSP_BERT_HP);
     HEROActionInitialization *actionInit = new HEROActionInitialization();

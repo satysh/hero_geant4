@@ -43,41 +43,58 @@ G4bool HEROSensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory*ROhi
     eventId += fStartEventId;
 // -----------------------------------------------------------------
 
-    if (pdg != 0 && volname != "logicWorld"/* && pdg == 1000020040*/) { // skip geantino
+    if (pdg != 0 /* && pdg == 1000020040*/) {// skip geantino
 	    G4AnalysisManager* man = G4AnalysisManager::Instance();
-	    man->FillNtupleIColumn(0, 0, eventId);
-	    man->FillNtupleIColumn(0, 1, pdg);
-	    man->FillNtupleIColumn(0, 2, trackID);
-	    man->FillNtupleDColumn(0, 3, depositEnergy); // MeV
-	    man->FillNtupleDColumn(0, 4, kinEnergy); // MeV
-	    man->FillNtupleDColumn(0, 5, positionParticle[0]);
-	    man->FillNtupleDColumn(0, 6, positionParticle[1]);
-	    man->FillNtupleDColumn(0, 7, positionParticle[2]);
-	    man->FillNtupleDColumn(0, 8, positionParticleOff[0]);
-	    man->FillNtupleDColumn(0, 9, positionParticleOff[1]);
-	    man->FillNtupleDColumn(0, 10, positionParticleOff[2]);
-	    man->FillNtupleDColumn(0, 11, globalTime); // nanosecond
-	    man->FillNtupleDColumn(0, 12, localTime); // nanosecond
-	    man->AddNtupleRow(0);
-	}
-	else if (volname == "logicWorld") {
-		G4AnalysisManager* man = G4AnalysisManager::Instance();
-	    man->FillNtupleIColumn(1, 0, eventId);
-	    man->FillNtupleIColumn(1, 1, pdg);
-	    man->FillNtupleIColumn(1, 2, trackID);
-	    man->FillNtupleDColumn(1, 3, depositEnergy); // MeV
-	    man->FillNtupleDColumn(1, 4, kinEnergy); // MeV
-	    man->FillNtupleDColumn(1, 5, positionParticle[0]);
-	    man->FillNtupleDColumn(1, 6, positionParticle[1]);
-	    man->FillNtupleDColumn(1, 7, positionParticle[2]);
-	    man->FillNtupleDColumn(1, 8, positionParticleOff[0]);
-	    man->FillNtupleDColumn(1, 9, positionParticleOff[1]);
-	    man->FillNtupleDColumn(1, 10, positionParticleOff[2]);
-	    man->FillNtupleDColumn(1, 11, globalTime); // nanosecond
-	    man->FillNtupleDColumn(1, 12, localTime); // nanosecond
-	    man->AddNtupleRow(1);
+    	if (volname.contains("logicBorScint_")) { 
+	    	man->FillNtupleIColumn(0, 0, eventId);
+	    	man->FillNtupleIColumn(0, 1, pdg);
+	    	man->FillNtupleIColumn(0, 2, trackID);
+	    	man->FillNtupleDColumn(0, 3, depositEnergy); // MeV
+	    	man->FillNtupleDColumn(0, 4, kinEnergy); // MeV
+	    	man->FillNtupleDColumn(0, 5, positionParticle[0]);
+	    	man->FillNtupleDColumn(0, 6, positionParticle[1]);
+	    	man->FillNtupleDColumn(0, 7, positionParticle[2]);
+	    	man->FillNtupleDColumn(0, 8, positionParticleOff[0]);
+	    	man->FillNtupleDColumn(0, 9, positionParticleOff[1]);
+	    	man->FillNtupleDColumn(0, 10, positionParticleOff[2]);
+	    	man->FillNtupleDColumn(0, 11, globalTime); // nanosecond
+	    	man->FillNtupleDColumn(0, 12, localTime); // nanosecond
+	    	man->AddNtupleRow(0);
+		}
+		else if (volname.contains("logicWolfram_")) {
+			man->FillNtupleIColumn(1, 0, eventId);
+	    	man->FillNtupleIColumn(1, 1, pdg);
+	    	man->FillNtupleIColumn(1, 2, trackID);
+	    	man->FillNtupleDColumn(1, 3, depositEnergy); // MeV
+	    	man->FillNtupleDColumn(1, 4, kinEnergy); // MeV
+	    	man->FillNtupleDColumn(1, 5, positionParticle[0]);
+	    	man->FillNtupleDColumn(1, 6, positionParticle[1]);
+	    	man->FillNtupleDColumn(1, 7, positionParticle[2]);
+	    	man->FillNtupleDColumn(1, 8, positionParticleOff[0]);
+	    	man->FillNtupleDColumn(1, 9, positionParticleOff[1]);
+	    	man->FillNtupleDColumn(1, 10, positionParticleOff[2]);
+	    	man->FillNtupleDColumn(1, 11, globalTime); // nanosecond
+	    	man->FillNtupleDColumn(1, 12, localTime); // nanosecond
+	    	man->AddNtupleRow(1);
+		}
+		else if (volname.contains("logicWorld")) {
+	    	man->FillNtupleIColumn(2, 0, eventId);
+	    	man->FillNtupleIColumn(2, 1, pdg);
+	    	man->FillNtupleIColumn(2, 2, trackID);
+	    	man->FillNtupleDColumn(2, 3, depositEnergy); // MeV
+	    	man->FillNtupleDColumn(2, 4, kinEnergy); // MeV
+	    	man->FillNtupleDColumn(2, 5, positionParticle[0]);
+	    	man->FillNtupleDColumn(2, 6, positionParticle[1]);
+	    	man->FillNtupleDColumn(2, 7, positionParticle[2]);
+	    	man->FillNtupleDColumn(2, 8, positionParticleOff[0]);
+	    	man->FillNtupleDColumn(2, 9, positionParticleOff[1]);
+	    	man->FillNtupleDColumn(2, 10, positionParticleOff[2]);
+	    	man->FillNtupleDColumn(2, 11, globalTime); // nanosecond
+	    	man->FillNtupleDColumn(2, 12, localTime); // nanosecond
+	    	man->AddNtupleRow(2);
 
-	    track->SetTrackStatus(fStopAndKill);
+	    	track->SetTrackStatus(fStopAndKill);
+		}
 	}
 
 	return true;
