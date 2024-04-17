@@ -1,9 +1,9 @@
 #/bin/bash
 
 NTHREADS=16 # 
-NRUNS=10 # full_nevents / nevents_in_run -> result NTHREADS * nevents_in_run * NRUNS
-NBATCH=$((NRUNS / NTHREADS - 1))
+NBATCH=10
 echo NBATCH=${NBATCH}
+# result NTHREADS * nevents_in_run * NBATCH
 
 if [ -d output ];then
     rm -vf output/*.root
