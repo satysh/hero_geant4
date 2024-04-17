@@ -34,10 +34,10 @@ int main(int argc, char** argv)
     G4double currFixedStartTime = 0.; // nanoseconds
     G4int nEvents = 100;
 
-    G4int seed = 0;
+    G4int seed = 1;
     if (argc > 1) {
         TString inputSeed(argv[1]);
-        seed = inputSeed.Atoi();
+        seed = inputSeed.Atoi() + 1;
     }
     G4Random::setTheSeed(seed);
 

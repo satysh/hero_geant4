@@ -16,20 +16,22 @@ auto get_root_files_list(TString path)
 	return result;
 }
 
-void sum_edep_distribution_calc()
+void sum_edep_distribution_calc(Int_t index=0)
 {
-	TString dirpath = "../input/fixed/100gev/";
+	TString dirpath = "../../output";
 	auto files_list = get_root_files_list(dirpath);
 	
-	Int_t binN = 100;
-	TH1F *hist = new TH1F("hist", "hist", binN, 0., 100.);
+	TString hist_name;
+	hist_name.Form("h_%d", index);
+	Int_t binN = 200;
+	TH1F *hist = new TH1F(hist_name, hist_name, binN, 0., 100.);
 	
 	for (UInt_t i=0; i<files_list.size(); i++) {
 		Fill(hist, dirpath + "/" + files_list[i]);
 	}
 
 
-	TFile *file = new TFile("sum_edep_distribution_calc.root", "RECREATE");
+	TFile *file = new TFile("sum_edep_distribution_calc.root", "UPDATE");
 	hist->Write();
 }
 

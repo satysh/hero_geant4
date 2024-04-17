@@ -61,6 +61,7 @@ G4bool HEROSensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory*ROhi
 	    	man->FillNtupleDColumn(0, 12, localTime); // nanosecond
 	    	man->AddNtupleRow(0);
 		}
+		/*
 		else if (volname.contains("logicWolfram_")) {
 			man->FillNtupleIColumn(1, 0, eventId);
 	    	man->FillNtupleIColumn(1, 1, pdg);
@@ -95,6 +96,7 @@ G4bool HEROSensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory*ROhi
 
 	    	track->SetTrackStatus(fStopAndKill);
 		}
+		*/
 	}
 
 	return true;
