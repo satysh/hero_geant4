@@ -1,9 +1,23 @@
 #/bin/bash
 
+if [ -n "$1" ]
+then
+    ENERGY=$1
+    NEVENTS_IN_RUN=$2
+else
+echo "No parameters found. "
+exit
+fi
+
 NTHREADS=16 # 
-NBATCH=10
+NBATCH=1
+BOPT="b"
+echo ENERGY=${ENERGY}
+echo NEVENTS_IN_RUN=${NEVENTS_IN_RUN}
+echo NTHREADS=${NTHREADS}
 echo NBATCH=${NBATCH}
-# result NTHREADS * nevents_in_run * NBATCH
+echo BOPT=${BOPT}
+# result NEVENTS= NTHREADS * NEVENTS_IN_RUN * NBATCH
 
 if [ -d output ];then
     rm -vf output/*.root
@@ -30,12 +44,12 @@ make -j${NTHREADS}
 wait
 sleep 5
 
-for BATCH_ID in $(seq 0 ${NBATCH}); do
+for BATCH_ID in $(seq 0 $((NBATCH - 1))); do
     #echo "BATCH_ID="${BATCH_ID}
     for THR in $(seq 0 $((NTHREADS - 1))); do
         INTERVAL_ID=$((BATCH_ID * NTHREADS + THR))
         echo INTERVAL_ID=${INTERVAL_ID}
-        ./hero ${INTERVAL_ID} 1> >(tee out_${INTERVAL_ID}.txt ) 2> >(tee err_${INTERVAL_ID}.txt) &
+        ./hero ${INTERVAL_ID} ${ENERGY} ${NEVENTS_IN_RUN} ${BOPT} 1> >(tee out_${INTERVAL_ID}.txt ) 2> >(tee err_${INTERVAL_ID}.txt) &
     done
     wait
     
@@ -43,11 +57,17 @@ for BATCH_ID in $(seq 0 ${NBATCH}); do
     rm -fv *.txt
     cd ../project/macro/diff_r/
     wait
-
-    root -l -q "sum_edep_distribution_calc.C(${BATCH_ID})" &
-    wait
+    root -l -q "sum_edep_distribution_calc.C(${BATCH_ID}, ${ENERGY})" 
     cd -
     rm -fv ../project/output/*.root
 done
 wait
 
+pwd
+cd ../project/macro/diff_r
+
+if [[ ${BOPT} = "wb" ]];then
+    mv sum_edep_distribution_calc.root wb_${ENERGY}_GeV_sum_edep_distribution_calc.root
+else
+    mv sum_edep_distribution_calc.root ${ENERGY}_GeV_sum_edep_distribution_calc.root
+fi

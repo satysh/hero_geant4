@@ -16,15 +16,15 @@ auto get_root_files_list(TString path)
 	return result;
 }
 
-void sum_edep_distribution_calc(Int_t index=0)
+void sum_edep_distribution_calc(Int_t index=0, Int_t energy=100)
 {
 	TString dirpath = "../../output";
 	auto files_list = get_root_files_list(dirpath);
 	
 	TString hist_name;
 	hist_name.Form("h_%d", index);
-	Int_t binN = 200;
-	TH1F *hist = new TH1F(hist_name, hist_name, binN, 0., 100.);
+	Int_t binN = 2*energy;
+	TH1F *hist = new TH1F(hist_name, hist_name, binN, 0., (Double_t)energy);
 	
 	for (UInt_t i=0; i<files_list.size(); i++) {
 		Fill(hist, dirpath + "/" + files_list[i]);

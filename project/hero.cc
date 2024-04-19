@@ -26,13 +26,13 @@
 int main(int argc, char** argv)
 {   
     //G4int year = 2010;
-    TString bopt = "b";
+    TString bopt = "";
     G4int nowR = 125; // cm
-    G4double primaryE0 = 100.; // GeV
+    G4double primaryE0 = -1.; // GeV
 
     //G4double maxStartTime = 100000.; // nanoseconds
     G4double currFixedStartTime = 0.; // nanoseconds
-    G4int nEvents = 100;
+    G4int nEvents = -1;
 
     G4int seed = 1;
     if (argc > 1) {
@@ -40,6 +40,20 @@ int main(int argc, char** argv)
         seed = inputSeed.Atoi() + 1;
     }
     G4Random::setTheSeed(seed);
+
+    if (argc > 2) {
+        TString inputE(argv[2]);
+        primaryE0 = (G4double)inputE.Atoi(); // GeV
+    }
+
+    if (argc > 3) {
+        TString inputNEvents(argv[3]);
+        nEvents = inputNEvents.Atoi();
+    }
+
+    if (argc > 4) {
+        bopt = argv[4];
+    }
 
     G4RunManager *runManager = new G4RunManager();
     //runManager->SetVerboseLevel(3);
