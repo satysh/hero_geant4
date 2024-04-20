@@ -4,14 +4,14 @@ if [ -n "$1" ]
 then
     ENERGY=$1
     NEVENTS_IN_RUN=$2
+    NTHREADS=$3
+    NBATCH=$4
 else
 echo "No parameters found. "
 exit
 fi
 
-NTHREADS=16 # 
-NBATCH=1
-BOPT="b"
+BOPT="wb"
 echo ENERGY=${ENERGY}
 echo NEVENTS_IN_RUN=${NEVENTS_IN_RUN}
 echo NTHREADS=${NTHREADS}

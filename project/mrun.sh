@@ -1,5 +1,8 @@
 #!/bin/bash
 
-# ./tmp.sh energy nevents_in_run
-# result NEVENTS= NTHREADS * NEVENTS_IN_RUN * NBATCH
-./tmp.sh 100000 1
+# ./tmp.sh ENERGY NEVENTS_IN_RUN NTHREADS NBATCH
+# result NEVENTS= NEVENTS_IN_RUN * NTHREADS * NBATCH
+./tmp.sh 100 100 16 11
+./tmp.sh 1000 10 16 11			
+./tmp.sh 10000 10 16 11
+./tmp.sh 100000 1 16 1
