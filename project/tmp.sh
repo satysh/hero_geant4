@@ -22,7 +22,7 @@ echo BOPT=${BOPT}
 if [ -d output ];then
     rm -vf output/*.root
     rm -vf output/*.txt
-    rm -vf macro/diff_r/sum_edep_distribution_calc.root
+    rm -vf macro/diff_r/params*
 else
     mkdir output
 fi
@@ -57,7 +57,7 @@ for BATCH_ID in $(seq 0 $((NBATCH - 1))); do
     rm -fv *.txt
     cd ../project/macro/diff_r/
     wait
-    root -l -q "sum_edep_distribution_calc.C(${BATCH_ID}, ${ENERGY})" 
+    root -l -q "sim_params_calculation.C(${BATCH_ID})" 
     cd -
     rm -fv ../project/output/*.root
 done
@@ -65,9 +65,10 @@ wait
 
 pwd
 cd ../project/macro/diff_r
+root -l -q sim_params_calculation_agg.C
 
 if [[ ${BOPT} = "wb" ]];then
-    mv sum_edep_distribution_calc.root wb_${ENERGY}_GeV_sum_edep_distribution_calc.root
+    mv params_result.root wb_${ENERGY}_GeV_params_result.root
 else
-    mv sum_edep_distribution_calc.root ${ENERGY}_GeV_sum_edep_distribution_calc.root
+    mv params_result.root ${ENERGY}_GeV_params_result.root
 fi
