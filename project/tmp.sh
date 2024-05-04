@@ -57,7 +57,8 @@ for BATCH_ID in $(seq 0 $((NBATCH - 1))); do
     rm -fv *.txt
     cd ../project/macro/diff_r/
     wait
-    root -l -q "sim_params_calculation.C(${BATCH_ID})" 
+    root -l -q "sim_params_calculation.C(${BATCH_ID})"
+    wait 
     cd -
     rm -fv ../project/output/*.root
 done
@@ -66,6 +67,7 @@ wait
 pwd
 cd ../project/macro/diff_r
 root -l -q sim_params_calculation_agg.C
+wait
 
 if [[ ${BOPT} = "wb" ]];then
     mv params_result.root wb_${ENERGY}_GeV_params_result.root

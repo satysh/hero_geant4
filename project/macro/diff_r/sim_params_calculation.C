@@ -26,6 +26,27 @@ void sim_params_calculation(Int_t index=0)
 	}
 }
 
+typedef std::map<int, Double_t> HEROAggMap;
+
+void FillAgg(HEROAggMap *m_ap, Int_t event_id, Double_t edep)
+{
+	if ((*m_ap).count(event_id)) {
+		(*m_ap)[event_id] += edep;
+	}
+	else {
+		(*m_ap)[event_id] = edep;
+	}
+}
+
+Double_t PullValue(HEROAggMap *m_ap, Int_t event_id)
+{
+	if ((*m_ap).count(event_id)) {
+		return (*m_ap)[event_id];
+	}
+
+	return 0.;
+}
+
 void FillTree(Int_t index, Int_t i, TString file_name)
 {
 	cout << "Filling from file " << file_name << "!" << endl;
@@ -128,22 +149,22 @@ void FillTree(Int_t index, Int_t i, TString file_name)
 
 
 	std::unordered_set<int> out_event_id_agg;
-	std::map<int, Double_t> sum_edep_scint_agg;
-	std::map<int, Double_t> sum_edep_absorb_agg;
-	std::map<int, Double_t> sum_edep_ultra_agg;
-	std::map<int, Double_t> sum_edep_agg;
+	HEROAggMap sum_edep_scint_agg;
+	HEROAggMap sum_edep_absorb_agg;
+	HEROAggMap sum_edep_ultra_agg;
+	HEROAggMap sum_edep_agg;
 	std::map<int, std::unordered_set<int>> n_born_neutrons_agg;
 	std::map<int, std::unordered_set<int>> n_dead_neutrons_agg;
-	std::map<int, Double_t> sum_edep_e_scint_agg;
-	std::map<int, Double_t> sum_edep_e_absorb_agg;
-	std::map<int, Double_t> sum_edep_e_ultra_agg;
-	std::map<int, Double_t> sum_edep_e_agg;
+	HEROAggMap sum_edep_e_scint_agg;
+	HEROAggMap sum_edep_e_absorb_agg;
+	HEROAggMap sum_edep_e_ultra_agg;
+	HEROAggMap sum_edep_e_agg;
 	std::map<int, std::unordered_set<int>> n_born_alpha_agg;
 	std::map<int, std::unordered_set<int>> n_dead_alpha_agg;
-	std::map<int, Double_t> sum_edep_alpha_scint_agg;
-	std::map<int, Double_t> sum_edep_alpha_absorb_agg;
-	std::map<int, Double_t> sum_edep_alpha_ultra_agg;
-	std::map<int, Double_t> sum_edep_alpha_agg;
+	HEROAggMap sum_edep_alpha_scint_agg;
+	HEROAggMap sum_edep_alpha_absorb_agg;
+	HEROAggMap sum_edep_alpha_ultra_agg;
+	HEROAggMap sum_edep_alpha_agg;
 
 	// fill aggs from scint
 	cout << "Filling from scint!" << endl;
@@ -152,56 +173,26 @@ void FillTree(Int_t index, Int_t i, TString file_name)
 
 		out_event_id_agg.insert(event_id);
 
-		if (sum_edep_agg.count(event_id)) {
-			sum_edep_agg[event_id] += edep;
-		}
-		else {
-			sum_edep_agg[event_id] = edep;
-		}
+		FillAgg(&sum_edep_scint_agg, event_id, edep);
 
-		if (sum_edep_scint_agg.count(event_id)) {
-			sum_edep_scint_agg[event_id] += edep;
-		}
-		else {
-			sum_edep_scint_agg[event_id] = edep;
-		}
+		FillAgg(&sum_edep_agg, event_id, edep);
 
 		if (pdg == 2112) {
 			n_born_neutrons_agg[event_id].insert(track_id);	
 		}
 
-		if (sum_edep_e_scint_agg.count(event_id)) {
-			sum_edep_e_scint_agg[event_id] += edep;
-		}
-		else {
-			sum_edep_e_scint_agg[event_id] = edep;
-		}
-
 		if (pdg == 11) {
-			if (sum_edep_e_agg.count(event_id)) {
-				sum_edep_e_agg[event_id] += edep;
-			}
-			else {
-				sum_edep_e_agg[event_id] = edep;
-			}
+			FillAgg(&sum_edep_e_scint_agg, event_id, edep);
+
+			FillAgg(&sum_edep_e_agg, event_id, edep);
 		}
 
 		if (pdg == 1000020040) {
 			n_born_alpha_agg[event_id].insert(track_id);
 
-			if (sum_edep_alpha_scint_agg.count(event_id)) {
-				sum_edep_alpha_scint_agg[event_id] += edep;
-			}
-			else {
-				sum_edep_alpha_scint_agg[event_id] = edep;
-			}
+			FillAgg(&sum_edep_alpha_scint_agg, event_id, edep);
 
-			if (sum_edep_alpha_agg.count(event_id)) {
-				sum_edep_alpha_agg[event_id] += edep;
-			}
-			else {
-				sum_edep_alpha_agg[event_id] = edep;
-			}
+			FillAgg(&sum_edep_alpha_agg, event_id, edep);
 		}
 
 	}
@@ -213,55 +204,26 @@ void FillTree(Int_t index, Int_t i, TString file_name)
 
 		out_event_id_agg.insert(event_id);
 
-		if (sum_edep_agg.count(event_id)) {
-			sum_edep_agg[event_id] += edep;
-		}
-		else {
-			sum_edep_agg[event_id] = edep;
-		}
-		if (sum_edep_absorb_agg.count(event_id)) {
-			sum_edep_absorb_agg[event_id] += edep;
-		}
-		else {
-			sum_edep_absorb_agg[event_id] = edep;
-		}
+		FillAgg(&sum_edep_absorb_agg, event_id, edep);
+
+		FillAgg(&sum_edep_agg, event_id, edep);
 
 		if (pdg == 2112) {
 			n_born_neutrons_agg[event_id].insert(track_id);	
 		}
 
-		if (sum_edep_absorb_agg.count(event_id)) {
-			sum_edep_absorb_agg[event_id] += edep;
-		}
-		else {
-			sum_edep_absorb_agg[event_id] = edep;
-		}
-
 		if (pdg == 11) {
-			if (sum_edep_e_agg.count(event_id)) {
-				sum_edep_e_agg[event_id] += edep;
-			}
-			else {
-				sum_edep_e_agg[event_id] = edep;
-			}
+			FillAgg(&sum_edep_e_absorb_agg, event_id, edep);
+
+			FillAgg(&sum_edep_e_agg, event_id, edep);
 		}
 
 		if (pdg == 1000020040) {
 			n_born_alpha_agg[event_id].insert(track_id);
 
-			if (sum_edep_alpha_absorb_agg.count(event_id)) {
-				sum_edep_alpha_absorb_agg[event_id] += edep;
-			}
-			else {
-				sum_edep_alpha_absorb_agg[event_id] = edep;
-			}
+			FillAgg(&sum_edep_alpha_absorb_agg, event_id, edep);
 
-			if (sum_edep_alpha_agg.count(event_id)) {
-				sum_edep_alpha_agg[event_id] += edep;
-			}
-			else {
-				sum_edep_alpha_agg[event_id] = edep;
-			}
+			FillAgg(&sum_edep_alpha_agg, event_id, edep);
 		}
 	}
 
@@ -272,41 +234,20 @@ void FillTree(Int_t index, Int_t i, TString file_name)
 
 		out_event_id_agg.insert(event_id);
 
-		if (sum_edep_agg.count(event_id)) {
-			sum_edep_agg[event_id] += edep;
-		}
-		else {
-			sum_edep_agg[event_id] = edep;
-		}
-		if (sum_edep_ultra_agg.count(event_id)) {
-			sum_edep_ultra_agg[event_id] += edep;
-		}
-		else {
-			sum_edep_ultra_agg[event_id] = edep;
-		}
+		FillAgg(&sum_edep_ultra_agg, event_id, edep);
 
 		if (pdg == 2112) {
 			n_dead_neutrons_agg[event_id].insert(track_id);
 		}
 
 		if (pdg == 11) {
-			if (sum_edep_e_ultra_agg.count(event_id)) {
-				sum_edep_e_ultra_agg[event_id] += edep;
-			}
-			else {
-				sum_edep_e_ultra_agg[event_id] = edep;
-			}
+			FillAgg(&sum_edep_e_ultra_agg, event_id, edep);
 		}
 
 		if (pdg == 1000020040) {
 			n_dead_alpha_agg[event_id].insert(track_id);
 
-			if (sum_edep_alpha_ultra_agg.count(event_id)) {
-				sum_edep_alpha_ultra_agg[event_id] += edep;
-			}
-			else {
-				sum_edep_alpha_ultra_agg[event_id] = edep;
-			}
+			FillAgg(&sum_edep_alpha_ultra_agg, event_id, edep);
 		}
 	}
 
@@ -315,26 +256,28 @@ void FillTree(Int_t index, Int_t i, TString file_name)
 	out_file->cd();
 	for (const auto& e_id : out_event_id_agg) {
         out_event_id = e_id;
-		sum_edep_scint = sum_edep_scint_agg[e_id];
-		sum_edep_absorb = sum_edep_absorb_agg[e_id];
-		sum_edep_ultra = sum_edep_ultra_agg[e_id];
-		sum_edep = sum_edep_agg[e_id];
+		sum_edep_scint = PullValue(&sum_edep_scint_agg, e_id);
+		sum_edep_absorb = PullValue(&sum_edep_absorb_agg, e_id);
+		sum_edep_ultra = PullValue(&sum_edep_ultra_agg, e_id);
+		sum_edep = PullValue(&sum_edep_agg, e_id);
 
 		n_born_neutrons = n_born_neutrons_agg[e_id].size();
 		n_dead_neutrons = n_dead_neutrons_agg[e_id].size();
-		ratio_neutrons = (n_born_neutrons - n_dead_neutrons) / n_born_neutrons;
-
-		sum_edep_e_scint = sum_edep_e_scint_agg[e_id];
-		sum_edep_e_absorb = sum_edep_absorb_agg[e_id];
-		sum_edep_e_ultra = sum_edep_ultra_agg[e_id];
-		sum_edep_e = sum_edep_agg[e_id];
+		if (n_born_neutrons != 0.)
+			ratio_neutrons = Double_t(n_born_neutrons - n_dead_neutrons) / n_born_neutrons;
+		else
+			ratio_neutrons = 0.;
+		sum_edep_e_scint = PullValue(&sum_edep_e_scint_agg, e_id);
+		sum_edep_e_absorb = PullValue(&sum_edep_e_absorb_agg, e_id);
+		sum_edep_e_ultra = PullValue(&sum_edep_e_ultra_agg, e_id);
+		sum_edep_e = PullValue(&sum_edep_e_agg, e_id);
 
 		n_born_alpha = n_born_alpha_agg[e_id].size();
 		n_dead_alpha = n_dead_alpha_agg[e_id].size();
-		sum_edep_alpha_scint = sum_edep_alpha_scint_agg[e_id];
-		sum_edep_alpha_absorb = sum_edep_alpha_absorb_agg[e_id];
-		sum_edep_alpha_ultra = sum_edep_alpha_ultra_agg[e_id];
-		sum_edep_alpha = sum_edep_alpha_agg[e_id];
+		sum_edep_alpha_scint = PullValue(&sum_edep_alpha_scint_agg, e_id);
+		sum_edep_alpha_absorb = PullValue(&sum_edep_alpha_absorb_agg, e_id);
+		sum_edep_alpha_ultra = PullValue(&sum_edep_alpha_ultra_agg, e_id);
+		sum_edep_alpha = PullValue(&sum_edep_alpha_agg, e_id);
 
 		tree->Fill();
 	}
