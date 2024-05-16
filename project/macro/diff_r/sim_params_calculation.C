@@ -14,16 +14,22 @@ auto get_root_files_list(TString path)
 	return result;
 }
 
-void FillTree(Int_t index, Int_t i, TString file_name);
+void FillTree(TString file_name);
 
-void sim_params_calculation(Int_t index=0)
+void sim_params_calculation(Int_t seed=1)
 {
-	TString dirpath = "../../output";
-	auto files_list = get_root_files_list(dirpath);
-
+	auto files_list = get_root_files_list("../../output");
+	TString file_name = "";
+	TString tmp;
+	tmp.Form("seed_%d_fixed_E_", seed + 1);
 	for (UInt_t i=0; i<files_list.size(); i++) {
-		FillTree(index, i, dirpath + "/" + files_list[i]);
+		if (files_list[i].Contains(tmp)) {
+			file_name = files_list[i];
+			break;
+		}
 	}
+	
+	FillTree(file_name);
 }
 
 typedef std::map<int, Double_t> HEROAggMap;
@@ -47,11 +53,13 @@ Double_t PullValue(HEROAggMap *m_ap, Int_t event_id)
 	return 0.;
 }
 
-void FillTree(Int_t index, Int_t i, TString file_name)
+// без индексов только имя файла для обработки 
+void FillTree(TString file_name)
 {
 	cout << "Filling from file " << file_name << "!" << endl;
 
-	TFile *out_file = new TFile("params.root", "UPDATE");
+	// формируем имя выходного файлы на основе имени входного, он называется точно так же, но создается в директории ./tmp_output
+	TFile *out_file = new TFile("tmp_output/" + file_name, "RECREATE");
 	out_file->cd();
 	Int_t out_event_id;
 	Double_t sum_edep_scint;
@@ -75,8 +83,7 @@ void FillTree(Int_t index, Int_t i, TString file_name)
 	Double_t sum_edep_alpha_ultra;
 	Double_t sum_edep_alpha;
 
-	TString tree_name;
-	tree_name.Form("params_%d_%d", index, i);
+	TString tree_name = "params";
 	TTree *tree = new TTree(tree_name, tree_name);
 
 	tree->Branch("event_id", &out_event_id, "event_id/I");
@@ -103,7 +110,7 @@ void FillTree(Int_t index, Int_t i, TString file_name)
 	tree->Branch("sum_edep_alpha", &sum_edep_alpha, "sum_edep_alpha/D");
 	
 
-	TFile *file = new TFile(file_name, "READ");
+	TFile *file = new TFile("../../output/" + file_name, "READ");
 	if (file->IsZombie()) {
 		cerr << "Can't read file " << file_name << endl;
 		return;

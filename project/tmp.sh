@@ -38,6 +38,15 @@ else
     wait
     cd -
 fi
+
+# временная директория для промежуточных выходных файлов
+if [ -d macro/diff_r/tmp_output ];then
+    rm -fvr macro/diff_r/tmp_output/*.root
+else
+    mkdir macro/diff_r/tmp_output
+fi
+sleep 2
+
 cd ../build
 sleep 5
 make -j${NTHREADS}
@@ -57,7 +66,11 @@ for BATCH_ID in $(seq 0 $((NBATCH - 1))); do
     rm -fv *.txt
     cd ../project/macro/diff_r/
     wait
-    root -l -q "sim_params_calculation.C(${BATCH_ID})"
+    # тут запускаешь обработку потоками с передачей INTERVAL_ID
+    for THR in $(seq 0 $((NTHREADS - 1))); do
+        INTERVAL_ID=$((BATCH_ID * NTHREADS + THR))
+        root -l -q "sim_params_calculation.C(${INTERVAL_ID})" &
+    done
     wait 
     cd -
     rm -fv ../project/output/*.root
@@ -66,6 +79,7 @@ wait
 
 pwd
 cd ../project/macro/diff_r
+# тут объединяешь все промежуточные выходные файлы в один
 root -l -q sim_params_calculation_agg.C
 wait
 
