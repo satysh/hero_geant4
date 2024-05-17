@@ -1,11 +1,11 @@
 TH1F *hist(TString file_name);
 void resolution()
 {
-	Int_t npoints = 4;
-	Int_t points[] = {100, 1000, 10000, 100000};
+	Int_t npoints = 2;
+	Int_t points[] = {20, 40, 60, 80, 100, 1000, 10000, 100000};
 
 	TCanvas *c = new TCanvas("canv", "canv", 800, 800);
-	c->Divide(2, 2);
+	//c->Divide(4, 2);
 	TGraph *result = new TGraph();
 	TGraph *wb_result = new TGraph();
 	for (UInt_t i=0; i<npoints; i++) {
@@ -20,7 +20,7 @@ void resolution()
 		Double_t now_mean = now_h->GetMean();
 		Double_t now_std_dev = now_h->GetStdDev();
 
-		cout << points[i] << ": " << now_mean << ", " << now_std_dev << ", " << now_std_dev / now_mean << endl;
+		cout << points[i] << ": " << now_mean << ", " << now_std_dev << ", " << now_std_dev / now_mean << " nevents = " << now_h->GetEntries() << endl;
 	    result->AddPoint((Double_t)points[i], now_std_dev / now_mean);
 	    TString hist_title;
 	    hist_title.Form("%d_GeV", points[i]);
@@ -36,8 +36,9 @@ void resolution()
 	    now_h->Draw();
 	    now_h->SetStats(0);
 
-		auto legend = new TLegend(0.5,0.4,0.9,0.9);
-		legend->SetTextSize(0.028);
+		auto legend = new TLegend(0.5,0.1,0.9,0.9);
+		//legend->SetTextSize(0.028);
+	    legend->SetTextFont(60);
 		TString legendTitle;
 		legendTitle.Form("%d events", (Int_t)now_h->GetEntries());
 		legend->SetHeader(legendTitle);
@@ -67,6 +68,7 @@ void resolution()
 	    now_h->SetName(hist_title);
 
 		legend->Draw();
+
 	}
 
 	TCanvas *c_res = new TCanvas("c_res", "c_res");
