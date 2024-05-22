@@ -11,7 +11,7 @@ echo "No parameters found. "
 exit
 fi
 
-BOPT="wb"
+BOPT="b"
 echo ENERGY=${ENERGY}
 echo NEVENTS_IN_RUN=${NEVENTS_IN_RUN}
 echo NTHREADS=${NTHREADS}
