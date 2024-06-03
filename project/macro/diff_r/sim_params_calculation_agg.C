@@ -14,24 +14,18 @@ auto get_root_files_list(TString path)
 	return result;
 }
 
-TTree *tree(TString file_name)
-{
-	TFile *file = new TFile("tmp_output/" + file_name, "READ");
-
-	return (TTree*)file->Get("params");
-}
-
 void sim_params_calculation_agg()
 {
 	auto files_list = get_root_files_list("tmp_output");
 	TList *list = new TList;
+	TChain *chain = new TChain("params");
 	for (UInt_t i=0; i<files_list.size(); i++) {
-		list->Add(tree(files_list[i]));
+		chain->Add("tmp_output/" + files_list[i]);
 	}
 
+	//chain->Draw("sum_edep_scint");
+	
 	TFile *out_file = new TFile("params_result.root", "RECREATE");
 	out_file->cd();
-	TTree *tree = TTree::MergeTrees(list);
-	tree->SetName("params_result");
-	tree->Write();
+	chain->Write();
 }
