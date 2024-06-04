@@ -6,10 +6,12 @@ else
 	mkdir archive_40
 fi
 while [[ true ]]; do
-	if [[ $(ls tmp_output/ | wc -l) > 0 ]]; then
-		mv -v tmp_output/* archive_40
+	if [[ $(ls ../../output/ | wc -l) = 2 ]]; then
+		if [[ $(ls tmp_output/ | wc -l) > 0 ]]; then
+		    mv -v tmp_output/* archive_40
+		fi
 	else
-		echo "tmp_output is empty!" 	
+		echo "wait" 	
 	fi 
 	sleep 1
 done
