@@ -35,9 +35,15 @@ int main(int argc, char** argv)
     G4int nEvents = -1;
 
     G4int seed = 1;
+    G4int seed_begin = 1;
+    if (argc > 5) {
+        TString inputSeedBegin(argv[5]);
+        seed_begin = inputSeedBegin.Atoi();
+    }
+
     if (argc > 1) {
         TString inputSeed(argv[1]);
-        seed = inputSeed.Atoi() + 1;
+        seed = inputSeed.Atoi() + seed_begin;
     }
     G4Random::setTheSeed(seed);
 
@@ -54,6 +60,7 @@ int main(int argc, char** argv)
     if (argc > 4) {
         bopt = argv[4];
     }
+
 
     G4RunManager *runManager = new G4RunManager();
     //runManager->SetVerboseLevel(3);

@@ -6,6 +6,7 @@ then
     NEVENTS_IN_RUN=$2
     NTHREADS=$3
     NBATCH=$4
+    SEED_BEGIN=$5
 else
 echo "No parameters found. "
 exit
@@ -17,6 +18,7 @@ echo NEVENTS_IN_RUN=${NEVENTS_IN_RUN}
 echo NTHREADS=${NTHREADS}
 echo NBATCH=${NBATCH}
 echo BOPT=${BOPT}
+echo SEED_BEGIN=${SEED_BEGIN}
 # result NEVENTS= NTHREADS * NEVENTS_IN_RUN * NBATCH
 
 if [ -d output ];then
@@ -56,7 +58,7 @@ sleep 5
 for BATCH_ID in $(seq 0 $((NBATCH - 1))); do
     #echo "BATCH_ID="${BATCH_ID}
     for THR in $(seq 0 $((NTHREADS - 1))); do
-        INTERVAL_ID=$((BATCH_ID * NTHREADS + THR))
+        INTERVAL_ID=$((BATCH_ID * NTHREADS + THR + SEED_BEGIN))
         echo INTERVAL_ID=${INTERVAL_ID}
         ./hero ${INTERVAL_ID} ${ENERGY} ${NEVENTS_IN_RUN} ${BOPT} 1> >(tee out_${INTERVAL_ID}.txt ) 2> >(tee err_${INTERVAL_ID}.txt) &
     done
@@ -68,7 +70,7 @@ for BATCH_ID in $(seq 0 $((NBATCH - 1))); do
     wait
     # тут запускаешь обработку потоками с передачей INTERVAL_ID
     for THR in $(seq 0 $((NTHREADS - 1))); do
-        INTERVAL_ID=$((BATCH_ID * NTHREADS + THR))
+        INTERVAL_ID=$((BATCH_ID * NTHREADS + THR + SEED_BEGIN))
         root -l -q "sim_params_calculation.C(${INTERVAL_ID})" &
     done
     wait 
