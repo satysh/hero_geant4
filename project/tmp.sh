@@ -1,4 +1,33 @@
-#!/bin/bash
+#/bin/bash
+
+if [ -n "$1" ]
+then
+    ENERGY=$1
+    NEVENTS_IN_RUN=$2
+    NTHREADS=$3
+    NBATCH=$4
+    SEED_BEGIN=$5
+else
+echo "No parameters found. "
+exit
+fi
+
+BOPT="b"
+echo ENERGY=${ENERGY}
+echo NEVENTS_IN_RUN=${NEVENTS_IN_RUN}
+echo NTHREADS=${NTHREADS}
+echo NBATCH=${NBATCH}
+echo BOPT=${BOPT}
+echo SEED_BEGIN=${SEED_BEGIN}
+# result NEVENTS= NTHREADS * NEVENTS_IN_RUN * NBATCH
+
+if [ -d output ];then
+    rm -vf output/*.root
+    rm -vf output/*.txt
+    rm -vf macro/diff_r/params*
+else
+    mkdir output
+fi
 
 if [ -d ../build ];then
     echo "../build was found!"
@@ -11,31 +40,53 @@ else
     wait
     cd -
 fi
-cd ../build
-make -j3
-wait
 
-./hero 30 1> >(tee out.txt ) 2> >(tee err.txt) &
-./hero 50 &
-./hero 62 &
-./hero 80 &
-./hero 100 &
-./hero 125 &
-./hero 250 &
-./hero 500 &
-./hero 1000 1> >(tee out_1000.txt ) 2> >(tee err_1000.txt)
-wait
-
-cd -
-if [ -d output ];then
-    rm -vf output/*.root
-    rm -vf output/*.txt
-    mv ../build/*.root output/
-    mv ../build/out.txt output/
-    mv ../build/err.txt output/
+# временная директория для промежуточных выходных файлов
+if [ -d macro/diff_r/tmp_output ];then
+    rm -fvr macro/diff_r/tmp_output/*.root
 else
-    mkdir output
-    mv ../build/*.root output/
-    mv ../build/out.txt output/
-    mv ../build/err.txt output/
+    mkdir macro/diff_r/tmp_output
+fi
+sleep 2
+
+cd ../build
+sleep 5
+make -j${NTHREADS}
+wait
+sleep 5
+
+for BATCH_ID in $(seq 0 $((NBATCH - 1))); do
+    #echo "BATCH_ID="${BATCH_ID}
+    for THR in $(seq 0 $((NTHREADS - 1))); do
+        INTERVAL_ID=$((BATCH_ID * NTHREADS + THR + SEED_BEGIN))
+        echo INTERVAL_ID=${INTERVAL_ID}
+        ./hero ${INTERVAL_ID} ${ENERGY} ${NEVENTS_IN_RUN} ${BOPT} 1> >(tee out_${INTERVAL_ID}.txt ) 2> >(tee err_${INTERVAL_ID}.txt) &
+    done
+    wait
+    
+    mv *.root ../project/output
+    rm -fv *.txt
+    cd ../project/macro/diff_r/
+    wait
+    # тут запускаешь обработку потоками с передачей INTERVAL_ID
+    for THR in $(seq 0 $((NTHREADS - 1))); do
+        INTERVAL_ID=$((BATCH_ID * NTHREADS + THR + SEED_BEGIN))
+        root -l -q "sim_params_calculation.C(${INTERVAL_ID})" &
+    done
+    wait 
+    cd -
+    rm -fv ../project/output/*.root
+done
+wait
+
+pwd
+cd ../project/macro/diff_r
+# тут объединяешь все промежуточные выходные файлы в один
+root -l -q sim_params_calculation_agg.C
+wait
+
+if [[ ${BOPT} = "wb" ]];then
+    mv params_result.root wb_${ENERGY}_GeV_params_result.root
+else
+    mv params_result.root ${ENERGY}_GeV_params_result.root
 fi

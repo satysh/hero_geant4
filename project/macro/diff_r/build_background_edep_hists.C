@@ -6,7 +6,7 @@ void build_background_edep_hists()
 	TString bopt = "b";
 	TString out_file_name;
 	if (bopt == "wb")
-		out_file_name.Form("wb_%d_edep_hists_diff_r.root", year);
+		out_file_name.Form("alpha_wb_%d_edep_hists_diff_r.root", year);
 	else 
 		out_file_name.Form("del_e_%d_edep_hists_diff_r.root", year);
 	TFile *out_file = new TFile(out_file_name, "RECREATE");
@@ -49,7 +49,6 @@ void now_r_hist_build(Int_t R=125, Int_t year=2010, Int_t nevents=10000, TString
 			cerr << "Can't find " << tree_name[i] << " tree in file " << input_file_name << endl;
 			return;
 		}
-
 		Int_t now_nentries = tree->GetEntries();
 		cout << tree_name[i] << " netries = " << now_nentries << endl;
 		Double_t edep;
