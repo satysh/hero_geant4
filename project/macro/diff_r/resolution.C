@@ -1,27 +1,37 @@
 TH1F *hist(TString file_name);
+TH1F *hist_from_tree(Int_t energy, Bool_t alpha=false);
 void resolution()
 {
-	Int_t npoints = 2;
-	Int_t points[] = {20, 40, 60, 80, 100, 1000, 10000, 100000};
+	const Int_t npoints = 7;
+	Int_t points[] = {1000, 10000, 20000, 40000, 60000, 80000, 100000};
 
-	TCanvas *c = new TCanvas("canv", "canv", 800, 800);
-	//c->Divide(4, 2);
-	TGraph *result = new TGraph();
-	TGraph *wb_result = new TGraph();
+	Double_t ratio[npoints];
+	Double_t ratioe[npoints];
+
+	Double_t alpha_ratio[npoints];
+	Double_t alpha_ratioe[npoints];
+
 	for (UInt_t i=0; i<npoints; i++) {
-		TString now_file_name;
-		now_file_name.Form("output/%d_GeV_sum_edep_distribution_calc.root", points[i]);
+		//TString now_file_name;
+		//now_file_name.Form("output/%d_GeV_sum_edep_distribution_calc.root", points[i]);
 		
-		TH1F *now_h = hist(now_file_name);
+		TH1F *now_h = hist_from_tree(points[i]);
 		if (!now_h) {
 			continue;
 		}
 
 		Double_t now_mean = now_h->GetMean();
 		Double_t now_std_dev = now_h->GetStdDev();
+		Double_t now_meane = now_h->GetMeanError();
+		Double_t now_std_deve = now_h->GetStdDevError();
 
-		cout << points[i] << ": " << now_mean << ", " << now_std_dev << ", " << now_std_dev / now_mean << " nevents = " << now_h->GetEntries() << endl;
-	    result->AddPoint((Double_t)points[i], now_std_dev / now_mean);
+
+	    ratio[i] = now_std_dev / now_mean;
+		cout << points[i] << ": " << now_mean << ", " << now_std_dev << ", " << ratio[i] 
+			 << " nevents = " << now_h->GetEntries() << endl;
+	    ratioe[i] = 3. * (((now_std_dev + now_std_deve) / (now_mean + now_meane)) - ratio[i]);
+	    cout << "errors: " << now_meane << ", " << now_std_deve << ", " << ratioe[i] << endl;
+
 	    TString hist_title;
 	    hist_title.Form("%d_GeV", points[i]);
 	    now_h->SetName(hist_title);
@@ -32,9 +42,8 @@ void resolution()
 	    now_h->SetFillStyle(3008); // 3008 3003
 	    now_h->SetFillColor(kBlue);
 
-	    c->cd(i+1);
 	    now_h->Draw();
-	    now_h->SetStats(0);
+	    //now_h->SetStats(0);
 
 		auto legend = new TLegend(0.5,0.1,0.9,0.9);
 		//legend->SetTextSize(0.028);
@@ -42,59 +51,78 @@ void resolution()
 		TString legendTitle;
 		legendTitle.Form("%d events", (Int_t)now_h->GetEntries());
 		legend->SetHeader(legendTitle);
-		legendTitle.Form("scint + B, mean = %.2f, stdDev = %.2f", now_mean, now_std_dev);
+		legendTitle.Form("all particles, mean = %.2f, stdDev = %.2f", now_mean, now_std_dev);
 		legend->AddEntry(now_h, legendTitle);
 
-		now_file_name.Form("output/wb_%d_GeV_sum_edep_distribution_calc.root", points[i]);
-		now_h = hist(now_file_name);
+
+		now_h = hist_from_tree(points[i], true);
 		if (!now_h) {
 			continue;
 		}
 
 		now_mean = now_h->GetMean();
+		now_meane = now_h->GetMeanError();	
 		now_std_dev = now_h->GetStdDev();
+		now_std_deve = now_h->GetStdDevError();
 
-		cout << "wb: " << points[i] << ": " << now_mean << ", " << now_std_dev << ", " << now_std_dev / now_mean << endl;
-	    wb_result->AddPoint((Double_t)points[i], now_std_dev / now_mean);
+		cout << "alpha: " << points[i] << ": " << now_mean << ", " << now_std_dev << ", " << now_std_dev / now_mean << endl;
+	    alpha_ratio[i] = now_std_dev / now_mean;
+	    alpha_ratioe[i] = 3. * ((now_std_dev + now_std_deve) / (now_mean + now_meane) - alpha_ratio[i]);
+		cout << "errors: " << now_meane << ", " << now_std_deve << ", " << alpha_ratio[i] << endl;
 
-	    legendTitle.Form("scint + only, mean = %.2f, stdDev = %.2f", now_mean, now_std_dev);
+	    legendTitle.Form("alpha particles only, mean = %.2f, stdDev = %.2f", now_mean, now_std_dev);
 		legend->AddEntry(now_h, legendTitle);
 		now_h->Draw("SAME");
 		now_h->SetLineColor(kRed);
 		now_h->SetLineWidth(3);
 	    now_h->SetFillStyle(3003); // 3008 3003
 	    now_h->SetFillColor(kRed);
-	    hist_title.Form("wb_%d_GeV", points[i]);
+	    hist_title.Form("alpha_%d_GeV", points[i]);
 	    now_h->SetName(hist_title);
 
-		legend->Draw();
+		//legend->Draw();
 
+	}
+
+	Double_t energies[npoints];
+	for (UInt_t i=0; i<npoints; i++) {
+		energies[i] = (Double_t)points[i] / 1000.;
+		/*ratio[i] /= 1000.;
+		ratioe[i] /= 1000.;
+		alpha_ratio[i] /= 1000.;
+		alpha_ratioe[i] /= 1000.;
+		ratio[i] = TMath::Log(ratio[i]);
+		ratioe[i] = TMath::Log(ratio[i] + ratioe[i]) - ratio[i];
+		alpha_ratio[i] = TMath::Log(alpha_ratio[i]);
+		alpha_ratioe[i] = TMath::Log(alpha_ratio[i] + alpha_ratioe[i]) - alpha_ratio[i];*/
 	}
 
 	TCanvas *c_res = new TCanvas("c_res", "c_res");
 	c_res->cd();
+	TGraphErrors *result = new TGraphErrors(npoints, energies, ratio, NULL, ratioe);
 	result->SetMarkerStyle(20);
 	result->SetMarkerSize(2);
 	result->SetMarkerColor(kBlue);
 	result->SetLineColor(kBlue);
-	result->SetLineWidth(3);
+	result->SetLineWidth(5);
     
-    wb_result->SetMarkerStyle(20);
-	wb_result->SetMarkerSize(2);
-	wb_result->SetMarkerColor(kRed);
-	wb_result->SetLineColor(kRed);
-	wb_result->SetLineWidth(3);
+    TGraphErrors *alpha_result = new TGraphErrors(npoints, energies, alpha_ratio, NULL, alpha_ratioe);
+    alpha_result->SetMarkerStyle(20);
+	alpha_result->SetMarkerSize(2);
+	alpha_result->SetMarkerColor(kRed);
+	alpha_result->SetLineColor(kRed);
+	alpha_result->SetLineWidth(3);
 	
 	auto legend = new TLegend(0.6,0.8,0.75,0.9);
-	legend->AddEntry(result, "scint + B");
-	legend->AddEntry(wb_result, "scint only");
+	legend->AddEntry(result, "all particles");
+	legend->AddEntry(alpha_result, "alpha particles only");
 	
 	TMultiGraph *mg = new TMultiGraph();
-	mg->SetTitle("resolution as function of primary proton Energy");
+	mg->SetTitle("");
 	mg->Add(result);
-	mg->Add(wb_result);
-	mg->GetXaxis()->SetTitle("E [GeV]");
-	mg->GetYaxis()->SetTitle("resolution []");
+	mg->Add(alpha_result);
+	mg->GetXaxis()->SetTitle("E [TeV]");
+	mg->GetYaxis()->SetTitle("resolution");
 	mg->Draw("ALP");
 	legend->Draw();
 	gPad->SetGrid(2, 2);
@@ -132,3 +160,47 @@ TH1F *hist(TString file_name)
 
 	return result;
 }
+
+TH1F *hist_from_tree(Int_t energy, Bool_t alpha=false)
+{
+	TString file_name;
+	file_name.Form("output/%d_GeV_params_result.root", energy);
+	TFile *file = new TFile(file_name, "READ");
+	if (file->IsZombie()) {
+		cerr << "Can't read file " << file_name << "!" << endl;
+		return NULL;
+	}
+
+	TTree *tree = (TTree*)file->Get("params_result");
+	if (!tree) {
+		cerr << "Can't find tree! in" << file_name << endl;
+		tree = (TTree*)file->Get("params");
+		if (!tree)
+			return NULL;
+	}
+
+	TString canv_name;
+	if (!alpha)
+		canv_name.Form("canv_%d_GeV", energy);
+	else
+		canv_name.Form("alpha_canv_%d_GeV", energy);
+	TCanvas *tmp_c = new TCanvas(canv_name, canv_name, 800, 800);
+	//TString hist_name;
+	//hist_name.Form("result_%d", energy);
+	//Int_t nbins = energy*2;
+	//TH1F *result = new TH1F(hist_name, hist_name, nbins, 0., (Double_t)energy);
+	TString draw_opt;
+	if (!alpha)
+		//draw_opt.Form("sum_edep_scint*0.001 >> %s", hist_name.Data());
+		draw_opt = "sum_edep_scint*0.001";
+
+	else
+		//draw_opt.Form("sum_edep_alpha_scint*0.001 >> %s", hist_name.Data());
+		draw_opt = "sum_edep_alpha_scint*0.001";
+	tree->Draw(draw_opt);
+
+	TH1F *result = (TH1F*)gPad->FindObject("htemp");
+	return result;
+}
+
+
