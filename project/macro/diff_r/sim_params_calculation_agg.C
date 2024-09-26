@@ -39,8 +39,11 @@ void fill_tree(TTree *tree, TString file_name)
 
 	TTree *in_tree = (TTree*)file->Get("params");
 	if (!in_tree) {
-		cerr << "Can't find tree params in " << file_name << endl;
-		return;
+		in_tree = (TTree*)file->Get("params_result");
+		if (!in_tree) {
+			cerr << "Can't find tree params in " << file_name << endl;
+			return;
+		}
 	}
 
 	Int_t out_event_id;

@@ -90,11 +90,11 @@ void resolution()
 		/*ratio[i] /= 1000.;
 		ratioe[i] /= 1000.;
 		alpha_ratio[i] /= 1000.;
-		alpha_ratioe[i] /= 1000.;
-		ratio[i] = TMath::Log(ratio[i]);
-		ratioe[i] = TMath::Log(ratio[i] + ratioe[i]) - ratio[i];
-		alpha_ratio[i] = TMath::Log(alpha_ratio[i]);
-		alpha_ratioe[i] = TMath::Log(alpha_ratio[i] + alpha_ratioe[i]) - alpha_ratio[i];*/
+		alpha_ratioe[i] /= 1000.;*/
+		//ratio[i] = TMath::Log(ratio[i]);
+		//ratioe[i] = TMath::Log(ratio[i] + ratioe[i]) - ratio[i];
+		//alpha_ratio[i] = TMath::Log(alpha_ratio[i]);
+		//alpha_ratioe[i] = TMath::Log(alpha_ratio[i] + alpha_ratioe[i]) - alpha_ratio[i];
 	}
 
 	TCanvas *c_res = new TCanvas("c_res", "c_res");
@@ -102,16 +102,18 @@ void resolution()
 	TGraphErrors *result = new TGraphErrors(npoints, energies, ratio, NULL, ratioe);
 	result->SetMarkerStyle(20);
 	result->SetMarkerSize(2);
-	result->SetMarkerColor(kBlue);
-	result->SetLineColor(kBlue);
+	result->SetMarkerColor(1);
+	result->SetLineColor(1);
 	result->SetLineWidth(5);
+	result->SetLineStyle(1);
     
     TGraphErrors *alpha_result = new TGraphErrors(npoints, energies, alpha_ratio, NULL, alpha_ratioe);
-    alpha_result->SetMarkerStyle(20);
+    alpha_result->SetMarkerStyle(21);
 	alpha_result->SetMarkerSize(2);
-	alpha_result->SetMarkerColor(kRed);
-	alpha_result->SetLineColor(kRed);
+	alpha_result->SetMarkerColor(1);
+	alpha_result->SetLineColor(1);
 	alpha_result->SetLineWidth(3);
+	alpha_result->SetLineStyle(10);
 	
 	auto legend = new TLegend(0.6,0.8,0.75,0.9);
 	legend->AddEntry(result, "all particles");
