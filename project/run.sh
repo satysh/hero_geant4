@@ -13,9 +13,8 @@ else
 fi
 cd ../build
 make -j3
-wait
+
 ./hero 1> >(tee out.txt ) 2> >(tee err.txt)
-wait
 
 cd -
 if [ -d output ];then
