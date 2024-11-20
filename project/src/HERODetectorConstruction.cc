@@ -31,9 +31,13 @@ G4VPhysicalVolume *HERODetectorConstruction::Construct()
     if (fBopt == "b") {
         G4cerr << "[HERO] b opt is set!" << G4endl;
         BorScinMat = new G4Material("BorScinMat", 1.032 * g / cm3, 3);
-        BorScinMat->AddElement(nist->FindOrBuildElement("C"), 46 * perCent);
-        BorScinMat->AddElement(nist->FindOrBuildElement("H"), 51 * perCent);
-        BorScinMat->AddElement(nist->FindOrBuildElement("B"), 3 * perCent);        
+        G4double constRatio = 0.46 / 0.51; // (cPerCent / hPerCent) for 3% boron 
+        G4double hPerCent = (1. - fBoronPerCent) / (1. + constRatio);
+        G4double cPerCent = constRatio * hPerCent;
+        BorScinMat->AddElement(nist->FindOrBuildElement("C"), cPerCent);
+        BorScinMat->AddElement(nist->FindOrBuildElement("H"), hPerCent);
+        BorScinMat->AddElement(nist->FindOrBuildElement("B"), fBoronPerCent);    
+        G4cerr << cPerCent << ", " << hPerCent << ", " << fBoronPerCent << ", " << cPerCent + hPerCent + fBoronPerCent << G4endl;
     }
     else if (fBopt == "-b") {
         G4cerr << "[HERO] -b opt is set!" << G4endl;

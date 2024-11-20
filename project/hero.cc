@@ -12,13 +12,14 @@
 
 int main(int argc, char** argv)
 {   
-    G4int nEvents = 100;
+    G4int nEvents = 1;
     G4int pdg = 2212; // 2212 proton
     G4int detectorR = 125; 
 
     G4double primaryE = 1. * GeV;
 
-    TString bopt = "-b";
+    TString bopt = "b"; // or -b
+    G4double boronPerCent = 3. * perCent;
     TString outFileName;
     outFileName.Form("hero_nevents_%d_pdg_%d_R_%d_E_%d_bron_%s.root", nEvents, pdg, detectorR, G4int(primaryE), bopt.Data());
     
@@ -28,6 +29,7 @@ int main(int argc, char** argv)
     HERODetectorConstruction *detectorConstruction = new HERODetectorConstruction();    
     detectorConstruction->SetR(detectorR);
     detectorConstruction->SetBopt(bopt.Data());
+    detectorConstruction->SetBoronPerCent(boronPerCent);
     runManager->SetUserInitialization(detectorConstruction);
 
     HEROPrimaryGenerator *primeGen = new HEROPrimaryGenerator();

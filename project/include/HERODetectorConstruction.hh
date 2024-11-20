@@ -14,6 +14,7 @@ public:
 
     void SetR(G4int r) { fR=r; }
     void SetBopt(TString bopt) { fBopt=bopt; }
+    void SetBoronPerCent(G4double value) { fBoronPerCent=value; }
 
 
     virtual G4VPhysicalVolume *Construct();
@@ -24,6 +25,7 @@ private:
 private:
     G4int fR=125; // detector radius in cm
     TString fBopt="b";
+    G4double fBoronPerCent=3.;
 };
 
 #endif
