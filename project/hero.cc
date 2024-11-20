@@ -12,14 +12,14 @@
 
 int main(int argc, char** argv)
 {   
-    G4int nEvents = 176;
+    G4int nEvents = 100;
     G4int pdg = 2212; // 2212 proton
     G4int detectorR = 125; 
 
-    G4double primaryE = 40. * GeV;
+    G4double primaryE = 78. * GeV;
 
     TString outFileName;
-    outFileName.Form("hero_nevents_%d_pdg_%d_R_%d_E_%d.root", nEvents, pdg, G4int(primaryE), detectorR);
+    outFileName.Form("hero_nevents_%d_pdg_%d_R_%d_E_%d.root", nEvents, pdg, detectorR, G4int(primaryE));
     
     G4RunManager *runManager = new G4RunManager();
     runManager->SetUserInitialization(new QGSP_BERT_HP);
