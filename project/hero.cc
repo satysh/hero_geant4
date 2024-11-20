@@ -12,16 +12,24 @@
 
 int main(int argc, char** argv)
 {   
-    G4int nEvents = 1;
+    G4int nEvents = 1000;
     G4int pdg = 2212; // 2212 proton
     G4int detectorR = 125; 
 
     G4double primaryE = 1. * GeV;
 
     TString bopt = "b"; // or -b
-    G4double boronPerCent = 3. * perCent;
+    G4double boronPerCent = 1. * perCent;
+
+    if (argc > 1) {
+        TString nowBoronPerCent(argv[1]);
+        boronPerCent = nowBoronPerCent.Atof() * perCent;
+        G4cerr << boronPerCent << G4endl;
+    }
+
     TString outFileName;
-    outFileName.Form("hero_nevents_%d_pdg_%d_R_%d_E_%d_bron_%s.root", nEvents, pdg, detectorR, G4int(primaryE), bopt.Data());
+    outFileName.Form("hero_nevents_%d_pdg_%d_R_%d_E_%d_bron_%s_percent_%d.root", nEvents, pdg, detectorR, G4int(primaryE), bopt.Data(),
+                     G4int(boronPerCent / perCent));
     
     G4RunManager *runManager = new G4RunManager();
     runManager->SetUserInitialization(new QGSP_BERT_HP);
