@@ -35,8 +35,8 @@ G4VPhysicalVolume *HERODetectorConstruction::Construct()
         BorScinMat->AddElement(nist->FindOrBuildElement("H"), 51 * perCent);
         BorScinMat->AddElement(nist->FindOrBuildElement("B"), 3 * perCent);        
     }
-    else if (fBopt == "wb") {
-        G4cerr << "[HERO] wb opt is set!" << G4endl;
+    else if (fBopt == "-b") {
+        G4cerr << "[HERO] -b opt is set!" << G4endl;
         BorScinMat = new G4Material("BorScinMat", 1.032 * g / cm3, 2);
         BorScinMat->AddElement(nist->FindOrBuildElement("C"), 46 * perCent);
         BorScinMat->AddElement(nist->FindOrBuildElement("H"), 54 * perCent);

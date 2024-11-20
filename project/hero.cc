@@ -16,17 +16,18 @@ int main(int argc, char** argv)
     G4int pdg = 2212; // 2212 proton
     G4int detectorR = 125; 
 
-    G4double primaryE = 78. * GeV;
+    G4double primaryE = 1. * GeV;
 
+    TString bopt = "-b";
     TString outFileName;
-    outFileName.Form("hero_nevents_%d_pdg_%d_R_%d_E_%d.root", nEvents, pdg, detectorR, G4int(primaryE));
+    outFileName.Form("hero_nevents_%d_pdg_%d_R_%d_E_%d_bron_%s.root", nEvents, pdg, detectorR, G4int(primaryE), bopt.Data());
     
     G4RunManager *runManager = new G4RunManager();
     runManager->SetUserInitialization(new QGSP_BERT_HP);
     
     HERODetectorConstruction *detectorConstruction = new HERODetectorConstruction();    
     detectorConstruction->SetR(detectorR);
-    detectorConstruction->SetBopt("wb");
+    detectorConstruction->SetBopt(bopt.Data());
     runManager->SetUserInitialization(detectorConstruction);
 
     HEROPrimaryGenerator *primeGen = new HEROPrimaryGenerator();
@@ -36,7 +37,7 @@ int main(int argc, char** argv)
     
     HEROActionInitialization *actionInit = new HEROActionInitialization();
     actionInit->SetPrimaryGenerator(primeGen);
-    actionInit->SetOutFileName(G4String(outFileName.Data()));
+    actionInit->SetOutFileName(outFileName.Data());
     runManager->SetUserInitialization(actionInit);
 
     runManager->Initialize();
