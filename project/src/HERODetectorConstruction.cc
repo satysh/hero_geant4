@@ -92,12 +92,6 @@ G4VPhysicalVolume *HERODetectorConstruction::Construct()
 
 void HERODetectorConstruction::ConstructSDandField()
 {
-    if (!fSensDetector) {
-        HEROSensitiveDetector* sensDet = new HEROSensitiveDetector("SensitiveDetector");
-        fSensDetector=sensDet;
-    }
-    for (G4int i=0; i<fR*2 + 1; i++)
-        fLogicalBorScin[i]->SetSensitiveDetector(fSensDetector);
 }
 
 

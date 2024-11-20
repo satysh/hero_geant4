@@ -34,18 +34,20 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include
 
 file(
   GLOB sources ${PROJECT_SOURCE_DIR}/src/HERODetectorConstruction.cc
-               ${PROJECT_SOURCE_DIR}/src/HERODetector.cc
+               ${PROJECT_SOURCE_DIR}/src/HEROSteppingAction.cc
                ${PROJECT_SOURCE_DIR}/src/HEROActionInitialization.cc
                ${PROJECT_SOURCE_DIR}/src/HERORunAction.cc
                ${PROJECT_SOURCE_DIR}/src/HEROPrimaryGenerator.cc
+               ${PROJECT_SOURCE_DIR}/src/HEROEventAction.cc
                ${PROJECT_SOURCE_DIR}/src/HEROPhysicsList.cc
 )
 file(
   GLOB headers ${PROJECT_SOURCE_DIR}/include/HERODetectorConstruction.hh
-               ${PROJECT_SOURCE_DIR}/include/HERODetector.hh
+               ${PROJECT_SOURCE_DIR}/include/HEROSteppingAction.hh
                ${PROJECT_SOURCE_DIR}/include/HEROActionInitialization.hh
                ${PROJECT_SOURCE_DIR}/include/HERORunAction.hh
                ${PROJECT_SOURCE_DIR}/include/HEROPrimaryGenerator.hh
+               ${PROJECT_SOURCE_DIR}/include/HEROEventAction.hh
                ${PROJECT_SOURCE_DIR}/include/HEROPhysicsList.hh
 )
 #file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cc)
