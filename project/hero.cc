@@ -12,14 +12,14 @@
 
 int main(int argc, char** argv)
 {   
-    G4int nEvents = 1000;
+    G4int nEvents = 10000;
     G4int pdg = 2212; // 2212 proton
     G4int detectorR = 125; 
 
     G4double primaryE = 1. * GeV;
 
-    TString bopt = "b"; // or -b
-    G4double boronPerCent = 1. * perCent;
+    TString bopt = "-b"; // or -b
+    G4double boronPerCent = 0. * perCent;
 
     if (argc > 1) {
         TString nowBoronPerCent(argv[1]);
