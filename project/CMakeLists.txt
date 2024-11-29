@@ -40,6 +40,7 @@ file(
                ${PROJECT_SOURCE_DIR}/src/HEROPrimaryGenerator.cc
                ${PROJECT_SOURCE_DIR}/src/HEROEventAction.cc
                ${PROJECT_SOURCE_DIR}/src/HEROPhysicsList.cc
+               ${PROJECT_SOURCE_DIR}/src/OpticalPhysicsWithoutCherenkov.cc
 )
 file(
   GLOB headers ${PROJECT_SOURCE_DIR}/include/HERODetectorConstruction.hh
@@ -49,6 +50,7 @@ file(
                ${PROJECT_SOURCE_DIR}/include/HEROPrimaryGenerator.hh
                ${PROJECT_SOURCE_DIR}/include/HEROEventAction.hh
                ${PROJECT_SOURCE_DIR}/include/HEROPhysicsList.hh
+               ${PROJECT_SOURCE_DIR}/include/OpticalPhysicsWithoutCherenkov.hh
 )
 #file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cc)
 #file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh)

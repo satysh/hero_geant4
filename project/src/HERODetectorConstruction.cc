@@ -26,6 +26,16 @@ G4VPhysicalVolume *HERODetectorConstruction::Construct()
     worldMat->AddElement(nist->FindOrBuildElement("O"), 23.1 * perCent);
     worldMat->AddElement(nist->FindOrBuildElement("Ar"), 1.4 * perCent);
 
+    // world mat + rindex
+    /*
+    G4double energy[2] = {1.239841939*eV/0.9, 1.239841939*eV/0.2};
+    G4double rindexWorld[2] = {1.000, 1.000}; 
+
+    G4MaterialPropertiesTable *mptworld = new G4MaterialPropertiesTable();
+    mptworld->AddProperty("RINDEX", energy, rindexWorld, 2);
+    worldMat->SetMaterialPropertiesTable(mptworld);
+    */
+
     G4Material *BorScinMat;
     
     if (fBopt == "b") {
@@ -46,11 +56,32 @@ G4VPhysicalVolume *HERODetectorConstruction::Construct()
         BorScinMat->AddElement(nist->FindOrBuildElement("H"), 54 * perCent);
     }
 
+    G4double energyScin[2] = {1.239841939*eV/0.9, 1.239841939*eV/0.2};
+    G4double rindexScin[2] = {1.5, 1.5};
+    G4double fraction[2] = {1.0, 1.0};
+
+    G4MaterialPropertiesTable *mptScin = new G4MaterialPropertiesTable();
+    mptScin->AddProperty("SCINTILLATIONCOMPONENT1", energyScin, fraction, 2);
+    mptScin->AddProperty("RINDEX", energyScin, rindexScin, 2);
+    mptScin->AddConstProperty("SCINTILLATIONYIELD", 10./keV);
+    mptScin->AddConstProperty("RESOLUTIONSCALE", 1.0);
+    mptScin->AddConstProperty("SCINTILLATIONTIMECONSTANT1", 250.*ns);
+    mptScin->AddConstProperty("SCINTILLATIONYIELD1", 1.);
+    BorScinMat->SetMaterialPropertiesTable(mptScin);
+
     G4Material *WolframMat = new G4Material("WolframMat", 19.3*g/cm3, 1);
     WolframMat->AddElement(nist->FindOrBuildElement("W"), 100. * perCent);
     //WolframMat->AddElement(nist->FindOrBuildElement("Ni"), 4.5 * perCent);
     //WolframMat->AddElement(nist->FindOrBuildElement("Cu"), 2.7 * perCent);
 
+    /*
+    G4double energyW[] = {1.239841939*eV/0.9, 1.239841939*eV/0.2};
+    G4double rindexW[] = {2.25, 2.25};
+
+    G4MaterialPropertiesTable *mptW = new G4MaterialPropertiesTable();
+    mptW->AddProperty("RINDEX", energyW, rindexW, 2);
+    WolframMat->SetMaterialPropertiesTable(mptW);
+    */
 
     // World
     G4int R = fR;

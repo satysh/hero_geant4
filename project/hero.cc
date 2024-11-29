@@ -8,18 +8,23 @@
 #include "HEROActionInitialization.hh"
 #include "HEROPrimaryGenerator.hh"
 
+#include "OpticalPhysicsWithoutCherenkov.hh"
+
 #include "TString.h" 
+
+#include <ctime>
 
 int main(int argc, char** argv)
 {   
-    G4int nEvents = 100;
+    clock_t start_time = clock();
+    G4int nEvents = 25;
     G4int pdg = 2212; // 2212 proton
     G4int detectorR = 125; 
 
     G4double primaryE = 1. * GeV;
 
-    TString bopt = "-b"; // or -b
-    G4double boronPerCent = 0. * perCent;
+    TString bopt = "b"; // or -b
+    G4double boronPerCent = 5. * perCent;
 
     if (argc > 1) {
         TString nowBoronPerCent(argv[1]);
@@ -32,7 +37,9 @@ int main(int argc, char** argv)
                      G4int(boronPerCent / perCent));
     
     G4RunManager *runManager = new G4RunManager();
-    runManager->SetUserInitialization(new QGSP_BERT_HP);
+    G4VModularPhysicsList* physics = new QGSP_BERT_HP(0);
+    physics->RegisterPhysics(new G4OpticalPhysics());
+    runManager->SetUserInitialization(physics);
     
     HERODetectorConstruction *detectorConstruction = new HERODetectorConstruction();    
     detectorConstruction->SetR(detectorR);
@@ -53,6 +60,12 @@ int main(int argc, char** argv)
     runManager->Initialize();
     runManager->SetPrintProgress(1);
     runManager->BeamOn(nEvents);
+
+    clock_t end_time = clock();
+    G4double execution_time = (G4double)(end_time - start_time) / CLOCKS_PER_SEC;
+    G4cout << "Execution time: " << G4int(execution_time / 3600.) << " h "
+                                 << G4int(execution_time / 60.) << " min "
+                                 << execution_time << " seconds " << G4endl;
  
     return 0;
 }

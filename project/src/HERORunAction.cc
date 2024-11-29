@@ -10,6 +10,7 @@ HERORunAction::HERORunAction()
 	man->CreateNtuple("HERO", "Data");
 	man->CreateNtupleIColumn(0, "eventid");
 	man->CreateNtupleDColumn(0, "edep");
+	man->CreateNtupleIColumn(0, "nopticalphotons");
 	man->FinishNtuple(0);
 }
 

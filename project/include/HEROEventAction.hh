@@ -16,10 +16,12 @@ class HEROEventAction : public G4UserEventAction
     void EndOfEventAction(const G4Event* event) override;
 
     void AddEdep(G4double edep) { fEdep += edep; }
+    void AddOpticalPhoton() { fNOpticalPhotons++; }
 
   private:
     HERORunAction* fRunAction = nullptr;
     G4double       fEdep = 0.;
+    G4int          fNOpticalPhotons = 0;
 };
 
 #endif

@@ -19,6 +19,7 @@ void HEROEventAction::EndOfEventAction(const G4Event *event)
     G4AnalysisManager* man = G4AnalysisManager::Instance();
     man->FillNtupleIColumn(0, 0, eventID);
     man->FillNtupleDColumn(0, 1, fEdep); // MeV
+    man->FillNtupleIColumn(0, 2, fNOpticalPhotons);
     man->AddNtupleRow(0);
 }
 
