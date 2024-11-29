@@ -12,7 +12,7 @@
 
 int main(int argc, char** argv)
 {   
-    G4int nEvents = 10000;
+    G4int nEvents = 100;
     G4int pdg = 2212; // 2212 proton
     G4int detectorR = 125; 
 
