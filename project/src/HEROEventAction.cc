@@ -11,6 +11,7 @@ HEROEventAction::HEROEventAction(HERORunAction* runAction)
 void HEROEventAction::BeginOfEventAction(const G4Event*)
 {
     fEdep = 0.;
+    fNOpticalPhotons = 0;
 }
 
 void HEROEventAction::EndOfEventAction(const G4Event *event)
