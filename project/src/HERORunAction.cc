@@ -4,7 +4,7 @@
 HERORunAction::HERORunAction()
 {
 	G4AnalysisManager *man = G4AnalysisManager::Instance();
-	man->SetNtupleMerging(false);
+	man->SetNtupleMerging(true);
 
 	// Scintillator
 	man->CreateNtuple("HERO", "Data");
