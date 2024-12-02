@@ -1,5 +1,5 @@
-
-#include "G4RunManager.hh"
+//#include "G4RunManager.hh"
+#include "G4MTRunManager.hh"
 #include "G4SystemOfUnits.hh"
 #include <QGSP_BERT_HP.hh>
 //#include <QGSP_INCLXX_HP>
@@ -17,7 +17,7 @@
 int main(int argc, char** argv)
 {   
     clock_t start_time = clock();
-    G4int nEvents = 25;
+    G4int nEvents = 1000;
     G4int pdg = 2212; // 2212 proton
     G4int detectorR = 125; 
 
@@ -26,17 +26,24 @@ int main(int argc, char** argv)
     TString bopt = "b"; // or -b
     G4double boronPerCent = 5. * perCent;
 
+    G4int nthr = 1;
     if (argc > 1) {
-        TString nowBoronPerCent(argv[1]);
-        boronPerCent = nowBoronPerCent.Atof() * perCent;
-        G4cerr << boronPerCent << G4endl;
+        TString energy(argv[1]), nthreds(argv[2]);
+        primaryE = energy.Atof() * GeV;
+        nthr = nthreds.Atoi();
     }
+
+    G4Random::setTheSeed(nthr);
 
     TString outFileName;
     outFileName.Form("hero_nevents_%d_pdg_%d_R_%d_E_%d_bron_%s_percent_%d.root", nEvents, pdg, detectorR, G4int(primaryE), bopt.Data(),
                      G4int(boronPerCent / perCent));
-    
-    G4RunManager *runManager = new G4RunManager();
+
+    G4MTRunManager* runManager = new G4MTRunManager();     // Multithreaded mode
+    runManager->SetNumberOfThreads(nthr);
+    G4cout << G4endl << G4endl << "NUMBER THREADS: " << runManager->GetNumberOfThreads() << G4endl<< G4endl;
+
+    //G4RunManager *runManager = new G4RunManager();
     G4VModularPhysicsList* physics = new QGSP_BERT_HP(0);
     physics->RegisterPhysics(new G4OpticalPhysics());
     runManager->SetUserInitialization(physics);

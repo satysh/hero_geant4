@@ -1,5 +1,9 @@
 #!/bin/bash
 
+NTHR=8
+EMIN=1 # GeV
+EMAX=15 # GeV
+
 if [ -d ../build ];then
     echo "../build was found!"
     rm -fv ../build/*.root
@@ -12,9 +16,13 @@ else
     cd -
 fi
 cd ../build
-make -j3
+make -j${NTHR}
 
-./hero 1> >(tee out.txt ) 2> >(tee err.txt)
+time (
+    for e in $(seq ${EMIN} ${EMAX}); do
+        ./hero ${e} ${NTHR} 1> >(tee out.txt ) 2> >(tee err.txt) 8
+    done
+)
 
 cd -
 
