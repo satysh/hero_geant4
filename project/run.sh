@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NTHR=8
+NTHR=16
 EMIN=1 # GeV
 EMAX=15 # GeV
 
@@ -20,7 +20,7 @@ make -j${NTHR}
 
 time (
     for e in $(seq ${EMIN} ${EMAX}); do
-        ./hero ${e} ${NTHR} 1> >(tee out.txt ) 2> >(tee err.txt) 8
+        ./hero ${e} ${NTHR} 1> >(tee out.txt ) 2> >(tee err.txt)
     done
 )
 
