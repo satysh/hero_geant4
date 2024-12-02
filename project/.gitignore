@@ -1,8 +1,5 @@
-!/build
-/build/*
-
-!/output
-/macro/thresholdscalculation/input/*.root
-/macro/jupyter/.ipynb_checkpoints/
-../*
+*.csv
+*.root
+*.txt
+*.ipynb_checkpoints/
 
