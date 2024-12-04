@@ -2,6 +2,9 @@
 #include "HEROEventAction.hh"
 
 #include "G4Step.hh"
+//#include "G4RunManager.hh"
+#include "G4AnalysisManager.hh"
+#include "G4Event.hh"
 
 HEROSteppingAction::HEROSteppingAction(HEROEventAction* eventAction)
 : fEventAction(eventAction)
@@ -21,13 +24,17 @@ void HEROSteppingAction::UserSteppingAction(const G4Step* step)
     if (volume.contains("logicBorScint_")) {
         // collect energy deposited in this step
         G4double edepStep = step->GetTotalEnergyDeposit();
-
-        // accumulate statistics in run action
-        fEventAction->AddEdep(edepStep);   
+        fEventAction->AddEdep(edepStep); // accumulate statistics in run action
 
         // opticalphoton
         if (particleName == "opticalphoton") {
             fEventAction->AddOpticalPhoton();
+            G4double globalTime = track->GetGlobalTime();
+            
+            G4AnalysisManager* man = G4AnalysisManager::Instance();
+            man->FillH1(0, globalTime * 0.001);
+            
+
             track->SetTrackStatus(fStopAndKill);
         }
     }
@@ -42,4 +49,5 @@ void HEROSteppingAction::UserSteppingAction(const G4Step* step)
             G4cerr << "opticalphoton in Wolfram!" << G4endl;
         }
     }
+
 }

@@ -12,6 +12,8 @@ HERORunAction::HERORunAction()
 	man->CreateNtupleDColumn(0, "edep");
 	man->CreateNtupleIColumn(0, "nopticalphotons");
 	man->FinishNtuple(0);
+
+	man->CreateH1("global_time", "global_time", 17, 0., 17.);
 }
 
 HERORunAction::~HERORunAction()
