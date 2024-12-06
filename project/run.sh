@@ -1,7 +1,7 @@
 #!/bin/bash
 
 NTHR=16
-EMIN=1 # GeV
+EMIN=1  # GeV
 EMAX=15 # GeV
 
 if [ -d ../build ];then
@@ -37,4 +37,13 @@ else
     mv ../build/*.root output/
     mv ../build/out.txt output/
     mv ../build/err.txt output/
+fi
+
+cd macro/scint_light/
+
+if [ -d scint_world_primarymaxedepxyzt_output ]; then
+    mv ../../output/*.root scint_world_primarymaxedepxyzt_output/
+else
+    mkdir scint_world_primarymaxedepxyzt_output/
+    mv ../../output/*.root scint_world_primarymaxedepxyzt_output/
 fi
