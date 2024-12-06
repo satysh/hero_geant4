@@ -18,7 +18,7 @@ int main(int argc, char** argv)
 {   
     clock_t start_time = clock();
     G4int nEvents = 1000;
-    G4int pdg = 11; // 2212 proton, 11 electron
+    G4int pdg = 2212; // 2212 proton, 11 electron
     G4int detectorR = 125; 
 
     G4double primaryE = 1. * GeV;

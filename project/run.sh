@@ -1,8 +1,8 @@
 #!/bin/bash
 
 NTHR=16
-#E_ARRAY=($(seq 1 15)) # GeV
-E_ARRAY=(6 12 25 50 100) # GeV
+#E_ARRAY=($(seq 1 2)) # GeV
+E_ARRAY=(10000 100000) # GeV
 
 if [ -d ../build ];then
     echo "../build was found!"
@@ -41,9 +41,11 @@ fi
 
 cd macro/scint_light/
 
-if [ -d electron ]; then
-    mv ../../output/*.root electron/
+OUTDIR=tev
+
+if [ -d ${OUTDIR} ]; then
+    mv ../../output/*.root ${OUTDIR}
 else
-    mkdir electron/
-    mv ../../output/*.root electron/
+    mkdir ${OUTDIR}
+    mv ../../output/*.root ${OUTDIR}
 fi
