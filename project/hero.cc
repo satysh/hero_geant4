@@ -16,6 +16,7 @@
 
 int main(int argc, char** argv)
 {   
+    G4Random::setTheSeed(123456);
     clock_t start_time = clock();
     G4int nEvents = 1000;
     G4int pdg = 2212; // 2212 proton
@@ -45,7 +46,7 @@ int main(int argc, char** argv)
 
     //G4RunManager *runManager = new G4RunManager();
     G4VModularPhysicsList* physics = new QGSP_BERT_HP(0);
-    physics->RegisterPhysics(new G4OpticalPhysics());
+    //physics->RegisterPhysics(new G4OpticalPhysics());
     runManager->SetUserInitialization(physics);
     
     HERODetectorConstruction *detectorConstruction = new HERODetectorConstruction();    

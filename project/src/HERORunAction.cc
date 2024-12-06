@@ -13,7 +13,22 @@ HERORunAction::HERORunAction()
 	man->CreateNtupleIColumn(0, "nopticalphotons");
 	man->FinishNtuple(0);
 
-	man->CreateH1("global_time", "global_time", 17, 0., 17.);
+	// World
+	man->CreateNtuple("WHERO", "Data");
+	man->CreateNtupleIColumn(1, "eventid");
+	man->CreateNtupleDColumn(1, "edep");
+	man->FinishNtuple(1);
+
+	// Primary
+	man->CreateNtuple("PRIMARY", "Data");
+	man->CreateNtupleDColumn(2, "maxedep");
+	man->CreateNtupleDColumn(2, "maxedepx");
+	man->CreateNtupleDColumn(2, "maxedepy");
+	man->CreateNtupleDColumn(2, "maxedepz");
+	man->CreateNtupleDColumn(2, "maxedept");
+	man->FinishNtuple(2);
+	
+	man->CreateH1("global_time", "global_time", 1700, 0., 17.);
 }
 
 HERORunAction::~HERORunAction()
