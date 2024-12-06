@@ -16,10 +16,9 @@
 
 int main(int argc, char** argv)
 {   
-    G4Random::setTheSeed(123456);
     clock_t start_time = clock();
     G4int nEvents = 1000;
-    G4int pdg = 2212; // 2212 proton
+    G4int pdg = 11; // 2212 proton, 11 electron
     G4int detectorR = 125; 
 
     G4double primaryE = 1. * GeV;
@@ -28,13 +27,18 @@ int main(int argc, char** argv)
     G4double boronPerCent = 5. * perCent;
 
     G4int nthr = 1;
+    G4int random_state=654321;
     if (argc > 1) {
         TString energy(argv[1]), nthreds(argv[2]);
         primaryE = energy.Atof() * GeV;
         nthr = nthreds.Atoi();
     }
+    else if (argc > 3) {
+        TString seed(argv[3]);
+        random_state = seed.Atoi();
+    }
 
-    G4Random::setTheSeed(nthr);
+    G4Random::setTheSeed(random_state);
 
     TString outFileName;
     outFileName.Form("hero_nevents_%d_pdg_%d_R_%d_E_%d_bron_%s_percent_%d.root", nEvents, pdg, detectorR, G4int(primaryE), bopt.Data(),

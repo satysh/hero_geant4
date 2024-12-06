@@ -1,8 +1,8 @@
 #!/bin/bash
 
 NTHR=16
-EMIN=1  # GeV
-EMAX=15 # GeV
+#E_ARRAY=($(seq 1 15)) # GeV
+E_ARRAY=(6 12 25 50 100) # GeV
 
 if [ -d ../build ];then
     echo "../build was found!"
@@ -19,8 +19,8 @@ cd ../build
 make -j${NTHR}
 
 time (
-    for e in $(seq ${EMIN} ${EMAX}); do
-        ./hero ${e} ${NTHR} 1> >(tee out.txt ) 2> >(tee err.txt)
+    for ((i=0; i<${#E_ARRAY[@]}; i++)); do
+        ./hero ${E_ARRAY[i]} ${NTHR} 1> >(tee out.txt ) 2> >(tee err.txt)
     done
 )
 
@@ -41,9 +41,9 @@ fi
 
 cd macro/scint_light/
 
-if [ -d scint_world_primarymaxedepxyzt_output ]; then
-    mv ../../output/*.root scint_world_primarymaxedepxyzt_output/
+if [ -d electron ]; then
+    mv ../../output/*.root electron/
 else
-    mkdir scint_world_primarymaxedepxyzt_output/
-    mv ../../output/*.root scint_world_primarymaxedepxyzt_output/
+    mkdir electron/
+    mv ../../output/*.root electron/
 fi
