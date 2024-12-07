@@ -33,13 +33,23 @@ int main(int argc, char** argv)
         primaryE = energy.Atof() * GeV;
         nthr = nthreds.Atoi();
     }
-    else if (argc > 3) {
+    if (argc > 3) {
         TString seed(argv[3]);
         random_state = seed.Atoi();
+    }
+    if (argc > 4) {
+        bopt = argv[4];
+    }
+    if (argc > 5) {
+        TString nevents(argv[5]);
+        nEvents = nevents.Atoi();
     }
 
     G4Random::setTheSeed(random_state);
 
+    G4cout << "primaryE=" << primaryE << ", nthreds=" << nthr << ", random_state=" << random_state
+           << ", bopt=" << bopt << ", nEvents=" << nEvents << G4endl;
+           
     TString outFileName;
     outFileName.Form("hero_nevents_%d_pdg_%d_R_%d_E_%d_bron_%s_percent_%d_absorber.root", nEvents, pdg, detectorR, G4int(primaryE), bopt.Data(),
                      G4int(boronPerCent / perCent));
