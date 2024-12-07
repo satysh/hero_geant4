@@ -59,12 +59,12 @@ void HEROSteppingAction::UserSteppingAction(const G4Step* step)
             track->SetTrackStatus(fStopAndKill);
         }
     }
-    else if (volume.contains("logicWorld")) {
+    else if (volume.contains("logicWolfram")) {
         const G4DynamicParticle* dParticle = track->GetDynamicParticle();
-        G4double kinEnergy = dParticle->GetKineticEnergy();
-        fEventAction->AddWEdep(kinEnergy); // accumulate statistics in run action
+        //G4double kinEnergy = dParticle->GetKineticEnergy();
+        fEventAction->AddWEdep(edepStep); // accumulate statistics in run action
 
-        track->SetTrackStatus(fStopAndKill);
+        //track->SetTrackStatus(fStopAndKill);
     }
 
     // check

@@ -14,7 +14,7 @@ HERORunAction::HERORunAction()
 	man->FinishNtuple(0);
 
 	// World
-	man->CreateNtuple("WHERO", "Data");
+	man->CreateNtuple("AHERO", "Data");
 	man->CreateNtupleIColumn(1, "eventid");
 	man->CreateNtupleDColumn(1, "edep");
 	man->FinishNtuple(1);
