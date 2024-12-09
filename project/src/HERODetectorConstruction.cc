@@ -56,6 +56,7 @@ G4VPhysicalVolume *HERODetectorConstruction::Construct()
         BorScinMat->AddElement(nist->FindOrBuildElement("H"), 54 * perCent);
     }
 
+    G4cout <<"Bor Rad length  = " << BorScinMat->GetRadlen() << "Bor nuclear = " << BorScinMat->GetNuclearInterLength () << G4endl;
     G4double energyScin[2] = {1.239841939*eV/0.9, 1.239841939*eV/0.2};
     G4double rindexScin[2] = {1.5, 1.5};
     G4double fraction[2] = {1.0, 1.0};
@@ -82,6 +83,8 @@ G4VPhysicalVolume *HERODetectorConstruction::Construct()
     mptW->AddProperty("RINDEX", energyW, rindexW, 2);
     WolframMat->SetMaterialPropertiesTable(mptW);
     */
+
+    G4cout <<"W Rad length  = " << WolframMat->GetRadlen() << "W nuclear = " << WolframMat->GetNuclearInterLength () << G4endl;
 
     // World
     G4int R = fR;
