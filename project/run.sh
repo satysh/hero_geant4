@@ -1,8 +1,9 @@
 #!/bin/bash
 
 NTHR=16
+NEVENTS=1000
 #E_ARRAY=($(seq 1 1)) # GeV
-E_ARRAY=(1 6 12 25 50 100 1000) # GeV
+E_ARRAY=(80 90 250 500 750 2500 5000 7500 10000 25000 50000 75000 100000) # GeV
 
 if [ -d ../build ];then
     echo "../build was found!"
@@ -20,19 +21,12 @@ make -j${NTHR}
 
 time (
     RANDOM_STATE=654321
-    BOPT=-b
-    NEVENTS=1000
-    for ((i=0; i<${#E_ARRAY[@]}; i++)); do
-        ./hero ${E_ARRAY[i]} ${NTHR} ${RANDOM_STATE} ${BOPT} ${NEVENTS} 1> >(tee out.txt ) 2> >(tee err.txt)
-    done
-
     BOPT=b
-    NEVENTS=100
-    E_ARRAY=(10000, 100000) # GeV
     for ((i=0; i<${#E_ARRAY[@]}; i++)); do
         ./hero ${E_ARRAY[i]} ${NTHR} ${RANDOM_STATE} ${BOPT} ${NEVENTS} 1> >(tee out.txt ) 2> >(tee err.txt)
     done
 
+    RANDOM_STATE=654321
     BOPT=-b
     for ((i=0; i<${#E_ARRAY[@]}; i++)); do
         ./hero ${E_ARRAY[i]} ${NTHR} ${RANDOM_STATE} ${BOPT} ${NEVENTS} 1> >(tee out.txt ) 2> >(tee err.txt)
