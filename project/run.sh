@@ -3,7 +3,7 @@
 NTHR=16
 NEVENTS=1000
 #E_ARRAY=($(seq 1 1)) # GeV
-E_ARRAY=(80 90 250 500 750 2500 5000 7500 10000 25000 50000 75000 100000) # GeV
+E_ARRAY=(1 10 25 50 75 100 250 500 750 1000 2500 5000 7500 10000 25000 50000 75000 100000) # GeV
 
 if [ -d ../build ];then
     echo "../build was found!"
@@ -50,7 +50,7 @@ fi
 
 cd macro/scint_light/
 
-OUTDIR=proton
+OUTDIR=gamma
 
 if [ -d ${OUTDIR} ]; then
     mv ../../output/*.root ${OUTDIR}
