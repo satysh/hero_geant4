@@ -29,7 +29,7 @@ void e_resolution()
 		
 
 		Double_t now_mean = h->GetMean();
-		//Double_t now_mean_error = h->GetMeanError();
+		Double_t now_mean_error = h->GetMeanError();
 		Double_t now_std = h->GetStdDev();
 		//Double_t now_std_error = h->GetStdDevError();
 
@@ -38,8 +38,8 @@ void e_resolution()
 		                                TMath::Sqrt(2. * h->GetEntries());
 
 		//cout << i << ", " << now_resolution << ", " << now_resolution_error << endl;
-		proton_boron_resolution_edep[i] = now_resolution;
-		proton_boron_resolution_edep_errors[i] = now_resolution_error;
+		proton_boron_resolution_edep[i] = now_mean * 0.001;
+		proton_boron_resolution_edep_errors[i] = now_mean_error * 0.001;
 // -------------------------------------------------------------------------------------------------------------------------------------
 // -b ----------------------------------------------------------------------------------------------------------------------------------
 		// path -b
@@ -49,6 +49,7 @@ void e_resolution()
 		if (!h) { return; }
 
 		now_mean = h->GetMean();
+		now_mean_error = h->GetMeanError();
 		now_std = h->GetStdDev();
 		now_resolution = now_std / now_mean;
 		now_resolution_error = TMath::Sqrt(1. + 2. * TMath::Power(0.01 * now_resolution, 2)) * now_resolution / 
@@ -56,8 +57,8 @@ void e_resolution()
 
 		cout << i << ", " << now_resolution << ", " << now_resolution_error << endl;
 
-		proton_noboron_resolution_edep[i] = now_resolution;
-		proton_noboron_resolution_edep_errors[i] = now_resolution_error;
+		proton_noboron_resolution_edep[i] = now_mean * 0.001;
+		proton_noboron_resolution_edep_errors[i] = now_mean_error * 0.001;
 // -----------------------------------------------------------------------------------------------------------------------------------
 	}
 	
@@ -94,16 +95,16 @@ void e_resolution()
 	TMultiGraph *mg = new TMultiGraph();
 	mg->Add(p_b_edep_gr);
 	mg->Add(p_nob_edep_gr);
-	mg->GetXaxis()->SetTitle("Energy [GeV]");
-	mg->GetYaxis()->SetTitle("resolution");
+	mg->GetXaxis()->SetTitle("E [GeV]");
+	mg->GetYaxis()->SetTitle("E_means [GeV]");
 
 	TCanvas *c = new TCanvas("resolution", "resolution");
 	c->cd();
 	mg->Draw("ALP");
 
 	auto legend = new TLegend(0.1, 0.77, 0.5, 0.9);
-	legend->AddEntry(p_b_edep_gr, "e-, det+boron, edep");
-	legend->AddEntry(p_nob_edep_gr, "e-, det-boron, edep");
+	legend->AddEntry(p_b_edep_gr, "scint+boron");
+	legend->AddEntry(p_nob_edep_gr, "scint");
 	legend->Draw();
 
 	gPad->SetGrid(2, 2);

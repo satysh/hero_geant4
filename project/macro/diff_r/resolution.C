@@ -2,7 +2,7 @@ TH1F *hist(TString file_name);
 TH1F *hist_from_tree(Int_t energy, Bool_t alpha=false);
 void resolution()
 {
-	const Int_t npoints = 7;
+	const Int_t npoints = 6;
 	Int_t points[] = {1000, 10000, 20000, 40000, 60000, 80000, 100000};
 
 	Double_t ratio[npoints];
@@ -71,7 +71,7 @@ void resolution()
 		cout << "errors: " << now_meane << ", " << now_std_deve << ", " << alpha_ratio[i] << endl;
 
 	    legendTitle.Form("alpha particles only, mean = %.2f, stdDev = %.2f", now_mean, now_std_dev);
-		legend->AddEntry(now_h, legendTitle);
+		//legend->AddEntry(now_h, legendTitle);
 		now_h->Draw("SAME");
 		now_h->SetLineColor(kRed);
 		now_h->SetLineWidth(3);
@@ -106,6 +106,9 @@ void resolution()
 	result->SetLineColor(1);
 	result->SetLineWidth(5);
 	result->SetLineStyle(1);
+
+	TF1 *f = new TF1("f1", "[1] * x + [0]", 1000, 80000);
+	//result->Fit(f);
     
     TGraphErrors *alpha_result = new TGraphErrors(npoints, energies, alpha_ratio, NULL, alpha_ratioe);
     alpha_result->SetMarkerStyle(21);
@@ -117,16 +120,16 @@ void resolution()
 	
 	auto legend = new TLegend(0.6,0.8,0.75,0.9);
 	legend->AddEntry(result, "all particles");
-	legend->AddEntry(alpha_result, "alpha particles only");
+	//legend->AddEntry(alpha_result, "alpha particles only");
 	
 	TMultiGraph *mg = new TMultiGraph();
 	mg->SetTitle("");
 	mg->Add(result);
-	mg->Add(alpha_result);
+	//mg->Add(alpha_result);
 	mg->GetXaxis()->SetTitle("E [TeV]");
 	mg->GetYaxis()->SetTitle("resolution");
 	mg->Draw("ALP");
-	legend->Draw();
+	//legend->Draw();
 	gPad->SetGrid(2, 2);
 }
 
