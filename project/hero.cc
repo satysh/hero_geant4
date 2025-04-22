@@ -60,7 +60,7 @@ int main(int argc, char** argv)
 
     //G4RunManager *runManager = new G4RunManager();
     G4VModularPhysicsList* physics = new QGSP_BERT_HP(0);
-    //physics->RegisterPhysics(new G4OpticalPhysics());
+    physics->RegisterPhysics(new G4OpticalPhysics());
     runManager->SetUserInitialization(physics);
     
     HERODetectorConstruction *detectorConstruction = new HERODetectorConstruction();    
