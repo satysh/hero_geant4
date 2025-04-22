@@ -18,7 +18,7 @@ int main(int argc, char** argv)
 {   
     clock_t start_time = clock();
     G4int nEvents = 1000;
-    G4int pdg = 22; // 2212 proton, 11 electron, 22 gamma
+    G4int pdg = 2212; // 2212 proton, 11 electron, 22 gamma
     G4int detectorR = 125; 
 
     G4double primaryE = 1. * GeV;
@@ -71,7 +71,8 @@ int main(int argc, char** argv)
 
     HEROPrimaryGenerator *primeGen = new HEROPrimaryGenerator();
     primeGen->SetPrimaryParticle(pdg);
-    primeGen->SetParticleEnergy(primaryE);
+    //primeGen->SetParticleEnergy(primaryE);
+    primeGen->SetBackgroundMCMode(128.);
     primeGen->SetR(G4double(detectorR) * cm);
     
     HEROActionInitialization *actionInit = new HEROActionInitialization();

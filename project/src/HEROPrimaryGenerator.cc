@@ -4,6 +4,17 @@
 #include "Randomize.hh"
 #include "G4IonTable.hh"
 
+#include "TGraph.h"
+#include "TF1.h"
+#include "TVectorD.h"
+
+#include <fstream>
+
+TGraph* energyInvCDFGr = NULL;
+
+Double_t EnergyInvCDF(Double_t *x, Double_t *par) {
+  return energyInvCDFGr->Eval(x[0]);
+}
 
 HEROPrimaryGenerator::HEROPrimaryGenerator()
 {
@@ -32,6 +43,13 @@ void HEROPrimaryGenerator::SetParticleEnergy(G4double particleE0, G4double parti
 
 }
 
+void HEROPrimaryGenerator::SetBackgroundMCMode(G4double dtime) 
+{ 
+    fBackgroundDTime=dtime; 
+    fBackgroundMCIsSet=true; 
+    ReadFluxTXT();
+}
+
 void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
 {
     G4int eventId = anEvent->GetEventID();
@@ -46,7 +64,9 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
 
     if (!particle) {
         G4cerr << "Can't find the particle with pdg: " << fPrimaryParticlePDG << G4endl;
+        return;
     }
+
 
     fParticleGun->SetParticleDefinition(particle);
 
@@ -59,8 +79,17 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
     G4ThreeVector mom(px, py, pz);
     fParticleGun->SetParticleMomentumDirection(mom);
 
-    // Energy
-    if (fEnergyIsSet) {
+    // Energy and Time
+    if (fBackgroundMCIsSet) {
+        G4double startTime = (G4double)G4UniformRand() * fBackgroundDTime; // nanoseconds
+        fParticleGun->SetParticleTime(startTime); // nanoseconds
+        G4double particleEnergy = GetBackgroundPrimaryEnergy();
+        fParticleGun->SetParticleEnergy(particleEnergy);
+        // Debug
+        G4cerr << "startTime=" << fParticleGun->GetParticleTime() << G4endl;
+        G4cerr << "Energy=" << fParticleGun->GetParticleEnergy() << G4endl;
+    }
+    else if (fEnergyIsSet) {
         fParticleGun->SetParticleEnergy(fParticleEnergy);
         //G4cerr << "primaryE=" << fParticleEnergy << G4endl;
     }
@@ -74,4 +103,46 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
 
     fParticleGun->GeneratePrimaryVertex(anEvent);
     fParticleSource->GeneratePrimaryVertex(anEvent);
+}
+
+void HEROPrimaryGenerator::ReadFluxTXT() {
+    std::ifstream fin("../project/input/IntPam2010.txt");
+    if (!fin.is_open()) {
+        G4cerr << "Can't find IntPam2010.txt!" << G4endl;
+    }
+
+    G4int nPoints = std::count(std::istreambuf_iterator<char>(fin),
+                               std::istreambuf_iterator<char>(), '\n');
+    fin.seekg(0, std::ios::beg);
+
+    G4String info="";
+    for (Int_t i=0; i<7; i++) {fin >> info;}
+
+    TVectorD energy(nPoints);
+    TVectorD flux(nPoints);
+    G4int i=0;
+
+    while (!fin.eof()) {
+        G4double curE; // GeV
+        G4double curFlux; // particles/m^2 sr s
+        fin >> curE >> curFlux;
+        energy(i) = curE;
+        flux(i) = curFlux;
+        if (fin.eof()) break;
+        i++;
+    }
+    fin.close();
+
+    fMinFlux = flux(nPoints - 1);
+    fMaxFlux = flux(0);
+
+    energyInvCDFGr = new TGraph(flux, energy);
+    fEnergyInvCDF = new TF1("EnergyInvCDF", EnergyInvCDF, fMinFlux, fMaxFlux, 0);
+}
+
+G4double HEROPrimaryGenerator::GetBackgroundPrimaryEnergy() 
+{
+    G4double rndflux = fMinFlux + G4UniformRand() * (fMaxFlux - fMinFlux);
+    G4double eval = fEnergyInvCDF->Eval(rndflux);
+    return eval;   
 }
