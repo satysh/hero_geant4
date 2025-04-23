@@ -18,7 +18,7 @@ class HEROEventAction : public G4UserEventAction
     void AddEdep(G4double edep) { fEdep += edep; }
     void AddWEdep(G4double edep) { fWEdep += edep; }
     void AddOpticalPhoton() { fNOpticalPhotons++; }
-    void AddMaxEdep(G4double edep) { fMaxEdep = edep; }
+    void SetIsPrimaryFirstStep(G4bool flag) { fIsPrimaryFirstStep = flag; }
     void AddMaxEdepXYZT(G4double x, G4double y, G4double z, G4double t) {
       fMaxEdepX = x;
       fMaxEdepY = y;
@@ -26,18 +26,20 @@ class HEROEventAction : public G4UserEventAction
       fMaxEdepTime = t;
     }
 
-    G4double GetMaxEdep() { return fMaxEdep; }
+    G4double IsPrimaryFirstStep() { return fIsPrimaryFirstStep; }
+    G4int GetEventID() { return fEventID; }
 
   private:
     HERORunAction* fRunAction = nullptr;
     G4double       fEdep = 0.;
     G4double       fWEdep = 0.;
-    G4double       fMaxEdep = 0.;
     G4double       fMaxEdepX = 0.;
     G4double       fMaxEdepY = 0.;
     G4double       fMaxEdepZ = 0.;
     G4double       fMaxEdepTime = 0.;
     G4int          fNOpticalPhotons = 0;
+    G4int          fEventID=0;
+    G4bool         fIsPrimaryFirstStep=true;
 };
 
 #endif

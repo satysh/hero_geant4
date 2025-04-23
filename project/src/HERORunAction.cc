@@ -21,14 +21,15 @@ HERORunAction::HERORunAction()
 
 	// Primary
 	man->CreateNtuple("PRIMARY", "Data");
-	man->CreateNtupleDColumn(2, "maxedep");
-	man->CreateNtupleDColumn(2, "maxedepx");
-	man->CreateNtupleDColumn(2, "maxedepy");
-	man->CreateNtupleDColumn(2, "maxedepz");
-	man->CreateNtupleDColumn(2, "maxedept");
+	man->CreateNtupleDColumn(2, "edepx");
+	man->CreateNtupleDColumn(2, "edepy");
+	man->CreateNtupleDColumn(2, "edepz");
+	man->CreateNtupleDColumn(2, "edept");
 	man->FinishNtuple(2);
 	
-	man->CreateH1("global_time", "global_time", 1700, 0., 17.);
+	man->CreateNtuple("global_time", "global_time");
+	man->CreateNtupleDColumn(3, "opticalphoton_global_time");
+	man->FinishNtuple(3);
 }
 
 HERORunAction::~HERORunAction()

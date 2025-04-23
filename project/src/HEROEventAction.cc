@@ -8,12 +8,13 @@ HEROEventAction::HEROEventAction(HERORunAction* runAction)
 : fRunAction(runAction)
 {}
 
-void HEROEventAction::BeginOfEventAction(const G4Event*)
+void HEROEventAction::BeginOfEventAction(const G4Event *event)
 {
     fEdep = 0.;
     fWEdep = 0.;
     fNOpticalPhotons = 0;
-    fMaxEdep = 0.;
+    SetIsPrimaryFirstStep(true);
+    fEventID = event->GetEventID();
 }
 
 void HEROEventAction::EndOfEventAction(const G4Event *event)
@@ -29,11 +30,10 @@ void HEROEventAction::EndOfEventAction(const G4Event *event)
     man->FillNtupleDColumn(1, 1, fWEdep); // MeV
     man->AddNtupleRow(1);
 
-    man->FillNtupleDColumn(2, 0, fMaxEdep); // MeV
-    man->FillNtupleDColumn(2, 1, fMaxEdepX); // mm
-    man->FillNtupleDColumn(2, 2, fMaxEdepY); // mm
-    man->FillNtupleDColumn(2, 3, fMaxEdepZ); // mm
-    man->FillNtupleDColumn(2, 4, fMaxEdepTime); // n
+    man->FillNtupleDColumn(2, 0, fMaxEdepX); // mm
+    man->FillNtupleDColumn(2, 1, fMaxEdepY); // mm
+    man->FillNtupleDColumn(2, 2, fMaxEdepZ); // mm
+    man->FillNtupleDColumn(2, 3, fMaxEdepTime); // n
     man->AddNtupleRow(2);
 }
 
