@@ -25,12 +25,19 @@ int main(int argc, char** argv)
 
     TString bopt = "b"; // or -b
     G4double boronPerCent = 5. * perCent;
+    G4bool background = false;
+    G4int backgroundPeriodDT = 0; // usec
 
     G4int nthr = 1;
     G4int random_state=654321;
     if (argc > 1) {
         TString energy(argv[1]), nthreds(argv[2]);
-        primaryE = energy.Atof() * GeV;
+        if (energy == "background") {
+            background = true;
+        }
+        else {
+            primaryE = energy.Atof() * GeV;
+        }
         nthr = nthreds.Atoi();
     }
     if (argc > 3) {
@@ -44,15 +51,26 @@ int main(int argc, char** argv)
         TString nevents(argv[5]);
         nEvents = nevents.Atoi();
     }
+    if (argc > 6) {
+        TString backgroundPeriod(argv[6]);
+        backgroundPeriodDT = backgroundPeriod.Atoi();
+    }
 
     G4Random::setTheSeed(random_state);
 
     G4cout << "primaryE=" << primaryE << ", nthreds=" << nthr << ", random_state=" << random_state
-           << ", bopt=" << bopt << ", nEvents=" << nEvents << G4endl;
-           
+           << ", bopt=" << bopt << ", nEvents=" << nEvents << ", backgroundPeriodDT=" << backgroundPeriodDT << G4endl;
+    
+    G4cerr << "background is " << background << G4endl;
     TString outFileName;
-    outFileName.Form("hero_nevents_%d_pdg_%d_R_%d_E_%d_bron_%s_percent_%d_absorber.root", nEvents, pdg, detectorR, G4int(primaryE), bopt.Data(),
-                     G4int(boronPerCent / perCent));
+    if (background) {
+        outFileName.Form("hero_nevents_%d_pdg_%d_R_%d_background_%d_bron_%s_percent_%d_absorber.root", nEvents, pdg, detectorR, backgroundPeriodDT, bopt.Data(),
+                         G4int(boronPerCent / perCent));
+    }
+    else {
+        outFileName.Form("hero_nevents_%d_pdg_%d_R_%d_E_%d_bron_%s_percent_%d_absorber.root", nEvents, pdg, detectorR, G4int(primaryE), bopt.Data(),
+                         G4int(boronPerCent / perCent));        
+    }
 
     G4MTRunManager* runManager = new G4MTRunManager();     // Multithreaded mode
     runManager->SetNumberOfThreads(nthr);
@@ -71,8 +89,8 @@ int main(int argc, char** argv)
 
     HEROPrimaryGenerator *primeGen = new HEROPrimaryGenerator();
     primeGen->SetPrimaryParticle(pdg);
-    //primeGen->SetParticleEnergy(primaryE);
-    primeGen->SetBackgroundMCMode(128.);
+    if (background) primeGen->SetBackgroundMCMode(backgroundPeriodDT * 1000.); // nanosec
+    else primeGen->SetParticleEnergy(primaryE);
     primeGen->SetR(G4double(detectorR) * cm);
     
     HEROActionInitialization *actionInit = new HEROActionInitialization();
