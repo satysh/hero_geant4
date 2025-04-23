@@ -86,8 +86,7 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
         G4double particleEnergy = GetBackgroundPrimaryEnergy();
         fParticleGun->SetParticleEnergy(particleEnergy);
         // Debug
-        G4cerr << "startTime=" << fParticleGun->GetParticleTime() << G4endl;
-        G4cerr << "Energy=" << fParticleGun->GetParticleEnergy() << G4endl;
+        G4cerr << fParticleGun->GetParticleTime() << " " << fParticleGun->GetParticleEnergy() << G4endl;
     }
     else if (fEnergyIsSet) {
         fParticleGun->SetParticleEnergy(fParticleEnergy);
@@ -106,25 +105,22 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
 }
 
 void HEROPrimaryGenerator::ReadFluxTXT() {
-    std::ifstream fin("../project/input/IntPam2010.txt");
+    std::ifstream fin("../project/input/cumulative_func_2010.txt");
     if (!fin.is_open()) {
-        G4cerr << "Can't find IntPam2010.txt!" << G4endl;
+        G4cerr << "Can't find cumulative_func_2010.txt!" << G4endl;
     }
 
     G4int nPoints = std::count(std::istreambuf_iterator<char>(fin),
                                std::istreambuf_iterator<char>(), '\n');
     fin.seekg(0, std::ios::beg);
 
-    G4String info="";
-    for (Int_t i=0; i<7; i++) {fin >> info;}
-
-    TVectorD energy(nPoints);
-    TVectorD flux(nPoints);
+    TVectorD energy(nPoints + 1);
+    TVectorD flux(nPoints + 1);
     G4int i=0;
 
     while (!fin.eof()) {
         G4double curE; // GeV
-        G4double curFlux; // particles/m^2 sr s
+        G4double curFlux; 
         fin >> curE >> curFlux;
         energy(i) = curE;
         flux(i) = curFlux;
@@ -133,16 +129,13 @@ void HEROPrimaryGenerator::ReadFluxTXT() {
     }
     fin.close();
 
-    fMinFlux = flux(nPoints - 1);
-    fMaxFlux = flux(0);
-
     energyInvCDFGr = new TGraph(flux, energy);
-    fEnergyInvCDF = new TF1("EnergyInvCDF", EnergyInvCDF, fMinFlux, fMaxFlux, 0);
+    fEnergyInvCDF = new TF1("EnergyInvCDF", EnergyInvCDF, 0., 1., 0);
 }
 
 G4double HEROPrimaryGenerator::GetBackgroundPrimaryEnergy() 
 {
-    G4double rndflux = fMinFlux + G4UniformRand() * (fMaxFlux - fMinFlux);
+    G4double rndflux = G4UniformRand();
     G4double eval = fEnergyInvCDF->Eval(rndflux);
-    return eval;   
+    return eval * GeV;   
 }

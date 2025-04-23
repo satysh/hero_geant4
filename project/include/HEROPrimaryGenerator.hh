@@ -30,8 +30,6 @@ private:
     G4double fParticleEnergy0=0.;
     G4double fParticleEnergy1=0.;
     G4double fBackgroundDTime=0.;
-    G4double fMinFlux;
-    G4double fMaxFlux;
     G4int    fPrimaryParticlePDG=2212;
     G4int    fR=125; // detector radius in cm
 
