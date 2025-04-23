@@ -76,8 +76,6 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
     G4double px = 0.;
     G4double py = 0.;
     G4double pz = 1.;
-    G4ThreeVector mom(px, py, pz);
-    fParticleGun->SetParticleMomentumDirection(mom);
 
     // Energy and Time
     if (fBackgroundMCIsSet) {
@@ -85,8 +83,15 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
         fParticleGun->SetParticleTime(startTime); // nanoseconds
         G4double particleEnergy = GetBackgroundPrimaryEnergy();
         fParticleGun->SetParticleEnergy(particleEnergy);
+
+        G4double theta = (-90. + G4UniformRand()*180.)*deg;
+        G4double phi = G4UniformRand()*360.*deg;
+        px = sin(theta)*cos(phi);
+        py = sin(theta)*sin(phi);
+        pz = cos(theta);
+
         // Debug
-        G4cerr << fParticleGun->GetParticleTime() << " " << fParticleGun->GetParticleEnergy() << G4endl;
+        //G4cerr << fParticleGun->GetParticleTime() * 0.001 << " " << fParticleGun->GetParticleEnergy() * 0.001 << G4endl;
     }
     else if (fEnergyIsSet) {
         fParticleGun->SetParticleEnergy(fParticleEnergy);
@@ -100,6 +105,8 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
         G4cerr << "User must set primary Energy!" << G4endl;
     }
 
+    G4ThreeVector mom(px, py, pz);
+    fParticleGun->SetParticleMomentumDirection(mom);
     fParticleGun->GeneratePrimaryVertex(anEvent);
     fParticleSource->GeneratePrimaryVertex(anEvent);
 }
