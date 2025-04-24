@@ -51,16 +51,16 @@ void HEROSteppingAction::UserSteppingAction(const G4Step* step)
         // opticalphoton
         if (particleName == "opticalphoton") {
             fEventAction->AddOpticalPhoton();
-            
             man->FillNtupleDColumn(3, 0, globalTime * 0.001); // usec
             man->AddNtupleRow(3);
-
             track->SetTrackStatus(fStopAndKill);
         }
+        else { // We want to write edeps for all particles except optical photons
+            man->FillNtupleDColumn(4, 0, edepStep * 0.001); // GeV
+            man->FillNtupleDColumn(4, 1, globalTime * 0.001); // usec
+            man->AddNtupleRow(4);
+        }
 
-        man->FillNtupleDColumn(4, 0, edepStep * 0.001); // GeV
-        man->FillNtupleDColumn(4, 1, globalTime * 0.001); // usec
-        man->AddNtupleRow(4);
     }
     else if (volume.contains("logicWolfram")) {
         const G4DynamicParticle* dParticle = track->GetDynamicParticle();
