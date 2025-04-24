@@ -45,19 +45,22 @@ void HEROSteppingAction::UserSteppingAction(const G4Step* step)
     if (volume.contains("logicBorScint_")) {
         // collect energy deposited in this step
         fEventAction->AddEdep(edepStep); // accumulate statistics in run action
+        G4double globalTime = track->GetGlobalTime();
+        G4AnalysisManager* man = G4AnalysisManager::Instance();
 
         // opticalphoton
         if (particleName == "opticalphoton") {
             fEventAction->AddOpticalPhoton();
-            G4double globalTime = track->GetGlobalTime();
-            
-            G4AnalysisManager* man = G4AnalysisManager::Instance();
             
             man->FillNtupleDColumn(3, 0, globalTime * 0.001); // usec
             man->AddNtupleRow(3);
 
             track->SetTrackStatus(fStopAndKill);
         }
+
+        man->FillNtupleDColumn(4, 0, edepStep * 0.001); // GeV
+        man->FillNtupleDColumn(4, 1, globalTime * 0.001); // usec
+        man->AddNtupleRow(4);
     }
     else if (volume.contains("logicWolfram")) {
         const G4DynamicParticle* dParticle = track->GetDynamicParticle();

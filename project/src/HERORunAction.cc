@@ -27,9 +27,16 @@ HERORunAction::HERORunAction()
 	man->CreateNtupleDColumn(2, "edept");
 	man->FinishNtuple(2);
 	
-	man->CreateNtuple("global_time", "global_time");
+	// Optic time
+	man->CreateNtuple("optic_global_time", "optic_global_time");
 	man->CreateNtupleDColumn(3, "opticalphoton_global_time");
 	man->FinishNtuple(3);
+
+	// Edep time
+	man->CreateNtuple("edep_global_time", "edep_global_time");
+	man->CreateNtupleDColumn(4, "edep");
+	man->CreateNtupleDColumn(4, "edept");
+	man->FinishNtuple(4);
 }
 
 HERORunAction::~HERORunAction()
