@@ -52,12 +52,14 @@ void HEROSteppingAction::UserSteppingAction(const G4Step* step)
         if (particleName == "opticalphoton") {
             fEventAction->AddOpticalPhoton();
             man->FillNtupleDColumn(3, 0, globalTime * 0.001); // usec
+            man->FillNtupleIColumn(3, 1, fEventAction->GetEventID());
             man->AddNtupleRow(3);
             track->SetTrackStatus(fStopAndKill);
         }
         else { // We want to write edeps for all particles except optical photons
             man->FillNtupleDColumn(4, 0, edepStep * 0.001); // GeV
             man->FillNtupleDColumn(4, 1, globalTime * 0.001); // usec
+            man->FillNtupleIColumn(4, 2, fEventAction->GetEventID());
             man->AddNtupleRow(4);
         }
 

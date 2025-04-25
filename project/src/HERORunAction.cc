@@ -25,17 +25,20 @@ HERORunAction::HERORunAction()
 	man->CreateNtupleDColumn(2, "edepy");
 	man->CreateNtupleDColumn(2, "edepz");
 	man->CreateNtupleDColumn(2, "edept");
+	man->CreateNtupleIColumn(2, "eventid");
 	man->FinishNtuple(2);
 	
 	// Optic time
 	man->CreateNtuple("optic_global_time", "optic_global_time");
 	man->CreateNtupleDColumn(3, "opticalphoton_global_time");
+	man->CreateNtupleIColumn(3, "eventid");
 	man->FinishNtuple(3);
 
 	// Edep time
 	man->CreateNtuple("edep_global_time", "edep_global_time");
 	man->CreateNtupleDColumn(4, "edep");
 	man->CreateNtupleDColumn(4, "edept");
+	man->CreateNtupleIColumn(4, "eventid");
 	man->FinishNtuple(4);
 }
 

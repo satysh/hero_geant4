@@ -34,6 +34,7 @@ void HEROEventAction::EndOfEventAction(const G4Event *event)
     man->FillNtupleDColumn(2, 1, fMaxEdepY); // mm
     man->FillNtupleDColumn(2, 2, fMaxEdepZ); // mm
     man->FillNtupleDColumn(2, 3, fMaxEdepTime); // n
+    man->FillNtupleIColumn(2, 4, eventID);
     man->AddNtupleRow(2);
 }
 
