@@ -84,11 +84,11 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
         G4double particleEnergy = GetBackgroundPrimaryEnergy();
         fParticleGun->SetParticleEnergy(particleEnergy);
 
-        G4double theta = (-90. + G4UniformRand()*180.)*deg;
-        G4double phi = G4UniformRand()*360.*deg;
-        px = sin(theta)*cos(phi);
-        py = sin(theta)*sin(phi);
-        pz = cos(theta);
+        G4double cost = (G4double)G4UniformRand();
+        G4double phi = (G4double)G4UniformRand() * 360. * deg;
+        px = sqrt(1. - cost * cost) * cos(phi);
+        py = sqrt(1. - cost * cost) * sin(phi);
+        pz = cost;
 
         // Debug
         //G4cerr << fParticleGun->GetParticleTime() * 0.001 << " " << fParticleGun->GetParticleEnergy() * 0.001 << G4endl;
