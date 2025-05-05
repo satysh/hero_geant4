@@ -43,13 +43,16 @@ void HEROEventAction::EndOfEventAction(const G4Event *event)
         man->FillNtupleIColumn(5, 0, eventID);
         man->FillNtupleIColumn(5, 1, pdg);
         man->FillNtupleDColumn(5, 2, edep);
+        man->FillNtupleIColumn(5, 3, fPrticleCntMap[pdg]);
         man->AddNtupleRow(5);
     }
 
-    fPrticleEdepMap.clear();   
+    fPrticleEdepMap.clear();
+    fPrticleCntMap.clear();
 }
 
 void HEROEventAction::AddParticleEdep(G4int pdg, G4double edep)
 {
     fPrticleEdepMap[pdg] += edep;
+    fPrticleCntMap[pdg]++;
 }

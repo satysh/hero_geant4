@@ -46,6 +46,7 @@ HERORunAction::HERORunAction()
 	man->CreateNtupleIColumn(5, "eventid");
 	man->CreateNtupleIColumn(5, "pdg");
 	man->CreateNtupleDColumn(5, "edep");
+	man->CreateNtupleIColumn(5, "nparticles");
 	man->FinishNtuple(5);
 }
 

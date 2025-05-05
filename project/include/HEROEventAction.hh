@@ -45,6 +45,7 @@ class HEROEventAction : public G4UserEventAction
     G4bool         fIsPrimaryFirstStep=true;
 
     std::unordered_map<G4int, G4double> fPrticleEdepMap; // <pdg, edep>
+    std::unordered_map<G4int, G4int> fPrticleCntMap; // <pdg, cnt>
 };
 
 #endif
