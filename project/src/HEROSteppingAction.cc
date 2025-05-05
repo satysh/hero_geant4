@@ -16,6 +16,7 @@ void HEROSteppingAction::UserSteppingAction(const G4Step* step)
     G4Track* track = step->GetTrack();
     const G4ParticleDefinition* particleDefinition = track->GetParticleDefinition();
     const G4String& particleName = particleDefinition->GetParticleName();
+    const G4int pdg = particleDefinition->GetPDGEncoding();
 
     // get volume of the current step
     G4String volume = step->GetPreStepPoint()->GetTouchableHandle()->GetVolume()->GetLogicalVolume()->GetName();
@@ -45,6 +46,7 @@ void HEROSteppingAction::UserSteppingAction(const G4Step* step)
     if (volume.contains("logicBorScint_")) {
         // collect energy deposited in this step
         fEventAction->AddEdep(edepStep); // accumulate statistics in run action
+        fEventAction->AddParticleEdep(pdg, edepStep);
         G4double globalTime = track->GetGlobalTime();
         G4AnalysisManager* man = G4AnalysisManager::Instance();
 

@@ -40,6 +40,13 @@ HERORunAction::HERORunAction()
 	man->CreateNtupleDColumn(4, "edept");
 	man->CreateNtupleIColumn(4, "eventid");
 	man->FinishNtuple(4);
+
+	// Particles
+	man->CreateNtuple("particles_agg_edep", "particles_agg_edep");
+	man->CreateNtupleIColumn(5, "eventid");
+	man->CreateNtupleIColumn(5, "pdg");
+	man->CreateNtupleDColumn(5, "edep");
+	man->FinishNtuple(5);
 }
 
 HERORunAction::~HERORunAction()

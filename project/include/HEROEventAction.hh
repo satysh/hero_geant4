@@ -4,6 +4,8 @@
 #include "G4UserEventAction.hh"
 #include "globals.hh"
 
+#include <unordered_map>
+
 class HERORunAction;
 
 class HEROEventAction : public G4UserEventAction
@@ -25,6 +27,7 @@ class HEROEventAction : public G4UserEventAction
       fMaxEdepZ = z;
       fMaxEdepTime = t;
     }
+    void AddParticleEdep(G4int pdg, G4double edep);
 
     G4double IsPrimaryFirstStep() { return fIsPrimaryFirstStep; }
     G4int GetEventID() { return fEventID; }
@@ -40,6 +43,8 @@ class HEROEventAction : public G4UserEventAction
     G4int          fNOpticalPhotons = 0;
     G4int          fEventID=0;
     G4bool         fIsPrimaryFirstStep=true;
+
+    std::unordered_map<G4int, G4double> fPrticleEdepMap; // <pdg, edep>
 };
 
 #endif

@@ -19,7 +19,7 @@ void HEROEventAction::BeginOfEventAction(const G4Event *event)
 
 void HEROEventAction::EndOfEventAction(const G4Event *event)
 {
-    G4double eventID = event->GetEventID();
+    G4int eventID = event->GetEventID();
     G4AnalysisManager* man = G4AnalysisManager::Instance();
     man->FillNtupleIColumn(0, 0, eventID);
     man->FillNtupleDColumn(0, 1, fEdep); // MeV
@@ -36,5 +36,20 @@ void HEROEventAction::EndOfEventAction(const G4Event *event)
     man->FillNtupleDColumn(2, 3, fMaxEdepTime); // n
     man->FillNtupleIColumn(2, 4, eventID);
     man->AddNtupleRow(2);
+
+    for(auto& item : fPrticleEdepMap) {
+        G4int pdg = item.first;
+        G4double edep = item.second;
+        man->FillNtupleIColumn(5, 0, eventID);
+        man->FillNtupleIColumn(5, 1, pdg);
+        man->FillNtupleDColumn(5, 2, edep);
+        man->AddNtupleRow(5);
+    }
+
+    fPrticleEdepMap.clear();   
 }
 
+void HEROEventAction::AddParticleEdep(G4int pdg, G4double edep)
+{
+    fPrticleEdepMap[pdg] += edep;
+}
