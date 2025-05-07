@@ -64,7 +64,6 @@ void merge()
 	mPRIMARY->Write();
 	//moptic_global_time->Write();
 	medep_global_time->Write();
-	medep_global_time->Write();
 	mparticles_agg_edep->Write();
 	mdigi->Write();
 }
