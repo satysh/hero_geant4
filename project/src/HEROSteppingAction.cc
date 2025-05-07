@@ -21,7 +21,7 @@ void HEROSteppingAction::UserSteppingAction(const G4Step* step)
     // get volume of the current step
     G4String volume = step->GetPreStepPoint()->GetTouchableHandle()->GetVolume()->GetLogicalVolume()->GetName();
 
-    G4double edepStep = step->GetTotalEnergyDeposit();
+    G4double edepStep = step->GetTotalEnergyDeposit() * 0.001; // GeV
 
     // Primary info accumulate
     G4double trackID = track->GetTrackID();
@@ -35,10 +35,10 @@ void HEROSteppingAction::UserSteppingAction(const G4Step* step)
         G4double x = 0.5 * (positionParticleOn[0] + positionParticleOff[0]);
         G4double y = 0.5 * (positionParticleOn[1] + positionParticleOff[1]);
         G4double z = 0.5 * (positionParticleOn[2] + positionParticleOff[2]);
-        G4double globalTime = track->GetGlobalTime();
+        G4double globalTime = track->GetGlobalTime() * 0.001; // usec
 
         fEventAction->SetIsPrimaryFirstStep(false);
-        fEventAction->AddMaxEdepXYZT(x, y, z, globalTime * 0.001); // time [usec]
+        fEventAction->AddMaxEdepXYZT(x, y, z, globalTime); // time [usec]
         G4cerr << "nowEvent=" << fEventAction->GetEventID() << G4endl;
     }
 
@@ -47,21 +47,28 @@ void HEROSteppingAction::UserSteppingAction(const G4Step* step)
         // collect energy deposited in this step
         fEventAction->AddEdep(edepStep); // accumulate statistics in run action
         fEventAction->AddParticleEdep(pdg, edepStep);
+        
+        // Digi agg
         G4double globalTime = track->GetGlobalTime();
+        if (globalTime <= 16.) {
+            fEventAction->AddEdepDigi(edepStep); // GeV
+        }
+
         G4AnalysisManager* man = G4AnalysisManager::Instance();
 
         // opticalphoton
         if (particleName == "opticalphoton") {
             fEventAction->AddOpticalPhoton();
-            man->FillNtupleDColumn(3, 0, globalTime * 0.001); // usec
+            man->FillNtupleDColumn(3, 0, globalTime); // usec
             man->FillNtupleIColumn(3, 1, fEventAction->GetEventID());
             man->AddNtupleRow(3);
             track->SetTrackStatus(fStopAndKill);
         }
         else { // We want to write edeps for all particles except optical photons
-            man->FillNtupleDColumn(4, 0, edepStep * 0.001); // GeV
-            man->FillNtupleDColumn(4, 1, globalTime * 0.001); // usec
+            man->FillNtupleDColumn(4, 0, edepStep); // GeV
+            man->FillNtupleDColumn(4, 1, globalTime); // usec
             man->FillNtupleIColumn(4, 2, fEventAction->GetEventID());
+            man->FillNtupleIColumn(4, 3, pdg);
             man->AddNtupleRow(4);
         }
 

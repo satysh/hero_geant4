@@ -18,6 +18,7 @@ class HEROEventAction : public G4UserEventAction
     void EndOfEventAction(const G4Event* event) override;
 
     void AddEdep(G4double edep) { fEdep += edep; }
+    void AddEdepDigi(G4double edep) { fEdepDigi+= edep; }
     void AddWEdep(G4double edep) { fWEdep += edep; }
     void AddOpticalPhoton() { fNOpticalPhotons++; }
     void SetIsPrimaryFirstStep(G4bool flag) { fIsPrimaryFirstStep = flag; }
@@ -35,6 +36,7 @@ class HEROEventAction : public G4UserEventAction
   private:
     HERORunAction* fRunAction = nullptr;
     G4double       fEdep = 0.;
+    G4double       fEdepDigi=0.;
     G4double       fWEdep = 0.;
     G4double       fMaxEdepX = 0.;
     G4double       fMaxEdepY = 0.;

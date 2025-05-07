@@ -11,6 +11,7 @@ HEROEventAction::HEROEventAction(HERORunAction* runAction)
 void HEROEventAction::BeginOfEventAction(const G4Event *event)
 {
     fEdep = 0.;
+    fEdepDigi = 0.;
     fWEdep = 0.;
     fNOpticalPhotons = 0;
     SetIsPrimaryFirstStep(true);
@@ -49,6 +50,10 @@ void HEROEventAction::EndOfEventAction(const G4Event *event)
 
     fPrticleEdepMap.clear();
     fPrticleCntMap.clear();
+
+    man->FillNtupleIColumn(6, 0, eventID);
+    man->FillNtupleDColumn(6, 1, fEdepDigi);
+    man->AddNtupleRow(6);
 }
 
 void HEROEventAction::AddParticleEdep(G4int pdg, G4double edep)

@@ -39,6 +39,7 @@ HERORunAction::HERORunAction()
 	man->CreateNtupleDColumn(4, "edep");
 	man->CreateNtupleDColumn(4, "edept");
 	man->CreateNtupleIColumn(4, "eventid");
+	man->CreateNtupleIColumn(4, "pdg");
 	man->FinishNtuple(4);
 
 	// Particles
@@ -48,6 +49,12 @@ HERORunAction::HERORunAction()
 	man->CreateNtupleDColumn(5, "edep");
 	man->CreateNtupleIColumn(5, "nparticles");
 	man->FinishNtuple(5);
+
+	// Digi
+	man->CreateNtuple("digi", "digi");
+	man->CreateNtupleIColumn(6, "eventid");
+	man->CreateNtupleDColumn(6, "edep");
+	man->FinishNtuple(6);
 }
 
 HERORunAction::~HERORunAction()
