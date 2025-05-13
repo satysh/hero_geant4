@@ -1,13 +1,16 @@
-void merge()
+void merge(Int_t energy, TString bopt="b")
 {
-	TString dir = "1_gev";
+	TString dir;
+	dir.Form("%d_gev", energy);
 	void *dirp = gSystem->OpenDirectory(dir);
 	Char_t *afile;
 
 	std::vector<TString> vfile_names;
 	while ((afile = const_cast<Char_t *>(gSystem->GetDirEntry(dirp)))) {
 		TString safile(afile);
-		if (safile.Contains("bron_b_percent_5_absorber.root")) {
+		TString tmp;
+		tmp.Form("bron_%s_percent_5_absorber.root", bopt.Data());
+		if (safile.Contains(tmp)) {
 			vfile_names.push_back(safile);
 		}
 	}
@@ -27,7 +30,7 @@ void merge()
 		gROOT->cd();
 		auto HERO = ((TTree*)f->Get("HERO"))->CloneTree();
 		listHERO->Add(HERO);
-		gROOT->cd();
+		/*gROOT->cd();
 		auto AHERO = ((TTree*)f->Get("AHERO"))->CloneTree();
 		listAHERO->Add(AHERO);
 		gROOT->cd();
@@ -41,7 +44,7 @@ void merge()
 		listedep_global_time->Add(edep_global_time);
 		gROOT->cd();
 		auto particles_agg_edep = ((TTree*)f->Get("particles_agg_edep"))->CloneTree();
-		listparticles_agg_edep->Add(particles_agg_edep);
+		listparticles_agg_edep->Add(particles_agg_edep);*/
 		gROOT->cd();
 		auto digi = ((TTree*)f->Get("digi"))->CloneTree();
 		listdigi->Add(digi);
@@ -49,21 +52,23 @@ void merge()
 		f->Close();
 	}
 	
-	auto fout = new TFile("merged.root", "RECREATE");
+	TString outFileName;
+	outFileName.Form("hero_nevents_1000_pdg_2212_R_125_E_%d_bron_%s_percent_5_absorber.root", energy * 1000, bopt.Data());
+	auto fout = new TFile(outFileName, "RECREATE");
 	auto mHERO = TTree::MergeTrees(listHERO);
-	auto mAHERO = TTree::MergeTrees(listAHERO);
+	/*auto mAHERO = TTree::MergeTrees(listAHERO);
 	auto mPRIMARY = TTree::MergeTrees(listPRIMARY);
 	auto moptic_global_time = TTree::MergeTrees(listoptic_global_time);
 	auto medep_global_time = TTree::MergeTrees(listedep_global_time);
-	auto mparticles_agg_edep = TTree::MergeTrees(listparticles_agg_edep);
+	auto mparticles_agg_edep = TTree::MergeTrees(listparticles_agg_edep);*/
 	auto mdigi = TTree::MergeTrees(listdigi);
 
 	fout->cd();
 	mHERO->Write();
-	mAHERO->Write();
+	/*mAHERO->Write();
 	mPRIMARY->Write();
 	//moptic_global_time->Write();
 	medep_global_time->Write();
-	mparticles_agg_edep->Write();
+	mparticles_agg_edep->Write();*/
 	mdigi->Write();
 }
