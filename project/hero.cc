@@ -64,7 +64,8 @@ int main(int argc, char** argv)
     G4cerr << "background is " << background << G4endl;
     TString outFileName;
     if (background) {
-        outFileName.Form("hero_nevents_%d_pdg_%d_R_%d_background_%d_bron_%s_percent_%d_absorber.root", nEvents, pdg, detectorR, backgroundPeriodDT, bopt.Data(),
+        outFileName.Form("hero_rnd_%d_nevents_%d_pdg_%d_R_%d_background_%d_bron_%s_percent_%d_absorber.root", 
+                         random_state, nEvents, pdg, detectorR, backgroundPeriodDT, bopt.Data(),
                          G4int(boronPerCent / perCent));
     }
     else {

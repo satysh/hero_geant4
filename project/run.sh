@@ -1,8 +1,8 @@
 #!/bin/bash
 
-NTHR=16
-NEVENTS=100000;
-BACKGROUNDPERIOD=0
+NTHR=1
+NEVENTS=10;
+BACKGROUNDPERIOD=16
 E_ARRAY=($(seq 1 1)) # GeV
 #E_ARRAY=(1 10 25 50 75 100 250 500 750 1000 2500 5000 7500 10000 25000 50000 75000 100000) # GeV
 
@@ -51,13 +51,13 @@ else
     mv ../build/err.txt output/
 fi
 
-cd macro/scint_light/
+cd macro/
 
-OUTDIR=trash
+OUTDIR=background
 
 if [ -d ${OUTDIR} ]; then
-    mv ../../output/*.root ${OUTDIR}
+    mv ../output/*.root ${OUTDIR}
 else
     mkdir ${OUTDIR}
-    mv ../../output/*.root ${OUTDIR}
+    mv ../output/*.root ${OUTDIR}
 fi
