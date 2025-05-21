@@ -18,7 +18,7 @@ public:
     void SetParticleEnergy(G4double particleE0, G4double particleE1);
     void SetPrimaryParticle(G4int pdgcode) { fPrimaryParticlePDG=pdgcode; }
     void SetR(G4int r) { fR=r; }
-    void SetBackgroundMCMode(G4double dtime);
+    void SetBackgroundMCMode(G4double dtime, G4String path);
     virtual void GeneratePrimaries(G4Event*);
 
 private:
@@ -41,6 +41,8 @@ private:
     G4bool fEnergyIsSet=false;
     G4bool fEnergyRangeIsSet=false;
     G4bool fBackgroundMCIsSet=false;
+
+    G4String fPath="";
 
 private:
     TF1 *fEnergyInvCDF=nullptr;

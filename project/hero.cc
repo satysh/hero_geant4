@@ -90,7 +90,7 @@ int main(int argc, char** argv)
 
     HEROPrimaryGenerator *primeGen = new HEROPrimaryGenerator();
     primeGen->SetPrimaryParticle(pdg);
-    if (background) primeGen->SetBackgroundMCMode(backgroundPeriodDT * 1000.); // nanosec
+    if (background) primeGen->SetBackgroundMCMode(backgroundPeriodDT * 1000., "../project/input/cumulative_func_2010.txt"); // nanosec
     else primeGen->SetParticleEnergy(primaryE);
     primeGen->SetR(G4double(detectorR) * cm);
     

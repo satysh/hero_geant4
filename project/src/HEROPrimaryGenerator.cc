@@ -43,10 +43,11 @@ void HEROPrimaryGenerator::SetParticleEnergy(G4double particleE0, G4double parti
 
 }
 
-void HEROPrimaryGenerator::SetBackgroundMCMode(G4double dtime) 
+void HEROPrimaryGenerator::SetBackgroundMCMode(G4double dtime, G4String path) 
 { 
     fBackgroundDTime=dtime; 
-    fBackgroundMCIsSet=true; 
+    fBackgroundMCIsSet=true;
+    fPath=path; 
     ReadFluxTXT();
 }
 
@@ -112,7 +113,7 @@ void HEROPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
 }
 
 void HEROPrimaryGenerator::ReadFluxTXT() {
-    std::ifstream fin("../project/input/cumulative_func_2010.txt");
+    std::ifstream fin(fPath);
     if (!fin.is_open()) {
         G4cerr << "Can't find cumulative_func_2010.txt!" << G4endl;
     }
