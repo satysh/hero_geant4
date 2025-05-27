@@ -1,4 +1,4 @@
-void merge(Int_t usec=16, TString bopt="b", Int_t nevents=469318)
+void merge(Int_t usec=16, TString bopt="b", Int_t nevents=469318, Int_t R=125)
 {
 	TString dir;
 	dir.Form("%d_usec", usec);
@@ -28,7 +28,7 @@ void merge(Int_t usec=16, TString bopt="b", Int_t nevents=469318)
 	}
 	
 	TString outFileName;
-	outFileName.Form("hero_nevents_%d_pdg_2212_R_125_background_1000000_bron_%s_percent_5_absorber.root", nevents, bopt.Data());
+	outFileName.Form("hero_nevents_%d_pdg_2212_R_%d_background_1000000_bron_%s_percent_5_absorber.root", nevents, R, bopt.Data());
 	auto fout = new TFile(outFileName, "RECREATE");
 	auto medep_global_time = TTree::MergeTrees(listedep_global_time);
 
