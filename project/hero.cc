@@ -55,6 +55,10 @@ int main(int argc, char** argv)
         TString backgroundPeriod(argv[6]);
         backgroundPeriodDT = backgroundPeriod.Atoi();
     }
+    if (argc > 7) {
+        TString detR(argv[7]);
+        detectorR = detR.Atoi();
+    }
 
     G4Random::setTheSeed(random_state);
 
