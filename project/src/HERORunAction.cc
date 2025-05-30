@@ -48,6 +48,9 @@ HERORunAction::HERORunAction()
 	man->CreateNtupleDColumn(5, "edep");
 	man->CreateNtupleIColumn(5, "nparticles");
 	man->FinishNtuple(5);
+
+	// Time histogram edep
+	man->CreateH1("time_edep", "time_edep", 4000, 0., 16.);
 }
 
 HERORunAction::~HERORunAction()
